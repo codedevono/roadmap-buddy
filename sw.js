@@ -1,11 +1,19 @@
-const C = 'buddy-v2';
-const SHELL = ['./', 'index.html', 'manifest.json', 'icon.svg'];
-self.addEventListener('install', e => e.waitUntil(caches.open(C).then(c => c.addAll(SHELL))));
-self.addEventListener('activate', e => e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== C).map(k => caches.delete(k))))));
+// Network-first: new versions of the app and the plan files show up on the next load.
+// The cache is only a fallback for when the phone is offline.
+const C = 'buddy-v3';
+const SHELL = ['./', 'index.html', 'manifest.json', 'icon.svg', 'skills.json', 'projects.json', 'events.json'];
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(C).then(c => c.addAll(SHELL)));
+});
+self.addEventListener('activate', e => e.waitUntil(
+  caches.keys().then(ks => Promise.all(ks.filter(k => k !== C).map(k => caches.delete(k)))).then(() => self.clients.claim())
+));
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  const isData = /(skills|projects|events)\.json/.test(e.request.url);
-  e.respondWith(isData
-    ? fetch(e.request).then(r => { const x = r.clone(); caches.open(C).then(c => c.put(e.request, x)); return r; }).catch(() => caches.match(e.request))
-    : caches.match(e.request).then(r => r || fetch(e.request)));
+  e.respondWith(
+    fetch(e.request, { cache: 'no-cache' })
+      .then(r => { if (r.ok) { const x = r.clone(); caches.open(C).then(c => c.put(e.request, x)); } return r; })
+      .catch(() => caches.match(e.request))
+  );
 });

@@ -8,16 +8,29 @@
 <link rel="icon" href="icon.svg">
 <title>Roadmap Buddy</title>
 <style>
-:root{--bg:#eef2f4;--ink:#14202b;--mute:#5d6f7c;--line:#cfd9df;--accent:#1f6f78;--accent-ink:#fff;--track:#d9e3e8;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a22;--ink:#e6edf1;--mute:#8fa2b0;--line:#2a3b49;--accent:#7cc4cc;--accent-ink:#0b1318;--track:#223240;color-scheme:dark}}
+:root{--bg:#eef2f4;--ink:#14202b;--mute:#5d6f7c;--line:#cfd9df;--accent:#1f6f78;--accent-ink:#fff;--track:#d9e3e8;--card:#f8fafb;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a22;--ink:#e6edf1;--mute:#8fa2b0;--line:#2a3b49;--accent:#7cc4cc;--accent-ink:#0b1318;--track:#223240;--card:#15212b;color-scheme:dark}}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
-main{max-width:30rem;margin:0 auto;padding:1.25rem 1.25rem 2rem;display:flex;flex-direction:column;min-height:100%}
+main{max-width:30rem;margin:0 auto;padding:1rem 1.25rem 2rem;display:flex;flex-direction:column;min-height:100%}
 .top{display:flex;justify-content:space-between;align-items:baseline;color:var(--mute);font-size:.9rem}
-.focus{flex:1;display:flex;flex-direction:column;justify-content:center;padding:2rem 0}
+.muted{color:var(--mute)}
+.bar{height:.55rem;border-radius:1rem;background:var(--track);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:1rem;transition:width .6s ease}
+.hud{margin:.6rem 0 .2rem}
+.hl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.35rem}
+.hl b{font-weight:650}
+.hl span{color:var(--mute);font-size:.85rem;font-variant-numeric:tabular-nums}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin:.9rem 0 .4rem}
+.tabs button{min-height:2.75rem;font-size:.95rem;border-radius:.8rem;color:var(--mute)}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+#v-today{flex:1;display:flex;flex-direction:column}
+.focus{flex:1;display:flex;flex-direction:column;justify-content:center;padding:1.5rem 0}
 .track{color:var(--accent);font-weight:600;margin:0 0 .5rem}
 h1{font:600 1.9rem/1.2 Georgia,"Iowan Old Style","Times New Roman",serif;margin:0 0 .75rem}
+h2{font-size:.95rem;font-weight:600;margin:0 0 .6rem}
 .hint{color:var(--mute);margin:0 0 1.5rem}
 .ring{position:relative;width:11rem;height:11rem;margin:0 auto 1.5rem}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
@@ -26,11 +39,14 @@ h1{font:600 1.9rem/1.2 Georgia,"Iowan Old Style","Times New Roman",serif;margin:
 .ring .fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
 .ring .t{position:absolute;inset:0;display:grid;place-items:center;font:600 2rem system-ui,sans-serif;font-variant-numeric:tabular-nums}
 button{font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.9rem;padding:.8rem 1rem;min-height:3rem;cursor:pointer}
-button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600;width:100%;font-size:1.1rem;min-height:3.4rem}
-.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-top:.75rem}
-.week{border-top:1px solid var(--line);padding-top:1rem}
-.week h2{font-size:.95rem;font-weight:600;margin:0 0 .6rem}
+button small{display:block;font-size:.75rem;color:var(--mute)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem}
+.why{color:var(--mute);font-size:.9rem;margin:-.9rem 0 1.25rem}
+.proj,.week{border-top:1px solid var(--line);padding:1rem 0;margin-top:.5rem}
+.p-row{display:flex;justify-content:space-between;gap:1rem;padding:.2rem 0;font-size:.95rem}
+.p-row span:last-child{color:var(--mute)}
 .t-row{display:flex;align-items:center;gap:.75rem;padding:.25rem 0}
 .t-row .n{width:6.5rem;font-size:.95rem}
 .dots{display:flex;gap:.3rem}
@@ -38,42 +54,145 @@ button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--
 .dot.on{background:var(--accent);border-color:var(--accent)}
 .foot{display:flex;gap:.5rem;margin-top:1.25rem}
 .foot button{flex:1;font-size:.85rem;min-height:2.5rem;color:var(--mute)}
-.why{color:var(--mute);font-size:.9rem;margin:-.9rem 0 1.25rem}
-.row{grid-template-columns:1fr 1fr!important}
-.proj{border-top:1px solid var(--line);padding:1rem 0;margin-top:.5rem}
-.proj h2,.week h2{font-size:.95rem;font-weight:600;margin:0 0 .6rem}
-.p-row{display:flex;justify-content:space-between;gap:1rem;padding:.2rem 0;font-size:.95rem}
-.p-row span:last-child{color:var(--mute)}
 .msg{color:var(--mute);text-align:center;padding:1rem}
-@media (prefers-reduced-motion:reduce){.ring .fg{transition:none}}
+/* roadmap */
+.jour{background:var(--card);border:1px solid var(--line);border-radius:1rem;padding:1rem;margin:.4rem 0 .8rem}
+.jour p{margin:.1rem 0 .6rem}
+details.lad{border:1px solid var(--line);border-radius:1rem;margin:.5rem 0;background:var(--card)}
+details.lad summary{list-style:none;cursor:pointer;padding:.8rem 1rem;display:grid;grid-template-columns:1fr auto;gap:.3rem .75rem;align-items:center;min-height:3rem}
+details.lad summary::-webkit-details-marker{display:none}
+details.lad summary .bar{grid-column:1/3}
+.ln{font-weight:600}
+.lc{color:var(--mute);font-size:.85rem;font-variant-numeric:tabular-nums}
+.tp{display:grid;grid-template-columns:1.4rem 1fr;gap:.2rem .5rem;padding:.65rem 1rem;border-top:1px solid var(--line)}
+.tp .ic{color:var(--mute);text-align:center}
+.tp.done .ic,.tp.ready .ic{color:var(--accent);font-weight:700}
+.tp.done .tt{color:var(--mute);text-decoration:line-through}
+.tp.locked{opacity:.75}
+.tt{font-size:.95rem}
+.sub{font-size:.8rem;color:var(--mute)}
+.acts{display:flex;gap:.4rem;margin-top:.4rem}
+.mini{min-height:2.75rem;padding:.3rem .8rem;font-size:.85rem;border-radius:.7rem}
+.mini.go{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+/* rewards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:1rem;padding:1rem;margin:.5rem 0}
+.big{font:600 2.2rem/1.1 Georgia,"Times New Roman",serif}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;text-align:center}
+.stats b{display:block;font-size:1.4rem;font-variant-numeric:tabular-nums}
+.stats span{font-size:.8rem;color:var(--mute)}
+.badges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.badges li{border:1.5px solid var(--line);border-radius:.9rem;padding:.7rem .8rem;font-size:.9rem;background:var(--card)}
+.badges li b{display:block;font-size:.92rem}
+.badges li span{color:var(--mute);font-size:.78rem}
+.badges li.on{border-color:var(--accent)}
+.badges li.on b::before{content:"\2713  ";color:var(--accent)}
+.badges li.off{opacity:.65}
+#toast{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,2rem);max-width:min(26rem,92vw);background:var(--ink);color:var(--bg);padding:.8rem 1.1rem;border-radius:.9rem;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.ring .fg,.bar i,#toast{transition:none}}
 </style>
 </head>
 <body>
 <main>
   <div class="top"><span id="date"></span><span id="count"></span></div>
-  <section class="focus" id="focus" aria-live="polite"></section>
-  <section class="proj"><h2>Projects</h2><div id="proj"></div></section>
-  <section class="week"><h2>This week</h2><div id="week"></div>
-    <div class="foot"><button id="copy">Copy dev log</button><button id="reset">Reset data</button></div>
+  <section class="hud" aria-label="Level and XP">
+    <div class="hl"><b id="lv"></b><span id="xp"></span></div>
+    <div class="bar"><i id="xpb" style="width:0"></i></div>
   </section>
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button role="tab" data-v="today" aria-selected="true">Today</button>
+    <button role="tab" data-v="roadmap" aria-selected="false">Roadmap</button>
+    <button role="tab" data-v="rewards" aria-selected="false">Rewards</button>
+  </nav>
+
+  <div id="v-today" role="tabpanel">
+    <section class="focus" id="focus" aria-live="polite"></section>
+    <section class="proj"><h2>Projects</h2><div id="proj"></div></section>
+    <section class="week"><h2>This week</h2><div id="week"></div>
+      <div class="foot"><button id="copy">Copy dev log</button><button id="reset">Reset data</button></div>
+    </section>
+  </div>
+  <div id="v-roadmap" role="tabpanel" hidden></div>
+  <div id="v-rewards" role="tabpanel" hidden></div>
 </main>
+<div id="toast" role="status" aria-live="polite"></div>
 <script>
 const KEY='buddy.v2', DAY=864e5, FILES=['skills.json','projects.json','events.json'];
-let D=null, S=load(), cur=null, timer=null, idx={};
-function blank(){return{done:{},later:{},last:{},log:[]}}
+const GOAL=4;                                   // sessions per week that count as a goal week
+const XP={session:10,tiny:5,topic:40};
+const TITLES=['Newcomer','Apprentice','Builder','Maker','Engineer','Architect','Master'];
+let D=null, S=load(), cur=null, timer=null, idx={}, view='today', openL=new Set(), toastT=null;
+
+function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1}}
 function load(){try{return Object.assign(blank(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return blank()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const $=id=>document.getElementById(id);
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function bar(f){const b=el('div','bar'),i=el('i');i.style.width=Math.round(Math.max(0,Math.min(1,f))*100)+'%';b.append(i);return b}
 const isDone=id=>!!S.done[id];
 const ready=n=>(n.needs||[]).every(isDone);
 function build(){idx={};for(const l of D.ladders)for(const n of l.nodes){n.lad=l;idx[n.id]=n}}
-function weekStart(){const x=new Date();x.setHours(0,0,0,0);x.setDate(x.getDate()-(x.getDay()+6)%7);return x.getTime()}
+
+/* ---------- weeks ---------- */
+function wkStart(ts){const d=new Date(ts);d.setHours(0,0,0,0);d.setDate(d.getDate()-(d.getDay()+6)%7);return d.getTime()}
+const weekStart=()=>wkStart(Date.now());
+function prevWeek(w){const d=new Date(w);d.setDate(d.getDate()-7);return d.getTime()}
 function weekCount(lid){const w=weekStart();return S.log.filter(l=>l.lad===lid&&l.ts>=w).length}
 function closure(id,seen=new Set()){if(seen.has(id)||!idx[id])return seen;seen.add(id);(idx[id].needs||[]).forEach(p=>closure(p,seen));return seen}
 function firstOpen(lad){return lad.nodes.find(n=>!isDone(n.id)&&ready(n)&&!(S.later[n.id]>Date.now()))}
-// Planner: sums three pressures per task: project need, event deadline, ladder floor (nothing starves).
+
+/* ---------- gamification (all derived from the log, nothing extra to lose) ---------- */
+function stats(){
+  let xp=0,tiny=0,topics=0;const lads=new Set(),weeks={};
+  for(const l of S.log){
+    xp+=l.k==='topic'?XP.topic:l.k==='tiny'?XP.tiny:XP.session;
+    if(l.k==='topic')topics++;
+    if(l.k==='tiny')tiny++;
+    lads.add(l.lad);
+    const w=wkStart(l.ts);weeks[w]=(weeks[w]||0)+1;
+  }
+  const lvl=Math.floor(Math.sqrt(xp/50))+1, base=50*(lvl-1)**2, next=50*lvl**2;
+  let w=weekStart(),streak=0;
+  if((weeks[w]||0)>=GOAL)streak=1;           // this week counts once reached; missing it so far breaks nothing
+  w=prevWeek(w);
+  while((weeks[w]||0)>=GOAL){streak++;w=prevWeek(w)}
+  return{xp,lvl,base,next,frac:(xp-base)/(next-base),sess:S.log.length,tiny,topics,ladsUsed:lads.size,
+    goalWeeks:Object.values(weeks).filter(v=>v>=GOAL).length,streak,thisWeek:weeks[weekStart()]||0};
+}
+const title=l=>TITLES[Math.min(l-1,TITLES.length-1)];
+function allBadges(){
+  const B=[
+    {id:'first',n:'First step',d:'Log your first session',f:s=>s.sess>=1},
+    {id:'tiny',n:'Small start counts',d:'Finish a 5-minute tiny step',f:s=>s.tiny>=1},
+    {id:'s10',n:'Ten sessions',d:'Log 10 sessions',f:s=>s.sess>=10},
+    {id:'s50',n:'Fifty sessions',d:'Log 50 sessions',f:s=>s.sess>=50},
+    {id:'t1',n:'Topic cleared',d:'Finish a topic',f:s=>s.topics>=1},
+    {id:'t10',n:'Ten topics',d:'Finish 10 topics',f:s=>s.topics>=10},
+    {id:'t25',n:'Twenty-five topics',d:'Finish 25 topics',f:s=>s.topics>=25},
+    {id:'wk1',n:'Goal week',d:'Log '+GOAL+' sessions in one week',f:s=>s.goalWeeks>=1},
+    {id:'wk4',n:'Four in a row',d:'Hit the weekly goal 4 weeks running',f:s=>s.streak>=4},
+    {id:'explore',n:'Explorer',d:'Log sessions in 5 different ladders',f:s=>s.ladsUsed>=5}
+  ];
+  for(const l of D.ladders)B.push({id:'mast-'+l.id,n:l.name+' mastered',d:'Finish every topic in '+l.name,f:()=>l.nodes.every(n=>isDone(n.id))});
+  return B;
+}
+// Awards new badges and level-ups. silent=true on first load so old progress does not pop toasts.
+function check(silent){
+  const st=stats(),msgs=[];let changed=false;
+  const fresh=allBadges().filter(b=>b.f(st)&&!S.badges[b.id]);
+  for(const b of fresh){S.badges[b.id]=Date.now();changed=true}
+  if(st.lvl>S.lvl){if(!silent)msgs.push('Level up! Level '+st.lvl+', '+title(st.lvl));S.lvl=st.lvl;changed=true}
+  if(!silent&&fresh.length)msgs.push('Badge: '+fresh.map(b=>b.n).join(', '));
+  if(changed)save();
+  if(msgs.length)toast(msgs.join('  ·  '));
+}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),4000)}
+
+/* ---------- planner ---------- */
+// Sums three pressures per task: project need, event deadline, ladder floor (nothing starves).
 function pick(){
   const now=Date.now(), sc={}, why={};
+  if(S.pin&&idx[S.pin]&&!isDone(S.pin)&&ready(idx[S.pin])){const n=idx[S.pin];return{n,lad:n.lad,why:'You chose this from the roadmap'}}
   const add=(id,s,w)=>{sc[id]=(sc[id]||0)+s;(why[id]=why[id]||[]).push([s,w])};
   for(const p of D.projects){
     if(p.status==='paused')continue;
@@ -114,10 +233,17 @@ function pick(){
   const n=idx[best.id], reasons=why[best.id].sort((a,b)=>b[0]-a[0]).slice(0,2).map(r=>r[1]);
   return {n,lad:n.lad,why:reasons.join('; ')};
 }
-function render(){
+
+/* ---------- rendering ---------- */
+function renderHud(){
+  const st=stats();
   $('date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'short'});
-  const w=weekStart();
-  $('count').textContent=S.log.filter(l=>l.ts>=w).length+' sessions this week';
+  $('count').textContent=st.thisWeek+' of '+GOAL+' sessions this week';
+  $('lv').textContent='Level '+st.lvl+' · '+title(st.lvl);
+  $('xp').textContent=(st.xp-st.base)+' / '+(st.next-st.base)+' XP';
+  $('xpb').style.width=Math.round(st.frac*100)+'%';
+}
+function render(){
   const f=$('focus');f.textContent='';
   cur=pick();
   if(!cur){f.innerHTML='<p class="msg">Nothing is ready. Everything is done or snoozed. Add skills in skills.json.</p>'}
@@ -126,7 +252,7 @@ function render(){
     f.innerHTML=`<p class="track"></p><h1></h1><p class="hint"></p><p class="why"></p>
     <div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" id="fg" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><div class="t" id="clock"></div></div>
     <button class="main" id="go">Start ${mins} minutes</button>
-    <div class="row"><button id="ok">Session done</button><button id="fin">Topic finished</button><button id="later">Later</button><button id="hard">Too hard</button></div>`;
+    <div class="row"><button id="ok">Session done<small>+${XP.session} XP</small></button><button id="fin">Topic finished<small>+${XP.topic} XP</small></button><button id="later">Later</button><button id="hard">Too hard</button></div>`;
     f.querySelector('.track').textContent=lad.name+(lad.sample?' (sample tasks)':'');
     f.querySelector('h1').textContent=n.t;
     f.querySelector('.hint').textContent='Smallest start: '+(n.tiny||'open the first resource and work for 5 minutes');
@@ -135,26 +261,91 @@ function render(){
     $('go').onclick=()=>startTimer(mins*60);
     $('ok').onclick=()=>finish('session');
     $('fin').onclick=()=>finish('topic');
-    $('later').onclick=()=>{S.later[n.id]=Date.now()+DAY;save();stop();render()};
-    $('hard').onclick=()=>{stop();cur.tiny=true;$('go').textContent='Start 5 minutes';$('go').onclick=()=>startTimer(300);setClock(300,300);$('ok').onclick=()=>finish('tiny');$('fin').style.display='none'};
+    $('later').onclick=()=>{S.later[n.id]=Date.now()+DAY;if(S.pin===n.id)S.pin=null;save();stop();render()};
+    $('hard').onclick=()=>{stop();$('go').textContent='Start 5 minutes';$('go').onclick=()=>startTimer(300);setClock(300,300);
+      $('ok').textContent='Tiny step done · +'+XP.tiny+' XP';$('ok').onclick=()=>finish('tiny');$('fin').style.display='none'};
   }
   const pj=$('proj');pj.textContent='';
   for(const p of D.projects){
-    const d=p.needs.filter(isDone).length,r=document.createElement('div');r.className='p-row';
-    r.innerHTML='<span></span><span></span>';
-    r.children[0].textContent=p.name+(p.status==='paused'?' (paused)':'');
-    r.children[1].textContent=d+' of '+p.needs.length+' skills ready';
+    const d=p.needs.filter(isDone).length,r=el('div','p-row');
+    r.append(el('span',null,p.name+(p.status==='paused'?' (paused)':'')),el('span',null,d+' of '+p.needs.length+' skills ready'));
     pj.appendChild(r);
   }
   const wk=$('week');wk.textContent='';
   for(const l of D.ladders){
-    const c=weekCount(l.id),r=document.createElement('div');r.className='t-row';
-    r.innerHTML='<span class="n"></span><span class="dots"></span>';
-    r.querySelector('.n').textContent=l.name;
-    const d=r.querySelector('.dots');
-    for(let i=0;i<l.floor;i++){const s=document.createElement('span');s.className='dot'+(i<c?' on':'');d.appendChild(s)}
-    wk.appendChild(r);
+    const c=weekCount(l.id),r=el('div','t-row');
+    r.append(el('span','n',l.name));
+    const d=el('span','dots');
+    for(let i=0;i<l.floor;i++)d.appendChild(el('span','dot'+(i<c?' on':'')));
+    r.append(d);wk.appendChild(r);
   }
+}
+function renderRoadmap(){
+  const root=$('v-roadmap');root.textContent='';
+  const all=D.ladders.flatMap(l=>l.nodes), d=all.filter(n=>isDone(n.id)).length;
+  const j=el('div','jour');
+  j.append(el('h2',null,'The whole journey'),
+    el('p','muted',d+' of '+all.length+' topics done · '+Math.round(100*d/all.length)+'%  ·  '+D.ladders.length+' ladders, no deadlines, just order'),
+    bar(d/all.length));
+  root.append(j);
+  for(const l of D.ladders){
+    const nd=l.nodes.filter(n=>isDone(n.id)).length;
+    const det=el('details','lad');det.open=openL.has(l.id);
+    det.addEventListener('toggle',()=>{det.open?openL.add(l.id):openL.delete(l.id)});
+    const sm=el('summary');sm.append(el('span','ln',l.name),el('span','lc',nd+' / '+l.nodes.length),bar(nd/l.nodes.length));
+    det.append(sm);
+    for(const n of l.nodes){
+      const st=isDone(n.id)?'done':ready(n)?'ready':'locked';
+      const r=el('div','tp '+st);
+      r.append(el('span','ic',st==='done'?'✓':st==='ready'?'●':'○'));
+      const b=el('div','tb');
+      b.append(el('div','tt',n.t));
+      const unmet=(n.needs||[]).filter(x=>!isDone(x)).map(x=>idx[x]?idx[x].t.split(':')[0]:x);
+      b.append(el('div','sub',st==='locked'?'Needs: '+unmet.join(', '):(n.min||25)+' min'+(st==='done'?' · done':'')));
+      if(st==='ready'){
+        const a=el('div','acts');
+        const go=el('button','mini go','Do now');go.onclick=()=>{S.pin=n.id;save();setView('today');render()};
+        const dn=el('button','mini','Mark done');dn.setAttribute('aria-label','Mark '+n.t+' as already done');
+        dn.onclick=()=>{S.done[n.id]=Date.now();if(S.pin===n.id)S.pin=null;save();check(true);renderAll()};
+        a.append(go,dn);b.append(a);
+      }else if(st==='done'){
+        const a=el('div','acts'),u=el('button','mini','Undo');u.setAttribute('aria-label','Mark '+n.t+' as not done');
+        u.onclick=()=>{delete S.done[n.id];save();renderAll()};a.append(u);b.append(a);
+      }
+      r.append(b);det.append(r);
+    }
+    root.append(det);
+  }
+}
+function renderRewards(){
+  const root=$('v-rewards');root.textContent='';
+  const st=stats();
+  const lv=el('div','card');
+  lv.append(el('p','muted','Level'),el('div','big',String(st.lvl)),el('p',null,title(st.lvl)),bar(st.frac),
+    el('p','muted',(st.next-st.xp)+' XP to level '+(st.lvl+1)+'. Session '+XP.session+' XP, tiny step '+XP.tiny+' XP, finished topic '+XP.topic+' XP.'));
+  root.append(lv);
+  const wk=el('div','card');
+  wk.append(el('h2',null,'Weekly goal: '+GOAL+' sessions'));
+  const dots=el('div','dots');for(let i=0;i<GOAL;i++)dots.append(el('span','dot'+(i<st.thisWeek?' on':'')));
+  wk.append(dots,el('p','muted',st.streak?st.streak+' goal week'+(st.streak>1?'s':'')+' in a row. A slow week pauses the count; it never erases your XP or badges.':'Reach '+GOAL+' sessions this week to start a run. Missing a day costs nothing.'));
+  root.append(wk);
+  const sg=el('div','card stats');
+  for(const [v,l] of [[st.xp,'XP'],[st.sess,'sessions'],[st.topics,'topics finished']]){const c=el('div');c.append(el('b',null,String(v)),el('span',null,l));sg.append(c)}
+  root.append(sg);
+  const bh=el('h2',null,'Badges');bh.style.margin='1rem 0 .5rem';root.append(bh);
+  const ul=el('ul','badges');
+  for(const b of allBadges()){
+    const on=!!S.badges[b.id],li=el('li',on?'on':'off');
+    li.append(el('b',null,b.n),el('span',null,b.d));ul.append(li);
+  }
+  root.append(ul);
+}
+function renderAll(){renderHud();render();renderRoadmap();renderRewards()}
+function setView(v){
+  view=v;
+  for(const b of document.querySelectorAll('.tabs button'))b.setAttribute('aria-selected',String(b.dataset.v===v));
+  for(const id of ['today','roadmap','rewards'])$('v-'+id).hidden=id!==v;
+  window.scrollTo(0,0);
 }
 function setClock(left,total){
   const m=Math.floor(left/60),s=left%60,c=$('clock');if(c)c.textContent=m+':'+String(s).padStart(2,'0');
@@ -172,15 +363,23 @@ function finish(kind){
   const {n,lad}=cur,ts=Date.now();
   S.log.push({id:n.id,lad:lad.id,title:n.t,ts,k:kind});
   S.last[lad.id]=ts;
-  if(kind==='topic')S.done[n.id]=ts;
-  save();stop();render();
+  if(kind==='topic'){S.done[n.id]=ts;if(S.pin===n.id)S.pin=null}
+  save();stop();
+  const gain=kind==='topic'?XP.topic:kind==='tiny'?XP.tiny:XP.session;
+  const before=Object.keys(S.badges).length,lv0=S.lvl;
+  check(false);
+  if(Object.keys(S.badges).length===before&&S.lvl===lv0)toast('+'+gain+' XP');
+  renderAll();
 }
+for(const b of document.querySelectorAll('.tabs button'))b.onclick=()=>setView(b.dataset.v);
 $('copy').onclick=async()=>{
   const lines=S.log.map(l=>'- '+new Date(l.ts).toISOString().slice(0,10)+' | '+l.lad+' | '+l.title+(l.k==='topic'?' (finished)':l.k==='tiny'?' (tiny step)':'')).join('\n');
   try{await navigator.clipboard.writeText(lines||'Nothing logged yet.');$('copy').textContent='Copied';setTimeout(()=>$('copy').textContent='Copy dev log',1500)}catch(e){prompt('Copy this:',lines)}
 };
-$('reset').onclick=()=>{if(confirm('Erase all progress on this device?')){S=blank();save();render()}};
-Promise.all(FILES.map(f=>fetch(f).then(r=>r.json()))).then(([a,b,c])=>{D={ladders:a.ladders,projects:b.projects,events:c.events};build();render()}).catch(()=>{$('focus').innerHTML='<p class="msg">Could not load the plan files. Open this page from GitHub Pages or a local server, not as a file.</p>'});
+$('reset').onclick=()=>{if(confirm('Erase all progress on this device?')){S=blank();save();check(true);renderAll()}};
+Promise.all(FILES.map(f=>fetch(f,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(f);return r.json()}))).then(([a,b,c])=>{
+  D={ladders:a.ladders,projects:b.projects,events:c.events};build();check(true);renderAll();
+}).catch(()=>{$('focus').innerHTML='<p class="msg">Could not load the plan files. Open this page from GitHub Pages or a local server, not as a file.</p>'});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
