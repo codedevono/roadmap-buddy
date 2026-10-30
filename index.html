@@ -38,6 +38,12 @@ button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--
 .dot.on{background:var(--accent);border-color:var(--accent)}
 .foot{display:flex;gap:.5rem;margin-top:1.25rem}
 .foot button{flex:1;font-size:.85rem;min-height:2.5rem;color:var(--mute)}
+.why{color:var(--mute);font-size:.9rem;margin:-.9rem 0 1.25rem}
+.row{grid-template-columns:1fr 1fr!important}
+.proj{border-top:1px solid var(--line);padding:1rem 0;margin-top:.5rem}
+.proj h2,.week h2{font-size:.95rem;font-weight:600;margin:0 0 .6rem}
+.p-row{display:flex;justify-content:space-between;gap:1rem;padding:.2rem 0;font-size:.95rem}
+.p-row span:last-child{color:var(--mute)}
 .msg{color:var(--mute);text-align:center;padding:1rem}
 @media (prefers-reduced-motion:reduce){.ring .fg{transition:none}}
 </style>
@@ -46,98 +52,135 @@ button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--
 <main>
   <div class="top"><span id="date"></span><span id="count"></span></div>
   <section class="focus" id="focus" aria-live="polite"></section>
+  <section class="proj"><h2>Projects</h2><div id="proj"></div></section>
   <section class="week"><h2>This week</h2><div id="week"></div>
     <div class="foot"><button id="copy">Copy dev log</button><button id="reset">Reset data</button></div>
   </section>
 </main>
 <script>
-const KEY='buddy.v1', DAY=864e5;
-let R=null, S=load(), cur=null, timer=null;
-function load(){try{return Object.assign({done:{},later:{},last:{},log:[]},JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return{done:{},later:{},last:{},log:[]}}}
+const KEY='buddy.v2', DAY=864e5, FILES=['skills.json','projects.json','events.json'];
+let D=null, S=load(), cur=null, timer=null, idx={};
+function blank(){return{done:{},later:{},last:{},log:[]}}
+function load(){try{return Object.assign(blank(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return blank()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const $=id=>document.getElementById(id);
+const isDone=id=>!!S.done[id];
+const ready=n=>(n.needs||[]).every(isDone);
+function build(){idx={};for(const l of D.ladders)for(const n of l.nodes){n.lad=l;idx[n.id]=n}}
 function weekStart(){const x=new Date();x.setHours(0,0,0,0);x.setDate(x.getDate()-(x.getDay()+6)%7);return x.getTime()}
-function weekCount(tid){const w=weekStart();return S.log.filter(l=>l.track===tid&&l.ts>=w).length}
+function weekCount(lid){const w=weekStart();return S.log.filter(l=>l.lad===lid&&l.ts>=w).length}
+function closure(id,seen=new Set()){if(seen.has(id)||!idx[id])return seen;seen.add(id);(idx[id].needs||[]).forEach(p=>closure(p,seen));return seen}
+function firstOpen(lad){return lad.nodes.find(n=>!isDone(n.id)&&ready(n)&&!(S.later[n.id]>Date.now()))}
+// Planner: sums three pressures per task: project need, event deadline, ladder floor (nothing starves).
 function pick(){
-  const now=Date.now();let best=null;
-  for(const t of R.tracks){
-    const task=t.tasks.find(k=>!S.done[k.id]&&!(S.later[k.id]>now));
-    if(!task)continue;
-    const gap=(t.perWeek-weekCount(t.id))/t.perWeek;
-    const idle=Math.min((now-(S.last[t.id]||0))/DAY,7);
-    const score=gap*10+idle*.5;
-    if(!best||score>best.score)best={t,task,score};
+  const now=Date.now(), sc={}, why={};
+  const add=(id,s,w)=>{sc[id]=(sc[id]||0)+s;(why[id]=why[id]||[]).push([s,w])};
+  for(const p of D.projects){
+    if(p.status==='paused')continue;
+    const best={};
+    p.needs.forEach((nid,i)=>{
+      if(isDone(nid))return;
+      const base=p.priority*p.priority*Math.max(10-i,2);
+      for(const c of closure(nid)){
+        if(isDone(c)||!ready(idx[c]))continue;
+        const s=c===nid?base:base*.9;
+        if(!best[c]||best[c].s<s)best[c]={s,w:c===nid?p.name+' needs this':p.name+' needs '+idx[nid].t.split(':')[0].toLowerCase()+', and this comes first'};
+      }
+    });
+    for(const c in best)add(c,best[c].s,best[c].w);
   }
-  return best;
+  for(const e of D.events){
+    if(!e.date)continue;
+    const days=Math.max((new Date(e.date)-now)/DAY,3);
+    if(days>180)continue;
+    const u=e.weight*300/days;
+    for(const t of e.prep){
+      const ids=idx[t]?[t]:[(D.ladders.find(l=>l.id===t)||{nodes:[]}).nodes.find(n=>!isDone(n.id)&&ready(n))?.id].filter(Boolean);
+      for(const nid of ids)for(const c of closure(nid))if(!isDone(c)&&ready(idx[c]))add(c,u,e.name+' in '+Math.round(days)+' days');
+    }
+  }
+  for(const l of D.ladders){
+    const n=firstOpen(l);if(!n)continue;
+    const gap=Math.max(0,(l.floor-weekCount(l.id))/l.floor);
+    const idle=Math.min((now-(S.last[l.id]||0))/DAY,7);
+    add(n.id,gap*6+idle*.4,'keeps '+l.name+' moving this week');
+  }
+  let best=null;
+  for(const id in sc){
+    if(S.later[id]>now)continue;
+    if(!best||sc[id]>best.s)best={id,s:sc[id]};
+  }
+  if(!best)return null;
+  const n=idx[best.id], reasons=why[best.id].sort((a,b)=>b[0]-a[0]).slice(0,2).map(r=>r[1]);
+  return {n,lad:n.lad,why:reasons.join('; ')};
 }
 function render(){
   $('date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'short'});
-  const w=weekStart(), n=S.log.filter(l=>l.ts>=w).length;
-  $('count').textContent=n+' done this week';
+  const w=weekStart();
+  $('count').textContent=S.log.filter(l=>l.ts>=w).length+' sessions this week';
   const f=$('focus');f.textContent='';
   cur=pick();
-  if(!cur){f.innerHTML='<p class="msg">Every task is done or snoozed. Add more tasks to roadmap.json or check back later.</p>';}
+  if(!cur){f.innerHTML='<p class="msg">Nothing is ready. Everything is done or snoozed. Add skills in skills.json.</p>'}
   else{
-    const {t,task}=cur, tiny=!!cur.tiny, mins=tiny?5:task.min;
-    f.innerHTML=`<p class="track"></p><h1></h1><p class="hint"></p>
+    const {n,lad}=cur, mins=n.min||25;
+    f.innerHTML=`<p class="track"></p><h1></h1><p class="hint"></p><p class="why"></p>
     <div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" id="fg" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><div class="t" id="clock"></div></div>
     <button class="main" id="go">Start ${mins} minutes</button>
-    <div class="row"><button id="ok">Done</button><button id="later">Later</button><button id="hard">Too hard</button></div>`;
-    f.querySelector('.track').textContent=t.name;
-    f.querySelector('h1').textContent=task.title;
-    f.querySelector('.hint').textContent=tiny?'Tiny version: '+task.tiny:'Smallest start: '+task.tiny;
+    <div class="row"><button id="ok">Session done</button><button id="fin">Topic finished</button><button id="later">Later</button><button id="hard">Too hard</button></div>`;
+    f.querySelector('.track').textContent=lad.name+(lad.sample?' (sample tasks)':'');
+    f.querySelector('h1').textContent=n.t;
+    f.querySelector('.hint').textContent='Smallest start: '+(n.tiny||'open the first resource and work for 5 minutes');
+    f.querySelector('.why').textContent='Why now: '+cur.why;
     setClock(mins*60,mins*60);
     $('go').onclick=()=>startTimer(mins*60);
-    $('ok').onclick=()=>finish(false);
-    $('later').onclick=()=>{S.later[task.id]=Date.now()+DAY;save();stop();render()};
-    $('hard').onclick=()=>{stop();cur.tiny=true;S.tinyId=task.id;redrawTiny()};
+    $('ok').onclick=()=>finish('session');
+    $('fin').onclick=()=>finish('topic');
+    $('later').onclick=()=>{S.later[n.id]=Date.now()+DAY;save();stop();render()};
+    $('hard').onclick=()=>{stop();cur.tiny=true;$('go').textContent='Start 5 minutes';$('go').onclick=()=>startTimer(300);setClock(300,300);$('ok').onclick=()=>finish('tiny');$('fin').style.display='none'};
+  }
+  const pj=$('proj');pj.textContent='';
+  for(const p of D.projects){
+    const d=p.needs.filter(isDone).length,r=document.createElement('div');r.className='p-row';
+    r.innerHTML='<span></span><span></span>';
+    r.children[0].textContent=p.name+(p.status==='paused'?' (paused)':'');
+    r.children[1].textContent=d+' of '+p.needs.length+' skills ready';
+    pj.appendChild(r);
   }
   const wk=$('week');wk.textContent='';
-  for(const t of R.tracks){
-    const c=weekCount(t.id),r=document.createElement('div');r.className='t-row';
+  for(const l of D.ladders){
+    const c=weekCount(l.id),r=document.createElement('div');r.className='t-row';
     r.innerHTML='<span class="n"></span><span class="dots"></span>';
-    r.querySelector('.n').textContent=t.name;
+    r.querySelector('.n').textContent=l.name;
     const d=r.querySelector('.dots');
-    for(let i=0;i<t.perWeek;i++){const s=document.createElement('span');s.className='dot'+(i<c?' on':'');d.appendChild(s)}
+    for(let i=0;i<l.floor;i++){const s=document.createElement('span');s.className='dot'+(i<c?' on':'');d.appendChild(s)}
     wk.appendChild(r);
   }
 }
-function redrawTiny(){
-  // re-render the same task in tiny mode (5 minutes, smallest step)
-  const {t,task}=cur;const f=$('focus');
-  f.querySelector('.hint').textContent='Tiny version: '+task.tiny;
-  $('go').textContent='Start 5 minutes';$('go').onclick=()=>startTimer(300);
-  setClock(300,300);
-  $('ok').onclick=()=>finish(true);
-}
 function setClock(left,total){
-  const m=Math.floor(left/60),s=left%60;
-  const c=$('clock');if(c)c.textContent=m+':'+String(s).padStart(2,'0');
+  const m=Math.floor(left/60),s=left%60,c=$('clock');if(c)c.textContent=m+':'+String(s).padStart(2,'0');
   const fg=$('fg');if(fg)fg.style.strokeDashoffset=String(276.46*(1-left/total));
 }
 function startTimer(total){
   stop();let left=total;
   $('go').textContent='Stop timer';$('go').onclick=()=>{stop();render()};
-  timer=setInterval(()=>{
-    left--;setClock(left,total);
+  timer=setInterval(()=>{left--;setClock(left,total);
     if(left<=0){stop();try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
-      $('go').textContent='Time is up. Mark it done below.';$('go').onclick=null}
-  },1000);
+      $('go').textContent='Time is up. Log it below.';$('go').onclick=null}},1000);
 }
 function stop(){if(timer){clearInterval(timer);timer=null}}
-function finish(tiny){
-  const {t,task}=cur,ts=Date.now();
-  S.log.push({id:task.id,track:t.id,title:task.title,ts,tiny:!!tiny});
-  S.last[t.id]=ts;
-  if(!tiny)S.done[task.id]=ts;
+function finish(kind){
+  const {n,lad}=cur,ts=Date.now();
+  S.log.push({id:n.id,lad:lad.id,title:n.t,ts,k:kind});
+  S.last[lad.id]=ts;
+  if(kind==='topic')S.done[n.id]=ts;
   save();stop();render();
 }
 $('copy').onclick=async()=>{
-  const lines=S.log.map(l=>'- '+new Date(l.ts).toISOString().slice(0,10)+' | '+l.track+' | '+l.title+(l.tiny?' (tiny step)':'')).join('\n');
+  const lines=S.log.map(l=>'- '+new Date(l.ts).toISOString().slice(0,10)+' | '+l.lad+' | '+l.title+(l.k==='topic'?' (finished)':l.k==='tiny'?' (tiny step)':'')).join('\n');
   try{await navigator.clipboard.writeText(lines||'Nothing logged yet.');$('copy').textContent='Copied';setTimeout(()=>$('copy').textContent='Copy dev log',1500)}catch(e){prompt('Copy this:',lines)}
 };
-$('reset').onclick=()=>{if(confirm('Erase all progress on this device?')){S={done:{},later:{},last:{},log:[]};save();render()}};
-fetch('roadmap.json').then(r=>r.json()).then(j=>{R=j;render()}).catch(()=>{$('focus').innerHTML='<p class="msg">Could not load roadmap.json. Open this page from GitHub Pages or a local server, not as a file.</p>'});
+$('reset').onclick=()=>{if(confirm('Erase all progress on this device?')){S=blank();save();render()}};
+Promise.all(FILES.map(f=>fetch(f).then(r=>r.json()))).then(([a,b,c])=>{D={ladders:a.ladders,projects:b.projects,events:c.events};build();render()}).catch(()=>{$('focus').innerHTML='<p class="msg">Could not load the plan files. Open this page from GitHub Pages or a local server, not as a file.</p>'});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
