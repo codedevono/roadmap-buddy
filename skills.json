@@ -1,0 +1,82 @@
+{
+ "note": "Ladders imported from Notion pages. sample:true means placeholder tasks, not yet imported from the real Notion roadmap.",
+ "ladders": [
+  {"id":"math","name":"Math","floor":2,"src":"Mechatronics Roadmap v2, syllabus M0-M6","nodes":[
+   {"id":"m0","t":"Arithmetic, units and estimation","min":25},
+   {"id":"m1","t":"Algebra: rearranging formulas, equations, logs","needs":["m0"],"min":30},
+   {"id":"m2","t":"Geometry and trigonometry: radians, sine waves","needs":["m1"],"min":30},
+   {"id":"m3","t":"Vectors, matrices and complex numbers","needs":["m2"],"min":30},
+   {"id":"m4","t":"Calculus: derivatives, integrals, first-order ODEs","needs":["m2"],"min":30},
+   {"id":"m5","t":"Statistics and fitting for noisy sensors","needs":["m1"],"min":30},
+   {"id":"m6","t":"Control math: second-order ODEs, Laplace, eigenvalues","needs":["m3","m4"],"min":30}]},
+  {"id":"3d","name":"3D math and graphics","floor":2,"src":"AR/VR Resources: Learning 3D Maths, steps 1-5","nodes":[
+   {"id":"v1","t":"Vectors and coordinates: dot, cross, normalise (three.js)","needs":["m2"],"min":25},
+   {"id":"v2","t":"Matrices and transformations: translate, rotate, scale, 4x4","needs":["v1"],"min":30},
+   {"id":"v3","t":"Coordinate spaces and projection: model, view, projection","needs":["v2"],"min":30},
+   {"id":"v4","t":"Rotations and quaternions: Euler, gimbal lock, slerp","needs":["v2"],"min":30},
+   {"id":"v5","t":"Curves and interpolation: Bezier","needs":["v1"],"min":25},
+   {"id":"g1","t":"LearnOpenGL: getting started through lighting","needs":["v3"],"min":40}]},
+  {"id":"phy","name":"Physics","floor":1,"src":"Mechatronics Roadmap v2, syllabus P0-P6","nodes":[
+   {"id":"p0","t":"Measurement, units and error","min":20},
+   {"id":"p1","t":"Motion: velocity, acceleration, free fall","needs":["p0","m1"],"min":30},
+   {"id":"p2","t":"Forces: Newton's laws, friction, free-body diagrams","needs":["p1"],"min":30},
+   {"id":"p3","t":"Energy, power and momentum","needs":["p2"],"min":30},
+   {"id":"p4","t":"Rotation: torque, inertia, gears","needs":["p3"],"min":30},
+   {"id":"p5","t":"Electricity and magnetism: charge, current, motors","needs":["p1"],"min":30},
+   {"id":"p6","t":"Waves and heat: ultrasonics, temperature rise","needs":["p1"],"min":25}]},
+  {"id":"ele","name":"Electronics","floor":2,"src":"Mechatronics Roadmap v2, syllabus E0-E6","nodes":[
+   {"id":"e0","t":"First circuits: Ohm's law, breadboard, multimeter","needs":["m1"],"min":30},
+   {"id":"e1","t":"Circuit analysis: Kirchhoff, dividers, Thevenin","needs":["e0"],"min":30},
+   {"id":"e2","t":"Capacitors, inductors and AC: RC, impedance, filters","needs":["e1"],"min":30},
+   {"id":"e3","t":"Semiconductors: diodes, BJT, MOSFET switches","needs":["e1"],"min":30},
+   {"id":"e4","t":"Op-amps and power: regulators, ripple, decoupling","needs":["e3"],"min":30},
+   {"id":"e5","t":"Digital: gates, ADC and DAC, sampling","needs":["e0"],"min":30},
+   {"id":"e6","t":"PCB design in KiCad","needs":["e4"],"min":40}]},
+  {"id":"emb","name":"Embedded","floor":1,"src":"Mechatronics Roadmap v2, syllabus EM0-EM4","nodes":[
+   {"id":"em0","t":"Microcontroller basics: pins, clock, flashing code","needs":["e0"],"min":25},
+   {"id":"em1","t":"Peripherals: GPIO, PWM, ADC, timers, interrupts","needs":["em0","c1"],"min":35},
+   {"id":"em2","t":"Protocols: UART, I2C, SPI, logic analyser","needs":["em1"],"min":35},
+   {"id":"em3","t":"Firmware structure: state machines, FreeRTOS","needs":["em2"],"min":35},
+   {"id":"em4","t":"Wireless and IoT: ESP32, MQTT dashboard","needs":["em3"],"min":35}]},
+  {"id":"des","name":"Design and CAD","floor":1,"src":"Mechatronics Roadmap v2, syllabus ME0-ME5 (brand and graphic design not imported yet)","nodes":[
+   {"id":"me0","t":"Engineering drawings, tolerances, measuring","min":25},
+   {"id":"me1","t":"Statics: free-body diagrams, moments","needs":["me0","p2"],"min":30},
+   {"id":"me2","t":"Materials and strength: stress, strain, safety factor","needs":["me1"],"min":30},
+   {"id":"me3","t":"Machine elements: gears, bearings, fasteners","needs":["me2"],"min":30},
+   {"id":"me4","t":"CAD: sketches, extrudes, assemblies, 3D-print design","needs":["me0"],"min":40},
+   {"id":"me5","t":"Actuation sizing: torque, speed, gear ratio","needs":["me3","p4"],"min":30}]},
+  {"id":"c","name":"C and C++","floor":2,"src":"Advanced C / C++ / C# page, stages 1-14","nodes":[
+   {"id":"c1","t":"Stage 1: Advanced C and memory mastery","min":45},
+   {"id":"c2","t":"Stage 2: Data structures and algorithms in C","needs":["c1"],"min":45},
+   {"id":"c3","t":"Stage 3: Systems programming (Linux/POSIX)","needs":["c1"],"min":45},
+   {"id":"c4","t":"Stage 4: Computer architecture and x86-64 assembly","needs":["c1"],"min":45},
+   {"id":"c5","t":"Stage 5: OS theory and your own toy OS","needs":["c2","c3","c4"],"min":45},
+   {"id":"c6","t":"Stage 6: Linux kernel internals","needs":["c5"],"min":45},
+   {"id":"c7","t":"Stage 7: Reverse engineering and binary exploitation","needs":["c4"],"min":45},
+   {"id":"c8","t":"Stage 8: Embedded programming (STM32/ESP32, FreeRTOS)","needs":["c1"],"min":45},
+   {"id":"c9","t":"Stage 9: Modern C++ deep dive","needs":["c1"],"min":45},
+   {"id":"c10","t":"Stage 10: DSA and advanced algorithms in C++","needs":["c2","c9"],"min":45},
+   {"id":"c11","t":"Stage 11: Game dev and graphics in C++","needs":["c9"],"min":45},
+   {"id":"c12","t":"Stage 12: Competitive programming in C++","needs":["c10"],"min":45},
+   {"id":"c13","t":"Stage 13: Hackathons and capstone","needs":["c5","c7","c8","c11"],"min":45},
+   {"id":"c14","t":"Stage 14: Certifications","needs":["c7"],"min":30}]},
+  {"id":"py","name":"Python, DSA, AI","floor":3,"sample":true,"src":"Module 09 (not imported yet)","nodes":[
+   {"id":"py1","t":"Solve 2 small Python problems","min":20},
+   {"id":"py2","t":"Build a command-line to-do script","needs":["py1"],"min":30},
+   {"id":"py3","t":"Push the script to GitHub with a README","needs":["py2"],"min":20},
+   {"id":"ai1","t":"Watch one AI lecture and write a 5-line summary","min":25},
+   {"id":"ai2","t":"Train a tiny model on a toy dataset","needs":["ai1","py1"],"min":30}]},
+  {"id":"cyb","name":"Cyber","floor":2,"sample":true,"src":"Module 08 (not imported yet)","nodes":[
+   {"id":"cy1","t":"Finish one TryHackMe room","min":25},
+   {"id":"cy2","t":"Write notes on the room","needs":["cy1"],"min":15},
+   {"id":"cy3","t":"Set up a home lab VM","min":30}]},
+  {"id":"gs","name":"GSoC","floor":1,"sample":true,"src":"GSoC 2027 tracks (not imported yet)","nodes":[
+   {"id":"gs1","t":"Pick 3 GSoC organizations and read their ideas lists","min":25},
+   {"id":"gs2","t":"Clone one project and get it building","needs":["gs1"],"min":30},
+   {"id":"gs3","t":"Find a good first issue and comment on it","needs":["gs2"],"min":20}]},
+  {"id":"cal","name":"Calisthenics","floor":4,"sample":true,"src":"not imported yet","nodes":[
+   {"id":"ca1","t":"Push-ups: 3 sets to near failure","min":15},
+   {"id":"ca2","t":"Pull-ups or rows: 3 sets","min":15},
+   {"id":"ca3","t":"Core: plank and leg raises","min":10}]}
+ ]
+}

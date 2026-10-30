@@ -1,0 +1,4 @@
+{"events":[
+ {"id":"gsoc27","name":"GSoC 2027","date":null,"weight":2,"prep":["c","py","gs"],"note":"Set date (YYYY-MM-DD) to turn on urgency."},
+ {"id":"ctf","name":"Next CTF","date":null,"weight":1,"prep":["cyb"],"note":"Set date to turn on urgency."}
+]}

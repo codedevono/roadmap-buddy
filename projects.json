@@ -1,0 +1,6 @@
+{"projects":[
+ {"id":"arglasses","name":"AR glasses","priority":3,"status":"active",
+  "needs":["m2","v1","v2","v3","v4","c1","e0","em0","em1","e1","em2","p5","me4"],
+  "note":"Optics and tracking pages in AR/VR Resources are not imported yet."},
+ {"id":"buddy","name":"Roadmap Buddy","priority":2,"status":"active","needs":["py1","py2","py3"]}
+]}
