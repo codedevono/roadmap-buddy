@@ -1,0 +1,10 @@
+{
+  "name": "Roadmap Buddy",
+  "short_name": "Buddy",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101a22",
+  "theme_color": "#101a22",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}

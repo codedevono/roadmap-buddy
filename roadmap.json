@@ -1,0 +1,29 @@
+{
+  "name": "My one roadmap",
+  "tracks": [
+    {"id":"cyber","name":"Cyber","perWeek":3,"tasks":[
+      {"id":"cy1","title":"Finish one TryHackMe room","tiny":"Open TryHackMe and read the room intro","min":25},
+      {"id":"cy2","title":"Write notes on what you learned in the room","tiny":"Write 3 bullet points","min":15},
+      {"id":"cy3","title":"Set up a home lab VM","tiny":"Download the VM image","min":30}
+    ]},
+    {"id":"ai","name":"AI","perWeek":3,"tasks":[
+      {"id":"ai1","title":"Watch one lecture and write a 5-line summary","tiny":"Watch the first 5 minutes","min":25},
+      {"id":"ai2","title":"Train a tiny model on a toy dataset","tiny":"Open a notebook and load the data","min":30}
+    ]},
+    {"id":"py","name":"Python","perWeek":4,"tasks":[
+      {"id":"py1","title":"Solve 2 small Python problems","tiny":"Solve 1 problem","min":20},
+      {"id":"py2","title":"Build a command-line to-do script","tiny":"Create the file and print hello","min":30},
+      {"id":"py3","title":"Push the script to GitHub with a README","tiny":"Create the repo","min":20}
+    ]},
+    {"id":"gsoc","name":"GSoC","perWeek":2,"tasks":[
+      {"id":"gs1","title":"Pick 3 GSoC organizations and read their ideas lists","tiny":"Open the GSoC orgs page","min":25},
+      {"id":"gs2","title":"Clone one project and get it building","tiny":"Clone the repo","min":30},
+      {"id":"gs3","title":"Find a good first issue and comment on it","tiny":"Open the issues list","min":20}
+    ]},
+    {"id":"cali","name":"Calisthenics","perWeek":4,"tasks":[
+      {"id":"ca1","title":"Push-ups: 3 sets to near failure","tiny":"Do 1 set","min":15},
+      {"id":"ca2","title":"Pull-ups or rows: 3 sets","tiny":"Do 1 set","min":15},
+      {"id":"ca3","title":"Core: plank and leg raises","tiny":"One 30-second plank","min":10}
+    ]}
+  ]
+}
