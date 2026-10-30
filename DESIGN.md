@@ -29,5 +29,5 @@ All state is in the browser (`localStorage`). `skills.json`, `projects.json` and
 
 ## Plan ahead
 - v0.5: phone reminders (Telegram bot or web push), morning plan and evening check-in.
-- Next: import the remaining Notion roadmaps (Python, DSA, AI, cyber, GSoC, calisthenics, AR optics and tracking, brand design), Notion sync, auto-append to DEVLOG on GitHub, weekly review.
+- Next: import the remaining Notion roadmaps (AR optics and tracking, brand and graphic design, the GSoC 2028 C/C++ track), Notion sync, auto-append to DEVLOG on GitHub, weekly review.
 - Later: focus mode with app blocking on Android, home-screen widget.

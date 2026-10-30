@@ -1,4 +1,4 @@
 {"events":[
- {"id":"gsoc27","name":"GSoC 2027","date":null,"weight":2,"prep":["c","py","gs"],"note":"Set date (YYYY-MM-DD) to turn on urgency."},
- {"id":"ctf","name":"Next CTF","date":null,"weight":1,"prep":["cyb"],"note":"Set date to turn on urgency."}
+ {"id":"gsoc27","name":"GSoC 2027","date":"2027-03-31","weight":2,"prep":["py","gs"],"note":"Estimated proposal deadline (2026 was March 31, 18:00 UTC). Google has not published 2027 dates yet; check developers.google.com/open-source/gsoc/timeline. Python + AI track; if Phase -1 is not solid by November 2026 consider GSoC 2028."},
+ {"id":"ctf","name":"Next CTF","date":null,"weight":1,"prep":["cyb"],"note":"Set date (YYYY-MM-DD) to turn on urgency. Find live CTFs on ctftime.org."}
 ]}
