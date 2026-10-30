@@ -27,7 +27,7 @@ Weekly dots per ladder replace daily streaks, so a missed day breaks nothing. **
 Locally: `python3 -m http.server`, then open http://localhost:8000.
 
 ## Make it yours
-- Ladders marked `"sample": true` in `skills.json` are placeholders, not yet imported from the real roadmaps.
+- Ladders come from the real Notion roadmaps (11 ladders, 101 topics). A ladder marked `"sample": true` would be a placeholder; none are left. Add `"tiny"` to a topic for its smallest first step.
 - Set `date` (YYYY-MM-DD) on an event to turn on its urgency.
 - Change a project's `status` to `"paused"` to take it out of the plan.
 

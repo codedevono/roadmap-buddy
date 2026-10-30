@@ -1,5 +1,5 @@
 {
- "note": "Ladders imported from Notion pages. sample:true means placeholder tasks, not yet imported from the real Notion roadmap.",
+ "note": "Ladders imported from Notion pages. A ladder with sample:true holds placeholder tasks; none are left. Optional tiny gives the smallest first step.",
  "ladders": [
   {"id":"math","name":"Math","floor":2,"src":"Mechatronics Roadmap v2, syllabus M0-M6","nodes":[
    {"id":"m0","t":"Arithmetic, units and estimation","min":25},
@@ -60,23 +60,58 @@
    {"id":"c12","t":"Stage 12: Competitive programming in C++","needs":["c10"],"min":45},
    {"id":"c13","t":"Stage 13: Hackathons and capstone","needs":["c5","c7","c8","c11"],"min":45},
    {"id":"c14","t":"Stage 14: Certifications","needs":["c7"],"min":30}]},
-  {"id":"py","name":"Python, DSA, AI","floor":3,"sample":true,"src":"Module 09 (not imported yet)","nodes":[
-   {"id":"py1","t":"Solve 2 small Python problems","min":20},
-   {"id":"py2","t":"Build a command-line to-do script","needs":["py1"],"min":30},
-   {"id":"py3","t":"Push the script to GitHub with a README","needs":["py2"],"min":20},
-   {"id":"ai1","t":"Watch one AI lecture and write a 5-line summary","min":25},
-   {"id":"ai2","t":"Train a tiny model on a toy dataset","needs":["ai1","py1"],"min":30}]},
-  {"id":"cyb","name":"Cyber","floor":2,"sample":true,"src":"Module 08 (not imported yet)","nodes":[
-   {"id":"cy1","t":"Finish one TryHackMe room","min":25},
-   {"id":"cy2","t":"Write notes on the room","needs":["cy1"],"min":15},
-   {"id":"cy3","t":"Set up a home lab VM","min":30}]},
-  {"id":"gs","name":"GSoC","floor":1,"sample":true,"src":"GSoC 2027 tracks (not imported yet)","nodes":[
-   {"id":"gs1","t":"Pick 3 GSoC organizations and read their ideas lists","min":25},
-   {"id":"gs2","t":"Clone one project and get it building","needs":["gs1"],"min":30},
-   {"id":"gs3","t":"Find a good first issue and comment on it","needs":["gs2"],"min":20}]},
-  {"id":"cal","name":"Calisthenics","floor":4,"sample":true,"src":"not imported yet","nodes":[
-   {"id":"ca1","t":"Push-ups: 3 sets to near failure","min":15},
-   {"id":"ca2","t":"Pull-ups or rows: 3 sets","min":15},
-   {"id":"ca3","t":"Core: plank and leg raises","min":10}]}
- ]
+  {"id":"py","name":"Python, DSA, AI","floor":3,"src":"Module 09, stages 1-11 (one sequential path)","nodes":[
+   {"id":"py1","t":"Stage 1: Python fundamentals (CS50P)","min":45,"tiny":"Open CS50P and watch the first 10 minutes of the current lecture"},
+   {"id":"py2","t":"Stage 1 practice: 30 problems on Exercism or CodeWars","needs":["py1"],"min":30,"tiny":"Solve one easy problem"},
+   {"id":"py3","t":"Stage 1 build: CLI expense tracker or Wordle clone, pushed to GitHub with a README","needs":["py2"],"min":45,"tiny":"Create the repo and write the README title"},
+   {"id":"py4","t":"Stage 2: DSA basics (arrays, stacks, recursion): CodeChef roadmap, 50 problems, undo-redo editor","needs":["py3"],"min":45,"tiny":"Read one CodeChef array section"},
+   {"id":"py5","t":"Stage 2 compete: first CodeChef Starters or Codeforces Div 4 contest","needs":["py4"],"min":60,"tiny":"Register for the next contest"},
+   {"id":"py6","t":"Stage 3: trees and graphs: CodeChef, Striver A2Z, 40 problems, pathfinding visualizer","needs":["py4"],"min":45,"tiny":"Solve one tree problem"},
+   {"id":"py7","t":"Stage 3 compete: 2+ AtCoder Beginner Contests","needs":["py6"],"min":60,"tiny":"Register for the next ABC"},
+   {"id":"py8","t":"Stage 4: Dynamic programming: CSES, Striver DP playlist (56 problems), budget allocator project","needs":["py6"],"min":45,"tiny":"Watch the first DP video and solve one problem"},
+   {"id":"py9","t":"Stage 5: Pattern drill: NeetCode 150, weekly Codeforces rounds toward rating 1200, 5 writeups","needs":["py8"],"min":45,"tiny":"Do one NeetCode problem"},
+   {"id":"ai1","t":"Stage 6: AI/ML foundations: Google ML Crash Course, CS229, MIT 6.S191, Kaggle Titanic and House Prices","needs":["py9"],"min":45,"tiny":"Open the ML Crash Course first lesson"},
+   {"id":"ai2","t":"Stage 7: Applied and agentic AI: HF Agents course, fast.ai, RAG tutor bot, first lablab hackathon","needs":["ai1"],"min":45,"tiny":"Open the HF Agents course unit 1"},
+   {"id":"ai3","t":"Stage 8: Certification consolidation: Google Skills AI badges, IBM SkillsBuild, Azure AI-102 (paid)","needs":["ai2"],"min":40,"tiny":"Open the Google Skills Generative AI path"},
+   {"id":"ai4","t":"Stage 9: Blended showcase portfolio: route optimizer with LLM explainer, CP rating predictor, demos on GitHub","needs":["ai2"],"min":45,"tiny":"Write the README for one project"},
+   {"id":"ai5","t":"Stage 10: Major hackathon circuit: enter 3-5 across the year (Devpost, MLH, Unstop, Devfolio, SIH)","needs":["ai4"],"min":45,"tiny":"Find one upcoming hackathon and read its rules"},
+   {"id":"ai6","t":"Stage 11: Ongoing Kaggle competitions and Codeforces/CodeChef rating climb","needs":["py9"],"min":45,"tiny":"Open one open Kaggle competition"}]},
+  {"id":"cyb","name":"Cyber","floor":2,"src":"Module 08, phases 1-5 and the suggested sequence","nodes":[
+   {"id":"cy1","t":"OverTheWire Bandit wargame (Linux, SSH, networking)","min":30,"tiny":"Log in to Bandit level 0"},
+   {"id":"cy2","t":"TryHackMe Pre-Security path","min":30,"tiny":"Open the first room"},
+   {"id":"cy3","t":"Networking basics: Cisco Networking Academy and Professor Messer videos","min":30,"tiny":"Watch one Professor Messer video"},
+   {"id":"cy4","t":"picoCTF: work through the archive (binary, crypto, web, forensics, RE)","needs":["cy1"],"min":40,"tiny":"Open one easy picoCTF challenge"},
+   {"id":"cy5","t":"PortSwigger Web Security Academy: SQLi, XSS, auth, SSRF","needs":["cy2","cy3"],"min":40,"tiny":"Do the first SQL injection lab"},
+   {"id":"cy6","t":"Hacker101 CTF and videos","needs":["cy2"],"min":30,"tiny":"Watch the first Hacker101 video"},
+   {"id":"cy7","t":"pwn.college: lectures and challenges (binary exploitation, RE)","needs":["cy1","c1"],"min":45,"tiny":"Start the first module's lecture"},
+   {"id":"cy8","t":"Nightmare (GuyInATuxedo) and ROP Emporium drills","needs":["cy7"],"min":45,"tiny":"Read the first Nightmare chapter"},
+   {"id":"cy9","t":"TryHackMe free rooms toward Jr Penetration Tester or SOC Level 1 path (paid tier optional)","needs":["cy2"],"min":30,"tiny":"Finish one free room"},
+   {"id":"cy10","t":"HackTheBox free machines: 30-50 without walkthroughs (TJ Null list)","needs":["cy4","cy5"],"min":60,"tiny":"Spawn one easy machine and run nmap"},
+   {"id":"cy11","t":"Join a CTFtime team and enter a live CTF","needs":["cy4"],"min":60,"tiny":"Open CTFtime and find the next CTF"},
+   {"id":"cy12","t":"Publish writeups on GitHub or a blog for every box and CTF","needs":["cy4"],"min":30,"tiny":"Write the title and the goal of one writeup"},
+   {"id":"cy13","t":"ISC2 Certified in Cybersecurity (CC), free","needs":["cy3"],"min":40,"tiny":"Open the CC free course"},
+   {"id":"cy14","t":"eJPT v2 (practical pentest cert, paid about $249)","needs":["cy10"],"min":45,"tiny":"Read the eJPT exam outline"},
+   {"id":"cy15","t":"HTB CPTS (paid about $210)","needs":["cy14"],"min":45,"tiny":"Read the CPTS path outline"},
+   {"id":"cy16","t":"Bug bounty: YesWeHack Dojo, then live programs on HackerOne and Bugcrowd","needs":["cy5","cy6"],"min":45,"tiny":"Open one Dojo challenge"}]},
+  {"id":"gs","name":"GSoC","floor":1,"src":"GSoC 2027 Roadmap, Python + AI Track (phases -1 to 4). The C/C++ Systems Track targets GSoC 2028 and is not imported.","nodes":[
+   {"id":"gs1","t":"Phase -1: Git and GitHub properly: clone, branch, PR, resolve a merge conflict","min":30,"tiny":"Make a branch and push one small change"},
+   {"id":"gs2","t":"Phase -1: numpy and pandas basics","needs":["py1"],"min":30,"tiny":"Create one array and one dataframe"},
+   {"id":"gs3","t":"Phase -1: build 3-5 small real projects (CLI tool, CSV script, API caller, data cleaner)","needs":["py3","gs1"],"min":45,"tiny":"Pick the first project and write what it does in one line"},
+   {"id":"gs4","t":"Phase -1: read an open-source Python file of about 200 lines and explain every function","needs":["py2"],"min":30,"tiny":"Pick one small file and read the first function"},
+   {"id":"gs5","t":"Phase 0: pick a primary org and a backup (PSF, NumFOCUS AiiDA/ArviZ, CVXPY). Checkpoint: if Phase -1 is not solid by November 2026, consider GSoC 2028","needs":["gs3","gs4"],"min":30,"tiny":"List 3 orgs and read their front page"},
+   {"id":"gs6","t":"Phase 0: read CONTRIBUTING and get the codebase building and running locally","needs":["gs5"],"min":45,"tiny":"Clone the repo"},
+   {"id":"gs7","t":"Phase 0: join the community chat, introduce yourself, skim the test suite","needs":["gs6"],"min":30,"tiny":"Join the chat and say hello"},
+   {"id":"gs8","t":"Phase 1: find 2-3 good first issues and comment on one","needs":["gs7"],"min":30,"tiny":"Open the good first issue list"},
+   {"id":"gs9","t":"Phase 1: submit your first PR and iterate on review feedback","needs":["gs8"],"min":45,"tiny":"Trace the code path for the issue"},
+   {"id":"gs10","t":"Phase 1: second, slightly harder PR (small feature or real bug)","needs":["gs9"],"min":45,"tiny":"Pick the issue and comment on it"},
+   {"id":"gs11","t":"Phase 2: confirm the org is in GSoC 2027, read its ideas list, shortlist 2-3 ideas, message a mentor","needs":["gs10"],"min":40,"tiny":"Open the GSoC org list and search for your org"},
+   {"id":"gs12","t":"Phase 3: draft the proposal (1,500-2,500 words with a week-by-week timeline)","needs":["gs11"],"min":45,"tiny":"Write the problem statement paragraph"},
+   {"id":"gs13","t":"Phase 3: mentor review, register on the GSoC site, submit 24-48 hours before the deadline","needs":["gs12"],"min":40,"tiny":"Send the draft to a mentor"},
+   {"id":"gs14","t":"Phase 4: keep contributing small PRs while results are pending","needs":["gs13"],"min":30,"tiny":"Check the issue tracker for one small fix"}]},
+  {"id":"cal","name":"Calisthenics","floor":4,"src":"Rebuild Log: 8-Week Calisthenics and Diet Plan, phases 1-4. If still sore 48 hours after a session, repeat that week. Sunday is full rest.","nodes":[
+   {"id":"ca1","t":"Phase 1 (weeks 1-2): mobility, pain-free movement, core activation","min":20,"tiny":"Do 2 minutes of gentle mobility"},
+   {"id":"ca2","t":"Phase 2 (weeks 3-4): light calisthenics load and back strengthening","needs":["ca1"],"min":20,"tiny":"Do the first exercise of today's day page"},
+   {"id":"ca3","t":"Phase 3 (weeks 5-6): push, pull and squat progressions plus stamina intervals","needs":["ca2"],"min":25,"tiny":"Do one warm-up set"},
+   {"id":"ca4","t":"Phase 4 (weeks 7-8): combine and test, build toward month 3","needs":["ca3"],"min":25,"tiny":"Do one warm-up set"}]}
+]
 }
