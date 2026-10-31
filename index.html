@@ -23,13 +23,8 @@ main{max-width:30rem;margin:0 auto;padding:1rem 1.25rem 2rem;display:flex;flex-d
 .hl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.35rem}
 .hl b{font-weight:650}
 .hl span{color:var(--mute);font-size:.85rem;font-variant-numeric:tabular-nums}
-<<<<<<< HEAD
 .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:.35rem;margin:.9rem 0 .4rem}
 .tabs button{min-height:2.75rem;font-size:.78rem;padding:.8rem .2rem;border-radius:.8rem;color:var(--mute)}
-=======
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem;margin:.9rem 0 .4rem}
-.tabs button{min-height:2.75rem;font-size:.9rem;padding:.8rem .2rem;border-radius:.8rem;color:var(--mute)}
->>>>>>> 517e341cb15f3c8a44fbc420d77e0a7af44e2f12
 .tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
 #v-today{flex:1;display:flex;flex-direction:column}
 .focus{flex:1;display:flex;flex-direction:column;justify-content:center;padding:1.5rem 0}
@@ -111,7 +106,6 @@ details.lad summary .bar{grid-column:1/3}
 .tp.ms.done .ic{color:var(--accent);font-weight:700}
 .cal .p-row{padding:.5rem 1rem;border-top:1px solid var(--line)}
 .note{font-size:.82rem;margin:.5rem .2rem}
-<<<<<<< HEAD
 .card{border:1.5px solid var(--line);border-radius:1rem;padding:1rem;margin:.75rem 0}
 .card h3{margin:0 0 .3rem;font-size:1.05rem}
 .sub{color:var(--mute);font-size:.9rem;margin:.2rem 0}
@@ -123,8 +117,6 @@ details.lad summary .bar{grid-column:1/3}
 #v-projects label{display:block;margin:.6rem 0;font-size:.9rem;color:var(--mute)}
 #v-projects input,#v-projects select,#v-projects textarea{display:block;width:100%;font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem .7rem;margin-top:.25rem}
 #v-projects button.main{margin-top:.75rem}
-=======
->>>>>>> 517e341cb15f3c8a44fbc420d77e0a7af44e2f12
 @media (prefers-reduced-motion:reduce){.ring .fg,.bar i,#toast{transition:none}}
 </style>
 </head>
@@ -137,10 +129,7 @@ details.lad summary .bar{grid-column:1/3}
   </section>
   <nav class="tabs" role="tablist" aria-label="Views">
     <button role="tab" data-v="today" aria-selected="true">Today</button>
-<<<<<<< HEAD
     <button role="tab" data-v="projects" aria-selected="false">Projects</button>
-=======
->>>>>>> 517e341cb15f3c8a44fbc420d77e0a7af44e2f12
     <button role="tab" data-v="path" aria-selected="false">Path</button>
     <button role="tab" data-v="roadmap" aria-selected="false">Topics</button>
     <button role="tab" data-v="rewards" aria-selected="false">Rewards</button>
@@ -153,10 +142,7 @@ details.lad summary .bar{grid-column:1/3}
       <div class="foot"><button id="copy">Copy dev log</button><button id="reset">Reset data</button></div>
     </section>
   </div>
-<<<<<<< HEAD
   <div id="v-projects" role="tabpanel" hidden></div>
-=======
->>>>>>> 517e341cb15f3c8a44fbc420d77e0a7af44e2f12
   <div id="v-path" role="tabpanel" hidden></div>
   <div id="v-roadmap" role="tabpanel" hidden></div>
   <div id="v-rewards" role="tabpanel" hidden></div>
@@ -169,11 +155,7 @@ const XP={session:10,tiny:5,topic:40};
 const TITLES=['Newcomer','Apprentice','Builder','Maker','Engineer','Architect','Master'];
 let D=null, P=null, S=load(), cur=null, timer=null, idx={}, msIdx={}, view='today', openL=new Set(), openS=null, toastT=null;
 
-<<<<<<< HEAD
 function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1,ms:{},projects:[],focus:null}}
-=======
-function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1,ms:{}}}
->>>>>>> 517e341cb15f3c8a44fbc420d77e0a7af44e2f12
 function load(){try{return Object.assign(blank(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return blank()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const $=id=>document.getElementById(id);
@@ -486,7 +468,6 @@ function renderRewards(){
   }
   root.append(ul);
 }
-<<<<<<< HEAD
 /* ---------- projects made in the app (P1) ---------- */
 const PT={}, TPL={
  web:['Define the scope and who it is for','Sketch the screens on paper','Build the first working version','Test it with one real person','Publish it and write a short post'],
@@ -575,13 +556,6 @@ function setView(v){
   view=v;
   for(const b of document.querySelectorAll('.tabs button'))b.setAttribute('aria-selected',String(b.dataset.v===v));
   for(const id of ['today','projects','path','roadmap','rewards'])$('v-'+id).hidden=id!==v;
-=======
-function renderAll(){renderHud();render();renderPath();renderRoadmap();renderRewards()}
-function setView(v){
-  view=v;
-  for(const b of document.querySelectorAll('.tabs button'))b.setAttribute('aria-selected',String(b.dataset.v===v));
-  for(const id of ['today','path','roadmap','rewards'])$('v-'+id).hidden=id!==v;
->>>>>>> 517e341cb15f3c8a44fbc420d77e0a7af44e2f12
   window.scrollTo(0,0);
 }
 function setClock(left,total){
