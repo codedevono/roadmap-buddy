@@ -166,6 +166,42 @@ details.evn summary{cursor:pointer;min-height:1.6rem}
 #v-calendar input,#v-calendar select,#v-calendar textarea{display:block;width:100%;font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem .7rem;margin-top:.25rem}
 #v-calendar button.main{margin-top:.75rem}
 @media (prefers-reduced-motion:reduce){.ring .fg,.bar i,#toast{transition:none}}
+/* skin v3: colour, depth, tiles, icons */
+:root{--bg:#e8eff2;--card:#fff;--warm:#e0902f;--sh:0 1px 2px rgba(20,32,43,.06),0 10px 28px -14px rgba(20,32,43,.3)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1620;--card:#16232e;--line:#2a3d4c;--warm:#f0b866;--sh:0 1px 2px rgba(0,0,0,.4),0 12px 30px -14px rgba(0,0,0,.75)}}
+body{background:radial-gradient(120% 55% at 50% -8%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 62%) fixed,var(--bg)}
+.card,details.lad,.jour,.tk{background:var(--card);border:1px solid var(--line);border-radius:1.25rem;box-shadow:var(--sh)}
+.card{padding:1.1rem;margin:.7rem 0}
+.hud{background:var(--card);border:1px solid var(--line);border-radius:1rem;padding:.7rem .9rem;box-shadow:var(--sh)}
+.bar{height:.6rem}.bar i{background:linear-gradient(90deg,var(--accent),var(--warm))}
+.top{font-size:.85rem;letter-spacing:.01em}
+.goal{padding:1.1rem}
+.goal .gring .fg{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent) 55%,transparent))}
+.goal h2{font-size:1.15rem}
+.nx{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 11%,var(--card)),var(--card) 55%);border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.track{display:inline-block;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;background:color-mix(in srgb,var(--accent) 14%,transparent);padding:.25rem .65rem;border-radius:999px;margin:0 0 .7rem}
+.nx h1{font-size:1.55rem}
+.nx .ring .fg{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--accent) 50%,transparent))}
+.ring .t{font-size:2.2rem;letter-spacing:-.01em}
+.nx .why{background:color-mix(in srgb,var(--warm) 12%,transparent);border-radius:.7rem;padding:.45rem .7rem;color:var(--ink);margin:0 0 1.1rem}
+button{background:color-mix(in srgb,var(--ink) 4%,var(--card));border-color:var(--line)}
+button.main{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 88%,#fff),var(--accent));box-shadow:0 8px 18px -8px color-mix(in srgb,var(--accent) 80%,transparent);border-color:transparent}
+.mini.go{background:var(--accent)}
+#rst{margin-top:.5rem;width:100%;min-height:2.4rem;color:var(--mute)}
+.row button{border-radius:1rem;min-height:3.6rem}
+.row #ok{background:color-mix(in srgb,var(--accent) 12%,var(--card));border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.chip{background:color-mix(in srgb,currentColor 13%,transparent);border-color:transparent}
+.sd{border-top:0;margin:.2rem 0;padding:.6rem .7rem;border-radius:.9rem;background:color-mix(in srgb,var(--ink) 3%,transparent)}
+.sd.today{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.tp{border-top-color:color-mix(in srgb,var(--line) 70%,transparent)}
+details.lad summary{padding:.9rem 1.1rem}
+.bnav{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:.35rem .5rem calc(.35rem + env(safe-area-inset-bottom,0px))}
+.bnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;min-height:3.3rem;font-size:.7rem;background:transparent;border-color:transparent;border-radius:1rem}
+.bnav svg{width:1.35rem;height:1.35rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bnav button[aria-selected="true"]{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);font-weight:650}
+@media (prefers-reduced-motion:no-preference){button{transition:transform .12s ease,background .2s}button:active{transform:scale(.97)}}
+@media (max-width:24rem){.bnav button{font-size:.66rem}}
+.sd{grid-template-columns:5rem 1fr}
 </style>
 </head>
 <body>
@@ -196,11 +232,11 @@ details.evn summary{cursor:pointer;min-height:1.6rem}
   <div id="v-rewards" role="tabpanel" hidden></div>
 </main>
 <nav class="bnav" role="tablist" aria-label="Views">
-  <button role="tab" data-v="home" aria-selected="true">Home</button>
-  <button role="tab" data-v="roadmap" aria-selected="false">Topics</button>
-  <button role="tab" data-v="path" aria-selected="false">Path</button>
-  <button role="tab" data-v="calendar" aria-selected="false">Month</button>
-  <button role="tab" data-v="rewards" aria-selected="false">Rewards</button>
+  <button role="tab" data-v="home" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button>
+  <button role="tab" data-v="roadmap" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Topics</span></button>
+  <button role="tab" data-v="path" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 22V4M4 4h13l-2 4 2 4H4"/></svg><span>Path</span></button>
+  <button role="tab" data-v="calendar" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v16H3zM3 10h18M8 3v4M16 3v4"/></svg><span>Month</span></button>
+  <button role="tab" data-v="rewards" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg><span>Rewards</span></button>
 </nav>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -210,7 +246,7 @@ const XP={session:10,tiny:5,topic:40};
 const TITLES=['Newcomer','Apprentice','Builder','Maker','Engineer','Architect','Master'];
 let D=null, P=null, S=load(), cur=null, timer=null, idx={}, msIdx={}, view='home', openL=new Set(), openS=null, toastT=null, trOf={};
 
-function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1,ms:{},projects:[],focus:null,events:[],evDate:{},planner:'rules',hideStrip:false,goal:null}}
+function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1,ms:{},projects:[],focus:null,events:[],evDate:{},planner:'rules',hideStrip:false,goal:null,tm:null}}
 function load(){try{return Object.assign(blank(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return blank()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const $=id=>document.getElementById(id);
@@ -349,26 +385,28 @@ function renderHud(){
   $('xpb').style.width=Math.round(st.frac*100)+'%';
 }
 function render(){
+  if(!D)return;
   const f=$('focus');f.textContent='';
   cur=pickToday();
   if(!cur){f.innerHTML='<p class="msg">Nothing is ready. Everything is done or snoozed. Add skills in skills.json.</p>'}
   else{
-    const {n,lad}=cur, mins=n.min||25;
+    const n=cur.n, lad=cur.lad||n.lad||{id:'misc',name:'Next step'}, mins=n.min||25;
     f.innerHTML=`<p class="track"></p><h1></h1><p class="hint"></p><p class="why"></p>
     <div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" id="fg" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><div class="t" id="clock"></div></div>
     <button class="main" id="go">Start ${mins} minutes</button>
+    <button class="mini" id="rst" hidden>Start over</button>
     <div class="row"><button id="ok">Session done<small>+${XP.session} XP</small></button><button id="fin">Topic finished<small>+${XP.topic} XP</small></button><button id="later">Later</button><button id="hard">Too hard</button></div>`;
     f.querySelector('.track').textContent=lad.name+(n.pt?' · project task':lad.sample?' (sample tasks)':'');
     f.querySelector('h1').textContent=n.t;
     f.querySelector('.hint').textContent='Smallest start: '+(n.tiny||'open the first resource and work for 5 minutes');
     f.querySelector('.why').textContent='Why now: '+cur.why;
-    setClock(mins*60,mins*60);
+    timerUI(n.id,mins*60);
     if(n.pt)$('fin').firstChild.textContent='Task finished';
-    $('go').onclick=()=>startTimer(mins*60);
+    $('go').onclick=()=>timerGo(n.id,mins*60);
     $('ok').onclick=()=>finish('session');
     $('fin').onclick=()=>finish('topic');
-    $('later').onclick=()=>{S.later[n.id]=Date.now()+DAY;if(S.pin===n.id)S.pin=null;save();stop();render()};
-    $('hard').onclick=()=>{stop();$('go').textContent='Start 5 minutes';$('go').onclick=()=>startTimer(300);setClock(300,300);
+    $('later').onclick=()=>{S.later[n.id]=Date.now()+DAY;if(S.pin===n.id)S.pin=null;S.tm=null;save();stop();render()};
+    $('hard').onclick=()=>{stop();S.tm=null;save();$('go').textContent='Start 5 minutes';$('go').onclick=()=>timerGo(n.id,300);setClock(300,300);$('rst').hidden=true;
       $('ok').textContent='Tiny step done · +'+XP.tiny+' XP';$('ok').onclick=()=>finish('tiny');$('fin').style.display='none'};
   }
   const pj=$('proj');pj.textContent='';
@@ -536,7 +574,7 @@ const PT={}, TPL={
 let pf=null;
 function needsOf(p){const out=(p.needs||[]).filter(x=>idx[x]);for(const lid of p.ladders||[]){const l=D.ladders.find(x=>x.id===lid);if(l)for(const n of l.nodes)if(!out.includes(n.id))out.push(n.id)}return out}
 function projProg(p){const own=!p.file,tasks=own?(p.tasks||[]):[],nd=needsOf(p),d=tasks.filter(t=>isDone('pt:'+p.id+':'+t.id)).length+nd.filter(isDone).length;return{d,tot:tasks.length+nd.length,unit:tasks.length&&nd.length?'items done':tasks.length?'tasks done':'skills ready'}}
-function allProjects(){return D.projects.map(p=>Object.assign({status:'active'},p,{file:true})).concat(S.projects)}
+function allProjects(){return (D?D.projects:[]).map(p=>Object.assign({status:'active'},p,{file:true})).concat(S.projects)}
 function focusP(){return allProjects().find(p=>p.id===S.focus&&p.status!=='paused')||null}
 function daysTo(d){if(!d)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/DAY)}
 function ptNodes(p){return(p.tasks||[]).map(t=>{const id='pt:'+p.id+':'+t.id,n=PT[id]=PT[id]||{};return Object.assign(n,{id,t:t.t,min:t.min||25,needs:[],pt:p.id,tiny:'Open the project and work on this for 5 minutes',lad:{id:'proj',name:p.name,floor:0,nodes:[]}})})}
@@ -770,7 +808,7 @@ function rulesPlan(from,days){
       if(i>0){S.pin=null;S.later={}}
       const r=on.length?(pick({maxMin:30})||pick()):pick();
       out.push({date:ds,taskId:r?r.n.id:null,why:r?r.why+(on.length?(r.why?'; ':'')+'light day: '+on[0].name+' at '+on[0].time:''):'',light:on.length>0});
-      if(r){S.done[r.n.id]=Date.now();S.last[r.lad.id]=Date.now()}
+      if(r){S.done[r.n.id]=Date.now();const lq=r.lad||r.n.lad;if(lq)S.last[lq.id]=Date.now()}
     }
   }finally{S.done=sd;S.pin=sp;S.last=sl;S.later=sa}
   return out;
@@ -848,7 +886,7 @@ function renderStrip(){
     row.append(dl,b);s.append(row);
   }
 }
-function renderAll(){renderHud();render();renderProjects();renderCalendar();renderPath();renderRoadmap();renderRewards()}
+function renderAll(){if(!D)return;renderHud();render();renderProjects();renderCalendar();renderPath();renderRoadmap();renderRewards()}
 function setView(v){
   if(v==='today')v='home';
   view=v;
@@ -860,20 +898,36 @@ function setClock(left,total){
   const m=Math.floor(left/60),s=left%60,c=$('clock');if(c)c.textContent=m+':'+String(s).padStart(2,'0');
   const fg=$('fg');if(fg)fg.style.strokeDashoffset=String(276.46*(1-left/total));
 }
-function startTimer(total){
-  stop();let left=total;
-  $('go').textContent='Stop timer';$('go').onclick=()=>{stop();render()};
-  timer=setInterval(()=>{left--;setClock(left,total);
-    if(left<=0){stop();try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
-      $('go').textContent='Time is up. Log it below.';$('go').onclick=null}},1000);
+function tmLeft(){const t=S.tm;return !t?0:t.end?Math.max(0,Math.ceil((t.end-Date.now())/1000)):t.left}
+function tmMin(l){return Math.floor(l/60)+':'+String(l%60).padStart(2,'0')}
+function timerUI(id,total){
+  const t=S.tm&&S.tm.id===id?S.tm:null;if(!t){S.tm=null;setClock(total,total);return}
+  const l=tmLeft();setClock(l,t.total);$('rst').hidden=false;
+  if(l<=0){S.tm.end=null;S.tm.left=0;$('go').textContent='Time is up. Log it below.';$('go').onclick=null;return}
+  if(t.end)runTick();else $('go').textContent='Resume ('+tmMin(l)+' left)';
 }
+function timerGo(id,total){
+  const t=S.tm&&S.tm.id===id?S.tm:null;
+  if(t&&t.end){const l=tmLeft();stop();S.tm={id,total:t.total,left:l,end:null};save();$('go').textContent='Resume ('+tmMin(l)+' left)';setClock(l,t.total);return}
+  const left=t&&t.left>0?t.left:total,tt=t&&t.left>0?t.total:total;
+  S.tm={id,total:tt,left,end:Date.now()+left*1000};save();$('rst').hidden=false;runTick();
+}
+function runTick(){
+  stop();const t=S.tm;$('go').textContent='Pause';$('go').onclick=()=>timerGo(t.id,t.total);
+  $('rst').onclick=()=>{stop();S.tm=null;save();render()};
+  const tick=()=>{const l=tmLeft();setClock(l,S.tm.total);
+    if(l<=0){stop();S.tm.end=null;S.tm.left=0;save();try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}$('go').textContent='Time is up. Log it below.';$('go').onclick=null}};
+  tick();if(S.tm&&S.tm.end)timer=setInterval(tick,500);
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.tm&&S.tm.end&&$('go'))runTick()});
+function startTimer(total){timerGo(cur.n.id,total)}
 function stop(){if(timer){clearInterval(timer);timer=null}}
 function finish(kind){
-  const {n,lad}=cur,ts=Date.now();
+  const n=cur.n,lad=cur.lad||n.lad||{id:'misc',name:'Next step'},ts=Date.now();
   S.log.push({id:n.id,lad:lad.id,title:n.t,ts,k:kind});
   S.last[lad.id]=ts;
   if(kind==='topic'){S.done[n.id]=ts;if(S.pin===n.id)S.pin=null}
-  save();stop();
+  S.tm=null;save();stop();
   const gain=kind==='topic'?XP.topic:kind==='tiny'?XP.tiny:XP.session;
   const before=Object.keys(S.badges).length,lv0=S.lvl;
   check(false);
