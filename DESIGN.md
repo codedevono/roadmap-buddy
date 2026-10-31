@@ -27,6 +27,12 @@ The highest score wins, and the two strongest reasons become the "Why now" line.
 ## Data
 All state is in the browser (`localStorage`). `skills.json`, `projects.json` and `events.json` are the source of the plan.
 
+## The Path view (gamified whole picture)
+- `path.json` groups topics into three phases (Foundation, Competitive depth, Cross-domain mastery) and tags each quest with one of four tracks (systems, graphics, security, AI systems). No years: you move on when the quests are done.
+- A quest is an ordinary topic from `skills.json`, so finishing it anywhere counts everywhere. Nothing is stored twice.
+- Milestones (a CTF, a first merged fix, a certificate) are claimed by hand and give XP. Each phase has one boss that unlocks at 60% of that phase's quests. Only bosses are locked, so nothing else can frustrate.
+- XP, levels and badges stay derived from state (`done`, the session log and claimed milestones), so a slow week never erases anything.
+
 ## Plan ahead
 - v0.5: phone reminders (Telegram bot or web push), morning plan and evening check-in.
 - Next: import the remaining Notion roadmaps (AR optics and tracking, brand and graphic design, the GSoC 2028 C/C++ track), Notion sync, auto-append to DEVLOG on GitHub, weekly review.

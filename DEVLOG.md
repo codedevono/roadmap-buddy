@@ -6,4 +6,6 @@
 
 2026-10-30 | Imported the last four sample ladders from Notion: Python/DSA/AI (Module 09, 15 topics), Cyber (Module 08, 16), GSoC (Python + AI track, 14), Calisthenics (8-week plan, 4). Now 11 ladders and 101 topics, no samples. Set the GSoC 2027 date to 2027-03-31 as an estimate (2026 deadline was Mar 31; 2027 dates not published) and limited its prep to the py and gs ladders. Checked in a browser: no script errors, planner picks sensible tasks. Next: set the CTF date, import AR optics and brand design, use it on the phone for 3 days.
 
-2026-10-31 | Removed the Calisthenics ladder completely (my decision). Now 10 ladders and 97 topics. Next: add a full-roadmap view with levels and XP, from the 6-year low-level design roadmap file.
+2026-10-31 | Removed the Calisthenics ladder completely (my decision). Now 10 ladders and 97 topics. Next: a full-roadmap view from the 6-year low-level design roadmap file.
+
+2026-10-31 | Added the 6-year low-level design roadmap without its years. 21 new topics in 5 new ladders (systems depth, graphics and GPU, AI systems, security advanced, open source and research) plus discrete math; 15 ladders and 118 topics now. New Path tab: three phases, four tracks, 28 XP milestones and a locked boss per phase, all linked to the same topics as the Topics tab. Left out Google Code Jam, Kickstart and Hash Code because Google has shut them down. Tested in a headless browser at 320 to 390 px, light and dark, and with path.json missing.

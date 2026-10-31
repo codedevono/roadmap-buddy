@@ -23,8 +23,8 @@ main{max-width:30rem;margin:0 auto;padding:1rem 1.25rem 2rem;display:flex;flex-d
 .hl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.35rem}
 .hl b{font-weight:650}
 .hl span{color:var(--mute);font-size:.85rem;font-variant-numeric:tabular-nums}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin:.9rem 0 .4rem}
-.tabs button{min-height:2.75rem;font-size:.95rem;border-radius:.8rem;color:var(--mute)}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem;margin:.9rem 0 .4rem}
+.tabs button{min-height:2.75rem;font-size:.9rem;padding:.8rem .2rem;border-radius:.8rem;color:var(--mute)}
 .tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
 #v-today{flex:1;display:flex;flex-direction:column}
 .focus{flex:1;display:flex;flex-direction:column;justify-content:center;padding:1.5rem 0}
@@ -89,6 +89,23 @@ details.lad summary .bar{grid-column:1/3}
 .badges li.off{opacity:.65}
 #toast{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,2rem);max-width:min(26rem,92vw);background:var(--ink);color:var(--bg);padding:.8rem 1.1rem;border-radius:.9rem;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
+/* path */
+:root{--c-sys:#2a6db5;--c-gfx:#a86a00;--c-sec:#b83a2c;--c-ai:#8a3fa8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c-sys:#86b8ea;--c-gfx:#e6b95f;--c-sec:#f2958a;--c-ai:#cfa3e6}}
+.chip{display:inline-block;font-size:.72rem;font-weight:600;padding:.05rem .45rem;border-radius:.6rem;border:1px solid currentColor;margin-right:.4rem;vertical-align:1px}
+.c-sys{color:var(--c-sys)}.c-gfx{color:var(--c-gfx)}.c-sec{color:var(--c-sec)}.c-ai{color:var(--c-ai)}
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.5rem 0}
+.tk{border:1px solid var(--line);border-left-width:4px;border-radius:.9rem;padding:.65rem .75rem;background:var(--card);display:flex;flex-direction:column;gap:.25rem}
+.tk b{font-size:.95rem}
+.tk span{font-size:.78rem}
+.t-sys{border-left-color:var(--c-sys)}.t-gfx{border-left-color:var(--c-gfx)}.t-sec{border-left-color:var(--c-sec)}.t-ai{border-left-color:var(--c-ai)}
+.core{text-align:center;font-weight:600;border:1.5px dashed var(--accent);border-radius:.9rem;padding:.7rem;margin:.1rem 0 .9rem;font-size:.92rem}
+.stb{margin:.1rem 1rem .6rem;font-size:.88rem}
+.sec-h{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:.6rem 1rem .2rem;border-top:1px solid var(--line)}
+.tp.ms .ic{color:var(--mute)}
+.tp.ms.done .ic{color:var(--accent);font-weight:700}
+.cal .p-row{padding:.5rem 1rem;border-top:1px solid var(--line)}
+.note{font-size:.82rem;margin:.5rem .2rem}
 @media (prefers-reduced-motion:reduce){.ring .fg,.bar i,#toast{transition:none}}
 </style>
 </head>
@@ -101,7 +118,8 @@ details.lad summary .bar{grid-column:1/3}
   </section>
   <nav class="tabs" role="tablist" aria-label="Views">
     <button role="tab" data-v="today" aria-selected="true">Today</button>
-    <button role="tab" data-v="roadmap" aria-selected="false">Roadmap</button>
+    <button role="tab" data-v="path" aria-selected="false">Path</button>
+    <button role="tab" data-v="roadmap" aria-selected="false">Topics</button>
     <button role="tab" data-v="rewards" aria-selected="false">Rewards</button>
   </nav>
 
@@ -112,6 +130,7 @@ details.lad summary .bar{grid-column:1/3}
       <div class="foot"><button id="copy">Copy dev log</button><button id="reset">Reset data</button></div>
     </section>
   </div>
+  <div id="v-path" role="tabpanel" hidden></div>
   <div id="v-roadmap" role="tabpanel" hidden></div>
   <div id="v-rewards" role="tabpanel" hidden></div>
 </main>
@@ -121,9 +140,9 @@ const KEY='buddy.v2', DAY=864e5, FILES=['skills.json','projects.json','events.js
 const GOAL=4;                                   // sessions per week that count as a goal week
 const XP={session:10,tiny:5,topic:40};
 const TITLES=['Newcomer','Apprentice','Builder','Maker','Engineer','Architect','Master'];
-let D=null, S=load(), cur=null, timer=null, idx={}, view='today', openL=new Set(), toastT=null;
+let D=null, P=null, S=load(), cur=null, timer=null, idx={}, msIdx={}, view='today', openL=new Set(), openS=null, toastT=null;
 
-function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1}}
+function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1,ms:{}}}
 function load(){try{return Object.assign(blank(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return blank()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const $=id=>document.getElementById(id);
@@ -131,7 +150,8 @@ function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=nu
 function bar(f){const b=el('div','bar'),i=el('i');i.style.width=Math.round(Math.max(0,Math.min(1,f))*100)+'%';b.append(i);return b}
 const isDone=id=>!!S.done[id];
 const ready=n=>(n.needs||[]).every(isDone);
-function build(){idx={};for(const l of D.ladders)for(const n of l.nodes){n.lad=l;idx[n.id]=n}}
+function build(){idx={};for(const l of D.ladders)for(const n of l.nodes){n.lad=l;idx[n.id]=n}
+  msIdx={};if(P)for(const m of P.milestones)msIdx[m.id]=m}
 
 /* ---------- weeks ---------- */
 function wkStart(ts){const d=new Date(ts);d.setHours(0,0,0,0);d.setDate(d.getDate()-(d.getDay()+6)%7);return d.getTime()}
@@ -151,12 +171,13 @@ function stats(){
     lads.add(l.lad);
     const w=wkStart(l.ts);weeks[w]=(weeks[w]||0)+1;
   }
+  let msDone=0;for(const id in S.ms){if(msIdx[id]){xp+=msIdx[id].xp;msDone++}}   // milestone XP is derived too
   const lvl=Math.floor(Math.sqrt(xp/50))+1, base=50*(lvl-1)**2, next=50*lvl**2;
   let w=weekStart(),streak=0;
   if((weeks[w]||0)>=GOAL)streak=1;           // this week counts once reached; missing it so far breaks nothing
   w=prevWeek(w);
   while((weeks[w]||0)>=GOAL){streak++;w=prevWeek(w)}
-  return{xp,lvl,base,next,frac:(xp-base)/(next-base),sess:S.log.length,tiny,topics,ladsUsed:lads.size,
+  return{xp,lvl,base,next,frac:(xp-base)/(next-base),sess:S.log.length,tiny,topics,msDone,ladsUsed:lads.size,
     goalWeeks:Object.values(weeks).filter(v=>v>=GOAL).length,streak,thisWeek:weeks[weekStart()]||0};
 }
 const title=l=>TITLES[Math.min(l-1,TITLES.length-1)];
@@ -174,6 +195,13 @@ function allBadges(){
     {id:'explore',n:'Explorer',d:'Log sessions in 5 different ladders',f:s=>s.ladsUsed>=5}
   ];
   for(const l of D.ladders)B.push({id:'mast-'+l.id,n:l.name+' mastered',d:'Finish every topic in '+l.name,f:()=>l.nodes.every(n=>isDone(n.id))});
+  if(P){
+    B.push({id:'ms1',n:'First milestone',d:'Claim a milestone on the Path',f:s=>s.msDone>=1});
+    B.push({id:'ms10',n:'Ten milestones',d:'Claim 10 milestones',f:s=>s.msDone>=10});
+    B.push({id:'conv',n:'Converger',d:'Finish a quest in all four tracks',f:()=>P.tracks.every(t=>P.stages.some(s=>s.topics.some(x=>x.tr===t.id&&isDone(x.id))))});
+    for(const s of P.stages)B.push({id:'stage-'+s.id,n:s.name+' cleared',d:'Finish every quest in '+s.name,f:()=>s.topics.every(t=>isDone(t.id))});
+    for(const m of P.milestones)if(m.boss){const sg=P.stages.find(x=>x.id===m.stage);B.push({id:'boss-'+m.id,n:'Boss beaten: '+(sg?sg.name:m.stage),d:m.t.replace(/^Boss: /,''),f:()=>!!S.ms[m.id]})}
+  }
   return B;
 }
 // Awards new badges and level-ups. silent=true on first load so old progress does not pop toasts.
@@ -203,7 +231,7 @@ function pick(){
       for(const c of closure(nid)){
         if(isDone(c)||!ready(idx[c]))continue;
         const s=c===nid?base:base*.9;
-        if(!best[c]||best[c].s<s)best[c]={s,w:c===nid?p.name+' needs this':p.name+' needs '+idx[nid].t.split(':')[0].toLowerCase()+', and this comes first'};
+        if(!best[c]||best[c].s<s)best[c]={s,w:c===nid?p.name+' needs this':p.name+' needs '+short(idx[nid]).toLowerCase()+', and this comes first'};
       }
     });
     for(const c in best)add(c,best[c].s,best[c].w);
@@ -280,6 +308,33 @@ function render(){
     r.append(d);wk.appendChild(r);
   }
 }
+function short(n){const a=n.t.split(':')[0];if(!/^(Stage|Phase) \d+/.test(a))return a;const b=(n.t.split(':')[1]||a).trim();return b.length>42?b.slice(0,40)+'…':b}
+function trChip(id){const t=P&&P.tracks.find(x=>x.id===id);return el('span','chip c-'+id,t?t.name:id)}
+function topicRow(n,o){
+  o=o||{};
+  const st=isDone(n.id)?'done':ready(n)?'ready':'locked';
+  const r=el('div','tp '+st);
+  r.append(el('span','ic',st==='done'?'✓':st==='ready'?'●':'○'));
+  const b=el('div','tb');
+  b.append(el('div','tt',n.t));
+  const unmet=(n.needs||[]).filter(x=>!isDone(x)).map(x=>idx[x]?short(idx[x]):x);
+  const sub=el('div','sub');
+  if(o.tr)sub.append(trChip(o.tr));
+  sub.append(document.createTextNode(st==='locked'?'Needs: '+unmet.join(', '):(n.min||25)+' min'+(st==='done'?' · done':'')));
+  b.append(sub);
+  if(o.res)b.append(el('div','sub','Study: '+o.res));
+  if(st==='ready'){
+    const a=el('div','acts');
+    const go=el('button','mini go','Do now');go.onclick=()=>{S.pin=n.id;save();setView('today');render()};
+    const dn=el('button','mini','Mark done');dn.setAttribute('aria-label','Mark '+n.t+' as already done');
+    dn.onclick=()=>{S.done[n.id]=Date.now();if(S.pin===n.id)S.pin=null;save();check(true);renderAll()};
+    a.append(go,dn);b.append(a);
+  }else if(st==='done'){
+    const a=el('div','acts'),u=el('button','mini','Undo');u.setAttribute('aria-label','Mark '+n.t+' as not done');
+    u.onclick=()=>{delete S.done[n.id];save();renderAll()};a.append(u);b.append(a);
+  }
+  r.append(b);return r;
+}
 function renderRoadmap(){
   const root=$('v-roadmap');root.textContent='';
   const all=D.ladders.flatMap(l=>l.nodes), d=all.filter(n=>isDone(n.id)).length;
@@ -294,28 +349,79 @@ function renderRoadmap(){
     det.addEventListener('toggle',()=>{det.open?openL.add(l.id):openL.delete(l.id)});
     const sm=el('summary');sm.append(el('span','ln',l.name),el('span','lc',nd+' / '+l.nodes.length),bar(nd/l.nodes.length));
     det.append(sm);
-    for(const n of l.nodes){
-      const st=isDone(n.id)?'done':ready(n)?'ready':'locked';
-      const r=el('div','tp '+st);
-      r.append(el('span','ic',st==='done'?'✓':st==='ready'?'●':'○'));
-      const b=el('div','tb');
-      b.append(el('div','tt',n.t));
-      const unmet=(n.needs||[]).filter(x=>!isDone(x)).map(x=>idx[x]?idx[x].t.split(':')[0]:x);
-      b.append(el('div','sub',st==='locked'?'Needs: '+unmet.join(', '):(n.min||25)+' min'+(st==='done'?' · done':'')));
-      if(st==='ready'){
-        const a=el('div','acts');
-        const go=el('button','mini go','Do now');go.onclick=()=>{S.pin=n.id;save();setView('today');render()};
-        const dn=el('button','mini','Mark done');dn.setAttribute('aria-label','Mark '+n.t+' as already done');
-        dn.onclick=()=>{S.done[n.id]=Date.now();if(S.pin===n.id)S.pin=null;save();check(true);renderAll()};
-        a.append(go,dn);b.append(a);
-      }else if(st==='done'){
-        const a=el('div','acts'),u=el('button','mini','Undo');u.setAttribute('aria-label','Mark '+n.t+' as not done');
-        u.onclick=()=>{delete S.done[n.id];save();renderAll()};a.append(u);b.append(a);
-      }
-      r.append(b);det.append(r);
-    }
+    for(const n of l.nodes)det.append(topicRow(n));
     root.append(det);
   }
+}
+/* ---------- path: the whole six-stage picture, no years ---------- */
+function stageStats(s){
+  const q=s.topics.length,qd=s.topics.filter(t=>isDone(t.id)).length;
+  const ms=P.milestones.filter(m=>m.stage===s.id),md=ms.filter(m=>S.ms[m.id]).length;
+  return{q,qd,ms,md,all:(qd+md)/Math.max(1,q+ms.length),need:Math.ceil(P.bossUnlock*q-1e-9)-qd};
+}
+function msRow(m,x){
+  const on=!!S.ms[m.id],locked=!!m.boss&&!on&&x.need>0;
+  const r=el('div','tp ms '+(on?'done':locked?'locked':'ready'));
+  r.append(el('span','ic',on?'★':locked?'○':'☆'));
+  const b=el('div','tb');
+  b.append(el('div','tt',m.t));
+  b.append(el('div','sub',(m.boss?'Boss':'Milestone')+' · '+m.xp+' XP'+(m.note?' · '+m.note:'')+(locked?' · unlocks after '+x.need+' more quest'+(x.need===1?'':'s')+' in this phase':'')));
+  if(!locked){
+    const a=el('div','acts'),bt=el('button','mini'+(on?'':' go'),on?'Undo':'Claim +'+m.xp+' XP');
+    bt.setAttribute('aria-label',(on?'Unclaim: ':'Claim: ')+m.t);
+    bt.onclick=()=>on?unclaim(m):claim(m);
+    a.append(bt);b.append(a);
+  }
+  r.append(b);return r;
+}
+function claim(m){
+  S.ms[m.id]=Date.now();save();
+  const before=Object.keys(S.badges).length,lv0=S.lvl;
+  check(false);
+  if(Object.keys(S.badges).length===before&&S.lvl===lv0)toast('+'+m.xp+' XP · '+(m.boss?'Boss beaten':'Milestone claimed'));
+  renderAll();
+}
+function unclaim(m){delete S.ms[m.id];save();renderAll()}
+function renderPath(){
+  const root=$('v-path');root.textContent='';
+  if(!P){root.append(el('p','msg','Path data is missing. Check that path.json is in the repo.'));return}
+  const ss=P.stages.map(s=>({s,x:stageStats(s)}));
+  const q=ss.reduce((a,o)=>a+o.x.q,0),qd=ss.reduce((a,o)=>a+o.x.qd,0),m=P.milestones.length,md=ss.reduce((a,o)=>a+o.x.md,0);
+  const h=el('div','jour');
+  h.append(el('h2',null,P.title),el('p','muted',P.blurb),
+    el('p','muted',qd+' of '+q+' quests · '+md+' of '+m+' milestones · '+Math.round(100*(qd+md)/(q+m))+'%'),bar((qd+md)/(q+m)));
+  root.append(h);
+  const tg=el('div','tracks');
+  for(const t of P.tracks){
+    const tops=P.stages.flatMap(s=>s.topics).filter(x=>x.tr===t.id),d=tops.filter(x=>isDone(x.id)).length;
+    const c=el('div','tk t-'+t.id);
+    c.append(el('b',null,t.name),el('span','muted',t.desc),el('span','lc',d+' / '+tops.length+' quests'),bar(tops.length?d/tops.length:0));
+    tg.append(c);
+  }
+  root.append(tg,el('div','core','All four tracks feed one core: '+P.core));
+  if(openS===null){
+    const c=ss.find(o=>o.x.qd<o.x.q||o.x.md<o.x.ms.length)||ss[ss.length-1];
+    openS=new Set([c.s.id]);
+  }
+  ss.forEach(({s,x},i)=>{
+    const det=el('details','lad');det.open=openS.has(s.id);
+    det.addEventListener('toggle',()=>{det.open?openS.add(s.id):openS.delete(s.id)});
+    const sm=el('summary');
+    sm.append(el('span','ln','Phase '+(i+1)+' · '+s.name),el('span','lc',x.qd+'/'+x.q+' quests · '+x.md+'/'+x.ms.length+' milestones'),bar(x.all));
+    det.append(sm,el('p','muted stb',s.blurb),el('div','sec-h','Quests'));
+    for(const t of s.topics){const n=idx[t.id];if(n)det.append(topicRow(n,t))}
+    det.append(el('div','sec-h','Milestones'));
+    for(const mm of x.ms)det.append(msRow(mm,x));
+    root.append(det);
+  });
+  if(P.calendar&&P.calendar.length){
+    const d=el('details','lad cal'),sm=el('summary');
+    sm.append(el('span','ln','Season calendar'),el('span','lc','check each event site'));
+    d.append(sm);
+    for(const c of P.calendar){const r=el('div','p-row');r.append(el('span',null,c.m),el('span',null,c.t));d.append(r)}
+    root.append(d);
+  }
+  root.append(el('p','muted note','A locked quest shows what it needs. The Topics tab lists every prerequisite. Bosses unlock at '+Math.round(P.bossUnlock*100)+'% of a phase.'));
 }
 function renderRewards(){
   const root=$('v-rewards');root.textContent='';
@@ -340,11 +446,11 @@ function renderRewards(){
   }
   root.append(ul);
 }
-function renderAll(){renderHud();render();renderRoadmap();renderRewards()}
+function renderAll(){renderHud();render();renderPath();renderRoadmap();renderRewards()}
 function setView(v){
   view=v;
   for(const b of document.querySelectorAll('.tabs button'))b.setAttribute('aria-selected',String(b.dataset.v===v));
-  for(const id of ['today','roadmap','rewards'])$('v-'+id).hidden=id!==v;
+  for(const id of ['today','path','roadmap','rewards'])$('v-'+id).hidden=id!==v;
   window.scrollTo(0,0);
 }
 function setClock(left,total){
@@ -378,7 +484,8 @@ $('copy').onclick=async()=>{
 };
 $('reset').onclick=()=>{if(confirm('Erase all progress on this device?')){S=blank();save();check(true);renderAll()}};
 Promise.all(FILES.map(f=>fetch(f,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(f);return r.json()}))).then(([a,b,c])=>{
-  D={ladders:a.ladders,projects:b.projects,events:c.events};build();check(true);renderAll();
+  D={ladders:a.ladders,projects:b.projects,events:c.events};
+  return fetch('path.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null).then(pj=>{P=pj;build();check(true);renderAll()});
 }).catch(()=>{$('focus').innerHTML='<p class="msg">Could not load the plan files. Open this page from GitHub Pages or a local server, not as a file.</p>'});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>

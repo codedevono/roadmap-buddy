@@ -8,7 +8,8 @@
    {"id":"m3","t":"Vectors, matrices and complex numbers","needs":["m2"],"min":30},
    {"id":"m4","t":"Calculus: derivatives, integrals, first-order ODEs","needs":["m2"],"min":30},
    {"id":"m5","t":"Statistics and fitting for noisy sensors","needs":["m1"],"min":30},
-   {"id":"m6","t":"Control math: second-order ODEs, Laplace, eigenvalues","needs":["m3","m4"],"min":30}]},
+   {"id":"m6","t":"Control math: second-order ODEs, Laplace, eigenvalues","needs":["m3","m4"],"min":30},
+   {"id":"m7","t":"Discrete math and modular arithmetic: logic, counting, number theory for security and algorithms","needs":["m1"],"min":30,"tiny":"Work through modular arithmetic with clock examples"}]},
   {"id":"3d","name":"3D math and graphics","floor":2,"src":"AR/VR Resources: Learning 3D Maths, steps 1-5","nodes":[
    {"id":"v1","t":"Vectors and coordinates: dot, cross, normalise (three.js)","needs":["m2"],"min":25},
    {"id":"v2","t":"Matrices and transformations: translate, rotate, scale, 4x4","needs":["v1"],"min":30},
@@ -107,6 +108,31 @@
    {"id":"gs11","t":"Phase 2: confirm the org is in GSoC 2027, read its ideas list, shortlist 2-3 ideas, message a mentor","needs":["gs10"],"min":40,"tiny":"Open the GSoC org list and search for your org"},
    {"id":"gs12","t":"Phase 3: draft the proposal (1,500-2,500 words with a week-by-week timeline)","needs":["gs11"],"min":45,"tiny":"Write the problem statement paragraph"},
    {"id":"gs13","t":"Phase 3: mentor review, register on the GSoC site, submit 24-48 hours before the deadline","needs":["gs12"],"min":40,"tiny":"Send the draft to a mentor"},
-   {"id":"gs14","t":"Phase 4: keep contributing small PRs while results are pending","needs":["gs13"],"min":30,"tiny":"Check the issue tracker for one small fix"}]}
+   {"id":"gs14","t":"Phase 4: keep contributing small PRs while results are pending","needs":["gs13"],"min":30,"tiny":"Check the issue tracker for one small fix"}]},
+  {"id":"sysd","name":"Systems depth","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
+   {"id":"net1","t":"Networking internals: sockets in C, an HTTP/1.1 client and server, DNS, the TLS handshake, packets in Wireshark","needs":["c1"],"min":40,"tiny":"Read the first two chapters of Beej's Guide"},
+   {"id":"db1","t":"Database internals: B-trees, LSM trees, WAL, MVCC, buffer pool; build a toy key-value store in C++","needs":["c2","c9"],"min":45,"tiny":"Watch the first 10 minutes of a CMU 15-445 lecture"},
+   {"id":"cc1","t":"Concurrency and the memory model: mutexes, spinlocks, condition variables, atomics; build a concurrent hash map","needs":["c3","c9"],"min":40,"tiny":"Write a two-thread counter and watch it race"},
+   {"id":"llvm1","t":"Compilers and LLVM: lexing, parsing, IR, optimization passes, code generation","needs":["c2","c9"],"min":45,"tiny":"Compile a 5-line C file to LLVM IR with clang and read it"}]},
+  {"id":"gfx","name":"Graphics and GPU","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
+   {"id":"gx1","t":"Software rasterizer in C++ with no graphics API: triangles, depth buffer, textures","needs":["v2","c9"],"min":45,"tiny":"Draw one triangle into an image file"},
+   {"id":"vk1","t":"Vulkan or WebGPU: explicit memory, render passes, synchronization, descriptor sets","needs":["g1","c9"],"min":45,"tiny":"Read the Overview page of vulkan-tutorial.com"},
+   {"id":"cuda1","t":"CUDA programming: thread hierarchy, shared memory, warp divergence, coalescing, streams; write a GEMM kernel","needs":["c9","c4"],"min":45,"tiny":"Run the vector-add example from the CUDA guide (a free Colab GPU works)"},
+   {"id":"pbr1","t":"Real-time rendering: deferred shading, PBR, shadow maps, ambient occlusion, post-processing; build a deferred renderer","needs":["vk1"],"min":45,"tiny":"Read the deferred shading chapter of LearnOpenGL"}]},
+  {"id":"aisys","name":"AI systems","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
+   {"id":"ml1","t":"PyTorch internals and autograd: tensor storage, CUDA dispatch; build micrograd from scratch","needs":["ai1"],"min":45,"tiny":"Watch the first 10 minutes of Karpathy's micrograd lecture"},
+   {"id":"ml2","t":"AI inference optimization: INT8/FP16 quantization, pruning, TensorRT, ONNX Runtime, KV-cache","needs":["ml1","cuda1"],"min":45,"tiny":"Export one small model to ONNX"},
+   {"id":"nr1","t":"Neural rendering: NeRF, 3D Gaussian Splatting, instant-ngp; optimize at the CUDA level","needs":["cuda1","ml1"],"min":45,"tiny":"Read the abstract and figures of the 3D Gaussian Splatting paper"},
+   {"id":"ml3","t":"AI compilers: MLIR, Triton, IREE; write a small Triton kernel","needs":["llvm1","cuda1"],"min":45,"tiny":"Run the Triton vector-add tutorial"}]},
+  {"id":"secx","name":"Security advanced","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
+   {"id":"sx1","t":"Cloud security: AWS IAM misconfigurations, S3 exposure, OWASP cloud risks","needs":["cy5"],"min":40,"tiny":"Read the AWS IAM policy basics page"},
+   {"id":"sx2","t":"OSCP (PEN-200): buffer overflows, privilege escalation, Active Directory attacks, report writing, 24-hour exam","needs":["cy10","c7"],"min":60,"tiny":"Read the PEN-200 syllabus"},
+   {"id":"sx3","t":"Kernel and hypervisor security: Linux kernel exploitation, KVM, container escapes","needs":["c6","cy8"],"min":45,"tiny":"Read one public Linux kernel CVE writeup"},
+   {"id":"sx4","t":"GPU security research: driver vulnerabilities, GPU memory attacks, cache side channels, model theft through GPU timing","needs":["cuda1","c7"],"min":45,"tiny":"Read the abstract of one GPU security paper"}]},
+  {"id":"oss","name":"Open source and research","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
+   {"id":"os1","t":"GSoC systems track: pick an org (Mesa, LLVM, Rizin or Wireshark), build it, read the codebase, land a small bug fix","needs":["c9","gs1"],"min":45,"tiny":"Clone one of the four repos and build it"},
+   {"id":"os2","t":"GSoC systems proposal: shortlist ideas, message a mentor, write a detailed proposal with a week-by-week timeline","needs":["os1"],"min":45,"tiny":"Read the org's ideas list"},
+   {"id":"os3","t":"Write one solid technical writeup or workshop paper: a CTF exploit, a GPU optimization or a driver bug","needs":["c7"],"min":45,"tiny":"Write the title and the one-line claim"},
+   {"id":"os4","t":"Open source leadership: maintain a small project or ship your own systems tool (GPU profiler, shader debugger, exploit framework)","needs":["os1"],"min":45,"tiny":"Write the README title and one-line purpose"}]}
 ]
 }

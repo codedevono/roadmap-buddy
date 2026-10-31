@@ -3,11 +3,12 @@
 A personal productivity buddy for people with low consistency and a distractible mind.
 Your projects, competitions and learning roadmaps become one plan, and the app answers one question: **what do I do right now, and why?**
 
-Status: v1 prototype. Built in public.
+Status: v1 prototype with XP, levels, badges and a Path view. Built in public.
 
 ## How it works
 - **Skills** (`skills.json`): your roadmaps as ladders of topics with prerequisites (math, 3D math, physics, electronics, embedded, design and CAD, C and C++, and more).
 - **Projects** (`projects.json`): each project lists the skills it needs, in the order it needs them, with a priority from 1 to 3. You can run several at once.
+- **Path** (`path.json`): the whole low-level design roadmap as three phases with no years: quests (topics from the ladders), four tracks that feed one core, XP milestones and a locked boss per phase. Progress is shared with the Topics tab.
 - **Events** (`events.json`): GSoC, CTFs and contests with a date. As the date nears, their prep rises in the plan.
 - **Planner**: adds three pressures per task: what active projects need next (including prerequisites), event deadlines, and a weekly floor per ladder so nothing starves. The top task is shown with a "Why now" line.
 
@@ -27,7 +28,7 @@ Weekly dots per ladder replace daily streaks, so a missed day breaks nothing. **
 Locally: `python3 -m http.server`, then open http://localhost:8000.
 
 ## Make it yours
-- Ladders come from the real Notion roadmaps (11 ladders, 101 topics). A ladder marked `"sample": true` would be a placeholder; none are left. Add `"tiny"` to a topic for its smallest first step.
+- Ladders come from the real Notion roadmaps and the 6-year low-level design roadmap (15 ladders, 118 topics). A ladder marked `"sample": true` would be a placeholder; none are left. Add `"tiny"` to a topic for its smallest first step.
 - Set `date` (YYYY-MM-DD) on an event to turn on its urgency.
 - Change a project's `status` to `"paused"` to take it out of the plan.
 
