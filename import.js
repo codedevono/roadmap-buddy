@@ -129,9 +129,6 @@ body.append(el('p','sub','Roadmaps you add here live on this device. Copy a back
 const _rr=renderRoadmap;
 renderRoadmap=function(){_rr();drawList();$('v-roadmap').append(impBox)};
 })();
-<<<<<<< HEAD
 
-/* v2.1: load the project-first layer (v21.js) after this file. */
-(function(){const s=document.createElement('script');s.src='v21.js';document.body.append(s)})();
-=======
->>>>>>> 993369f82dee247d4b14a388c78c77459087717f
+/* v2.1: load the project-first layer (v21.js), then the Google Calendar bridge (gcal.js), after this file. */
+(function(){for(const f of ['v21.js','gcal.js']){const s=document.createElement('script');s.src=f;s.async=false;document.body.append(s)}})();

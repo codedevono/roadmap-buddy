@@ -1,0 +1,10 @@
+{"note":"Public dates related to the user. note says what to check; est means estimated. Add your own exams, tests and deadlines in the Month tab.",
+"events":[
+ {"id":"gsoc27-talk","name":"GSoC 2027: talk to organizations (estimate)","date":"2027-02-19","end":"2027-03-15","type":"gsoc","est":true,"note":"Estimated from the 2026 timeline. Google had not published the 2027 dates when this was checked on 2026-10-31.","url":"https://developers.google.com/open-source/gsoc/timeline"},
+ {"id":"gsoc27-open","name":"GSoC 2027: contributor applications open (estimate)","date":"2027-03-16","type":"gsoc","est":true,"note":"Estimated from 2026 (March 16). Not yet published for 2027.","url":"https://developers.google.com/open-source/gsoc/timeline"},
+ {"id":"gsoc27-results","name":"GSoC 2027: results announced (estimate)","date":"2027-04-30","type":"gsoc","est":true,"note":"Estimated from 2026 (April 30). Not yet published for 2027.","url":"https://developers.google.com/open-source/gsoc/timeline"},
+ {"id":"ctf-blackalps","name":"BlackAlps CTF 2026","date":"2026-11-06","type":"ctf","note":"Date read from a CTFtime listing. Check the event page for the exact time and rules.","url":"https://ctftime.org/event/list/upcoming"},
+ {"id":"ctf-wolv","name":"WolvCTF 2026","date":"2026-11-13","type":"ctf","note":"Date read from a CTFtime listing. Check the event page for the exact time and rules.","url":"https://ctftime.org/event/list/upcoming"},
+ {"id":"ctf-platypwn","name":"Platypwn 2026","date":"2026-11-14","type":"ctf","note":"Date read from a CTFtime listing. Check the event page for the exact time and rules.","url":"https://ctftime.org/event/list/upcoming"},
+ {"id":"ctf-swamp","name":"SwampCTF 2026","date":"2026-11-20","type":"ctf","note":"Date read from a CTFtime listing. Check the event page for the exact time and rules.","url":"https://ctftime.org/event/list/upcoming"}
+]}
