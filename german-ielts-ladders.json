@@ -1,0 +1,410 @@
+{
+ "ladders": [
+  {
+   "id": "ger",
+   "name": "German A1 to C1",
+   "floor": 3,
+   "src": "german_ielts_learning_roadmap.html (phases 1 to 5, months 1 to 24)",
+   "nodes": [
+    {
+     "id": "ger1",
+     "t": "German alphabet and pronunciation (umlauts ä ö ü, ß)",
+     "min": 30,
+     "tiny": "Say the alphabet aloud once"
+    },
+    {
+     "id": "ger2",
+     "t": "Numbers, days, months, colours and family words",
+     "min": 30,
+     "tiny": "Say the numbers 1 to 20 aloud",
+     "needs": [
+      "ger1"
+     ]
+    },
+    {
+     "id": "ger3",
+     "t": "Basic sentence order: subject, verb, object",
+     "min": 30,
+     "tiny": "Write one sentence about your day",
+     "needs": [
+      "ger1"
+     ]
+    },
+    {
+     "id": "ger4",
+     "t": "Present tense with sein and haben",
+     "min": 30,
+     "tiny": "Write ich bin and ich habe with one example each",
+     "needs": [
+      "ger3"
+     ]
+    },
+    {
+     "id": "ger5",
+     "t": "First 100 to 300 common words with Anki",
+     "min": 30,
+     "tiny": "Open Anki and add 5 words",
+     "needs": [
+      "ger2"
+     ]
+    },
+    {
+     "id": "ger6",
+     "t": "Cases: Nominativ, Akkusativ, Dativ and their articles",
+     "min": 40,
+     "tiny": "Write der, die, das in a three-column table",
+     "needs": [
+      "ger4"
+     ]
+    },
+    {
+     "id": "ger7",
+     "t": "Past tense: Perfekt and Präteritum",
+     "min": 40,
+     "tiny": "Turn one present sentence into Perfekt",
+     "needs": [
+      "ger4"
+     ]
+    },
+    {
+     "id": "ger8",
+     "t": "Modal verbs: können, müssen, wollen, sollen",
+     "min": 30,
+     "tiny": "Write one sentence with können",
+     "needs": [
+      "ger4"
+     ]
+    },
+    {
+     "id": "ger9",
+     "t": "Prepositions with cases (in, auf, an, mit, für)",
+     "min": 40,
+     "tiny": "List five prepositions and the case each takes",
+     "needs": [
+      "ger6"
+     ]
+    },
+    {
+     "id": "ger10",
+     "t": "Simple conversations: shopping, transport, directions",
+     "min": 30,
+     "tiny": "Write three lines you would say in a shop",
+     "needs": [
+      "ger8",
+      "ger9"
+     ]
+    },
+    {
+     "id": "ger11",
+     "t": "Vocabulary to about 800 words",
+     "min": 30,
+     "tiny": "Review 10 Anki cards",
+     "needs": [
+      "ger5"
+     ]
+    },
+    {
+     "id": "ger12",
+     "t": "Konjunktiv II (subjunctive)",
+     "min": 40,
+     "tiny": "Write one wish sentence with hätte or wäre",
+     "needs": [
+      "ger7",
+      "ger8"
+     ]
+    },
+    {
+     "id": "ger13",
+     "t": "Passive voice and relative clauses",
+     "min": 40,
+     "tiny": "Turn one active sentence into the passive",
+     "needs": [
+      "ger7"
+     ]
+    },
+    {
+     "id": "ger14",
+     "t": "Subordinate clauses with weil, obwohl, wenn, dass",
+     "min": 40,
+     "tiny": "Join two short sentences with weil",
+     "needs": [
+      "ger6"
+     ]
+    },
+    {
+     "id": "ger15",
+     "t": "Genitive case and two-way prepositions",
+     "min": 40,
+     "tiny": "Write one sentence with a two-way preposition",
+     "needs": [
+      "ger9"
+     ]
+    },
+    {
+     "id": "ger16",
+     "t": "Talk about opinions, events and experiences in German",
+     "min": 30,
+     "tiny": "Say one opinion about today aloud",
+     "needs": [
+      "ger14"
+     ]
+    },
+    {
+     "id": "ger17",
+     "t": "Vocabulary to about 2000 words and short news reading",
+     "min": 30,
+     "tiny": "Read one headline and look up one word",
+     "needs": [
+      "ger11"
+     ]
+    },
+    {
+     "id": "ger18",
+     "t": "Goethe-Zertifikat B1: prepare and sit the exam",
+     "min": 60,
+     "tiny": "Open the official B1 sample paper",
+     "needs": [
+      "ger12",
+      "ger13",
+      "ger14",
+      "ger15",
+      "ger16",
+      "ger17"
+     ]
+    },
+    {
+     "id": "ger19",
+     "t": "Read newspapers, books and podcasts at native speed",
+     "min": 30,
+     "tiny": "Play one minute of a German podcast",
+     "needs": [
+      "ger17"
+     ]
+    },
+    {
+     "id": "ger20",
+     "t": "Formal writing in German: emails, essays, letters",
+     "min": 45,
+     "tiny": "Write the opening line of a formal email",
+     "needs": [
+      "ger14"
+     ]
+    },
+    {
+     "id": "ger21",
+     "t": "Nuanced grammar: Partizip II as adjective, extended attributes",
+     "min": 40,
+     "tiny": "Find one extended attribute in a news sentence",
+     "needs": [
+      "ger13"
+     ]
+    },
+    {
+     "id": "ger22",
+     "t": "Watch German TV and films without subtitles (ARD, ZDF Mediathek)",
+     "min": 30,
+     "tiny": "Open the Mediathek and start one episode",
+     "needs": [
+      "ger17"
+     ]
+    },
+    {
+     "id": "ger23",
+     "t": "Vocabulary to about 4000 words",
+     "min": 30,
+     "tiny": "Review 10 Anki cards",
+     "needs": [
+      "ger17"
+     ]
+    },
+    {
+     "id": "ger24",
+     "t": "Goethe-Zertifikat B2: prepare and sit the exam",
+     "min": 60,
+     "tiny": "Open the official B2 sample paper",
+     "needs": [
+      "ger18",
+      "ger19",
+      "ger20",
+      "ger21"
+     ]
+    },
+    {
+     "id": "ger25",
+     "t": "Read full novels and academic, legal or business texts",
+     "min": 40,
+     "tiny": "Read one page and underline unknown words",
+     "needs": [
+      "ger19"
+     ]
+    },
+    {
+     "id": "ger26",
+     "t": "Debate, argue and present in German",
+     "min": 30,
+     "tiny": "Record a one-minute argument",
+     "needs": [
+      "ger16"
+     ]
+    },
+    {
+     "id": "ger27",
+     "t": "Idioms and edge-case grammar",
+     "min": 30,
+     "tiny": "Look up one idiom and use it in a sentence",
+     "needs": [
+      "ger21"
+     ]
+    },
+    {
+     "id": "ger28",
+     "t": "Vocabulary to 8000+ words",
+     "min": 30,
+     "tiny": "Review 10 Anki cards",
+     "needs": [
+      "ger23"
+     ]
+    },
+    {
+     "id": "ger29",
+     "t": "Goethe C1 (or TestDaF if you go to a German university): prepare and sit",
+     "min": 60,
+     "tiny": "Open the official C1 sample paper",
+     "needs": [
+      "ger24",
+      "ger25",
+      "ger26",
+      "ger27"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "iel",
+   "name": "IELTS",
+   "floor": 2,
+   "src": "german_ielts_learning_roadmap.html (IELTS parts of phases 3 to 5)",
+   "nodes": [
+    {
+     "id": "iel1",
+     "t": "Understand the IELTS format: Listening, Reading, Writing, Speaking",
+     "min": 30,
+     "tiny": "Open the official IELTS format page"
+    },
+    {
+     "id": "iel2",
+     "t": "Take one full practice test to find your baseline score",
+     "min": 90,
+     "tiny": "Open an official sample paper (the test may take two sittings)",
+     "needs": [
+      "iel1"
+     ]
+    },
+    {
+     "id": "iel3",
+     "t": "Build academic vocabulary with the AWL word list",
+     "min": 30,
+     "tiny": "Learn 5 words from the list",
+     "needs": [
+      "iel1"
+     ]
+    },
+    {
+     "id": "iel4",
+     "t": "Listening practice: BBC, CNN, TED Talks with note-taking",
+     "min": 30,
+     "tiny": "Play one TED talk for 5 minutes and take notes",
+     "needs": [
+      "iel1"
+     ]
+    },
+    {
+     "id": "iel5",
+     "t": "Reading strategies: skimming, scanning, true/false/not given",
+     "min": 40,
+     "tiny": "Skim one passage in 2 minutes",
+     "needs": [
+      "iel1"
+     ]
+    },
+    {
+     "id": "iel6",
+     "t": "Writing Task 1: describe charts and graphs",
+     "min": 45,
+     "tiny": "Describe one chart in three sentences",
+     "needs": [
+      "iel1"
+     ]
+    },
+    {
+     "id": "iel7",
+     "t": "Writing Task 2: essays",
+     "min": 45,
+     "tiny": "Write a thesis sentence for one essay question",
+     "needs": [
+      "iel1"
+     ]
+    },
+    {
+     "id": "iel8",
+     "t": "Speaking Parts 1 to 3: record yourself",
+     "min": 30,
+     "tiny": "Record a 1-minute answer to one Part 1 question",
+     "needs": [
+      "iel1"
+     ]
+    },
+    {
+     "id": "iel9",
+     "t": "Two or three full mock tests a month, with error analysis",
+     "min": 90,
+     "tiny": "Pick the next mock test and set a timer",
+     "needs": [
+      "iel2",
+      "iel6",
+      "iel7",
+      "iel8"
+     ]
+    },
+    {
+     "id": "iel10",
+     "t": "Weekly full mock test, timed strictly",
+     "min": 90,
+     "tiny": "Open this week's mock test",
+     "needs": [
+      "iel9"
+     ]
+    },
+    {
+     "id": "iel11",
+     "t": "Get your Writing checked by a certified IELTS tutor",
+     "min": 30,
+     "tiny": "Send one essay to a tutor",
+     "needs": [
+      "iel7"
+     ]
+    },
+    {
+     "id": "iel12",
+     "t": "Book the official IELTS exam (British Council or IDP)",
+     "min": 30,
+     "tiny": "Open the booking page and pick a date",
+     "needs": [
+      "iel9"
+     ]
+    },
+    {
+     "id": "iel13",
+     "t": "Sit the IELTS exam (target Band 7.0+, 6.5+ in each section)",
+     "min": 90,
+     "tiny": "Pack your ID and check the venue",
+     "needs": [
+      "iel10",
+      "iel11",
+      "iel12"
+     ]
+    }
+   ]
+  }
+ ]
+}
