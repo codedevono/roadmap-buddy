@@ -43,3 +43,7 @@ All state is in the browser (`localStorage`). `skills.json`, `projects.json` and
 - Each task of a project becomes a pseudo topic `pt:<projectId>:<taskId>` so Today, logging and XP work unchanged.
 - Score for the first open task of a project: `priority^2 * 12 * focusFactor + max(0, 20 - daysLeft) * 0.5 * focusFactor`; focusFactor is 1 for the focus project and 0.25 for the rest. Skill pulls from `projects.json` use the same factor.
 - Deadline maths, capacity from the log and the on-track message come in phase P2.
+
+## Planner contract (main screen)
+`plan(fromDate, days) -> [{date:'YYYY-MM-DD', taskId:string|null, why:string, light:boolean}]`. Planners live in `Planners` and the choice is stored as `S.planner` (default `rules`). The screen renders what comes back. A result is checked first: the date must match, the task must exist, not be done, and have its prerequisites done or planned on an earlier day; otherwise that day comes from the rules planner. A planner that throws is replaced by the rules planner. The rules planner runs pick() once per day on a scratch copy of the progress and never changes saved data. A day with an event that has a time is light: only tasks of 30 minutes or less. An API key must never be in the page; an API planner needs a small server in between.
+

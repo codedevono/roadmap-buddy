@@ -33,7 +33,7 @@ Locally: `python3 -m http.server`, then open http://localhost:8000.
 - Change a project's `status` to `"paused"` to take it out of the plan.
 
 ## Import a roadmap
-On the Home tab, open Roadmaps, paste the ladder JSON (from the roadmap-import skill), tap Check, then Add to my app. It is saved on this device only, so use Copy backup now and then. Remove deletes it again.
+At the bottom of the Topics tab, open Roadmaps, paste the ladder JSON (from the roadmap-import skill), tap Check, then Add to my app. It is saved on this device only, so use Copy backup now and then. Remove deletes it again.
 
 ## Docs
 - [NEED.md](NEED.md): the problem and who it is for

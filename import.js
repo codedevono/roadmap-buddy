@@ -1,73 +1,9 @@
-/* Home tab: the first screen. Reads the app's own state and adds nothing to storage.
-   Loaded by index.html after the main script, it wraps setView and renderAll. */
+/* Roadmap import, shown at the bottom of the Topics tab. Loaded after the main script:
+   it wraps build() (merges imported ladders into the plan) and renderRoadmap() (adds the import box). */
 (function(){
 const css=document.createElement('style');
-css.textContent='.tabs{grid-template-columns:repeat(7,minmax(0,1fr))}@media (max-width:30rem){.tabs{grid-template-columns:repeat(4,minmax(0,1fr))}}.hm h1{margin-top:.2rem}.hm .main{margin-top:.5rem}';
-css.textContent+='.imp textarea{display:block;width:100%;min-height:9rem;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem;margin:.5rem 0}.imp .acts{flex-wrap:wrap;margin:.3rem 0}';
+css.textContent='.imp textarea{display:block;width:100%;min-height:9rem;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem;margin:.5rem 0}.imp .acts{flex-wrap:wrap;margin:.3rem 0}';
 document.head.append(css);
-
-const nav=document.querySelector('.tabs'), hb=el('button',null,'Home');
-hb.setAttribute('role','tab');hb.dataset.v='home';hb.onclick=()=>setView('home');
-nav.prepend(hb);
-const panel=el('div');panel.id='v-home';panel.setAttribute('role','tabpanel');
-$('v-today').before(panel);
-
-const _sv=setView, _ra=renderAll;
-setView=function(v){
-  if(v!=='home'){_sv(v);panel.hidden=true;return}
-  view='home';
-  for(const b of document.querySelectorAll('.tabs button'))b.setAttribute('aria-selected',String(b.dataset.v==='home'));
-  for(const id of ['today','projects','calendar','path','roadmap','rewards'])$('v-'+id).hidden=true;
-  panel.hidden=false;window.scrollTo(0,0);
-};
-renderAll=function(){_ra();renderHome()};
-
-function renderHome(){
-  panel.textContent='';
-  if(!D){panel.append(el('p','msg','Loading…'));return}
-  const st=stats(), p=pick(), w=el('div','hm');
-  const last=S.log.reduce((m,l)=>Math.max(m,l.ts),0), away=last?Math.floor((Date.now()-last)/DAY):null;
-  w.append(el('p','hint',away===null?'Welcome. One small step is enough to start.':away>=2?'Welcome back. Nothing is lost. Pick up with one small step.':'Here is your next step.'));
-
-  const c=el('div','card');
-  if(p){
-    c.append(el('p','track',p.lad.name),el('h1',null,p.n.t),
-      el('p','sub','Smallest start: '+(p.n.tiny||'open the first resource and work for 5 minutes')),
-      el('p','sub','Why now: '+p.why));
-    const go=el('button','main','Start '+(p.n.min||25)+' minutes');
-    go.onclick=()=>{setView('today');render();const g=$('go');if(g)g.click()};
-    c.append(go);
-  }else c.append(el('p','msg','Nothing is ready. Everything is done or snoozed.'));
-  w.append(c);
-
-  const lv=el('div','card');
-  lv.append(el('h2',null,'Level '+st.lvl+' · '+title(st.lvl)),bar(st.frac),el('p','sub',(st.next-st.xp)+' XP to level '+(st.lvl+1)));
-  w.append(lv);
-
-  const wk=el('div','card'),dots=el('div','dots');
-  for(let i=0;i<GOAL;i++)dots.append(el('span','dot'+(i<st.thisWeek?' on':'')));
-  wk.append(el('h2',null,'This week: '+Math.min(st.thisWeek,GOAL)+' of '+GOAL+' sessions'),dots,
-    el('p','sub',st.streak?st.streak+' goal week'+(st.streak>1?'s':'')+' in a row. A slow week pauses the count; it never erases XP.':'Missing a day costs nothing.'));
-  const nb=allBadges().find(b=>!S.badges[b.id]);
-  if(nb)wk.append(el('p','sub','Next badge: '+nb.n+'. '+nb.d));
-  w.append(wk);
-
-  const items=calItems(), up=items.filter(i=>i.date&&daysTo(endOf(i))>=0).sort((a,b)=>a.date.localeCompare(b.date))[0], nd=items.filter(i=>!i.date).length;
-  const ev=el('div','card');ev.append(el('h2',null,'Next date'));
-  if(up){const r=el('div','ev');r.append(el('div','tt',up.name),el('div','sub',when(up)+(up.est?' · estimated':'')));ev.append(r)}
-  else ev.append(el('p','sub','No dates coming up.'));
-  if(nd){const b=el('button','mini',nd+(nd===1?' event needs':' events need')+' a date');b.onclick=()=>setView('calendar');ev.append(b)}
-  w.append(ev);
-
-  if(P){
-    const ss=P.stages.map(s=>({s,x:stageStats(s)})), i=ss.findIndex(o=>o.x.qd<o.x.q||o.x.md<o.x.ms.length), o=ss[i<0?ss.length-1:i];
-    const ph=el('div','card');
-    ph.append(el('h2',null,'Path · Phase '+((i<0?ss.length-1:i)+1)+': '+o.s.name),bar(o.x.all),el('p','sub',o.x.qd+' of '+o.x.q+' quests · '+o.x.md+' of '+o.x.ms.length+' milestones'));
-    const b=el('button','mini','Open Path');b.onclick=()=>setView('path');ph.append(b);
-    w.append(ph);
-  }
-  drawList();panel.append(w,impBox);
-}
 
 /*VET*/
 const IDRE=/^[a-z0-9][a-z0-9_-]*$/;
@@ -171,6 +107,8 @@ function removeLad(id){
   const l=(S.ladders||[]).find(x=>x.id===id);if(!l)return;
   const mine=new Set(l.nodes.map(n=>n.id));
   const dep=D.ladders.filter(x=>x.id!==id).flatMap(x=>x.nodes).filter(n=>(n.needs||[]).some(k=>mine.has(k)));
+  const used=S.projects.filter(p=>(p.ladders||[]).includes(id)||(p.needs||[]).some(k=>mine.has(k)));
+  if(used.length){show({err:['Cannot remove '+l.name+': the project "'+used[0].name+'" uses it. Edit the project first.'],warn:[],ladders:[]});return}
   if(dep.length){show({err:['Cannot remove '+l.name+': '+dep.length+' other topics need it, for example "'+short(dep[0])+'".'],warn:[],ladders:[]});return}
   if(!confirm('Remove '+l.name+' from this device? Your progress is kept if you add it again.'))return;
   S.ladders=S.ladders.filter(x=>x.id!==id);D.ladders=D.ladders.filter(x=>x.id!==id);
@@ -187,5 +125,7 @@ mk('Copy backup',async()=>{
 });
 fi.onchange=()=>{const f=fi.files[0];if(f)f.text().then(t=>{ta.value=t;run(false)})};
 body.append(el('p','sub','Roadmaps you add here live on this device. Copy a backup now and then.'),ta,acts,fi,msg,lst);
-renderHome();setView('home');
+
+const _rr=renderRoadmap;
+renderRoadmap=function(){_rr();drawList();$('v-roadmap').append(impBox)};
 })();
