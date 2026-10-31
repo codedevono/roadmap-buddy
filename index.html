@@ -23,8 +23,9 @@ main{max-width:30rem;margin:0 auto;padding:1rem 1.25rem 2rem;display:flex;flex-d
 .hl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.35rem}
 .hl b{font-weight:650}
 .hl span{color:var(--mute);font-size:.85rem;font-variant-numeric:tabular-nums}
-.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:.35rem;margin:.9rem 0 .4rem}
-.tabs button{min-height:2.75rem;font-size:.78rem;padding:.8rem .2rem;border-radius:.8rem;color:var(--mute)}
+.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.25rem;margin:.9rem 0 .4rem}
+@media (max-width:30rem){.tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:.35rem}}
+.tabs button{min-height:2.75rem;font-size:.76rem;padding:.8rem .1rem;border-radius:.8rem;color:var(--mute);white-space:nowrap;overflow:hidden}
 .tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
 #v-today{flex:1;display:flex;flex-direction:column}
 .focus{flex:1;display:flex;flex-direction:column;justify-content:center;padding:1.5rem 0}
@@ -117,6 +118,28 @@ details.lad summary .bar{grid-column:1/3}
 #v-projects label{display:block;margin:.6rem 0;font-size:.9rem;color:var(--mute)}
 #v-projects input,#v-projects select,#v-projects textarea{display:block;width:100%;font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem .7rem;margin-top:.25rem}
 #v-projects button.main{margin-top:.75rem}
+/* calendar */
+.k-deadline{color:var(--accent)}.k-milestone,.k-personal{color:var(--mute)}.k-hackathon{color:var(--c-gfx)}.k-ctf{color:var(--c-sec)}.k-contest{color:var(--c-ai)}.k-gsoc,.k-internship{color:var(--c-sys)}
+.calh{display:grid;grid-template-columns:auto 1fr auto auto;gap:.35rem;align-items:center;margin:.4rem 0 .6rem}
+.calh h2{margin:0;text-align:center;font-size:.95rem}
+.calh .mini{min-width:2.75rem}
+.cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.cal-w{text-align:center;font-size:.7rem;color:var(--mute);padding:.2rem 0}
+.cd{min-height:2.9rem;padding:.2rem 0;border-radius:.6rem;border:1.5px solid transparent;display:flex;flex-direction:column;align-items:center;gap:.15rem;background:transparent}
+.cd[aria-pressed="true"]{border-color:var(--accent);background:var(--card)}
+.cd .dn{display:grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;font-size:.85rem;font-variant-numeric:tabular-nums}
+.cd.today .dn{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.kds{display:flex;gap:2px;min-height:.4rem}
+.kd{width:.4rem;height:.4rem;border-radius:50%;background:currentColor;display:block}
+.legend{margin:.6rem 0 0}
+.ev{border-top:1px solid var(--line);padding:.7rem 0}
+.ev .tt{font-size:.95rem}
+.ev .acts{flex-wrap:wrap}
+details.evn{margin-top:.2rem;font-size:.82rem;color:var(--mute)}
+details.evn summary{cursor:pointer;min-height:1.6rem}
+#v-calendar label{display:block;margin:.6rem 0;font-size:.9rem;color:var(--mute)}
+#v-calendar input,#v-calendar select,#v-calendar textarea{display:block;width:100%;font:inherit;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem .7rem;margin-top:.25rem}
+#v-calendar button.main{margin-top:.75rem}
 @media (prefers-reduced-motion:reduce){.ring .fg,.bar i,#toast{transition:none}}
 </style>
 </head>
@@ -130,6 +153,7 @@ details.lad summary .bar{grid-column:1/3}
   <nav class="tabs" role="tablist" aria-label="Views">
     <button role="tab" data-v="today" aria-selected="true">Today</button>
     <button role="tab" data-v="projects" aria-selected="false">Projects</button>
+    <button role="tab" data-v="calendar" aria-selected="false">Calendar</button>
     <button role="tab" data-v="path" aria-selected="false">Path</button>
     <button role="tab" data-v="roadmap" aria-selected="false">Topics</button>
     <button role="tab" data-v="rewards" aria-selected="false">Rewards</button>
@@ -143,6 +167,7 @@ details.lad summary .bar{grid-column:1/3}
     </section>
   </div>
   <div id="v-projects" role="tabpanel" hidden></div>
+  <div id="v-calendar" role="tabpanel" hidden></div>
   <div id="v-path" role="tabpanel" hidden></div>
   <div id="v-roadmap" role="tabpanel" hidden></div>
   <div id="v-rewards" role="tabpanel" hidden></div>
@@ -155,7 +180,7 @@ const XP={session:10,tiny:5,topic:40};
 const TITLES=['Newcomer','Apprentice','Builder','Maker','Engineer','Architect','Master'];
 let D=null, P=null, S=load(), cur=null, timer=null, idx={}, msIdx={}, view='today', openL=new Set(), openS=null, toastT=null;
 
-function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1,ms:{},projects:[],focus:null}}
+function blank(){return{done:{},later:{},last:{},log:[],pin:null,badges:{},lvl:1,ms:{},projects:[],focus:null,events:[],evDate:{}}}
 function load(){try{return Object.assign(blank(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return blank()}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const $=id=>document.getElementById(id);
@@ -258,8 +283,8 @@ function pick(){
     add(t.id,p.priority*p.priority*12*f+(dl!=null?Math.max(0,20-dl)*.5*f:0),p.name+(fp&&fp.id===p.id?' is your focus project':' is one of your projects')+(dl!=null?(dl>=0?', due in '+dl+' days':', past its date'):''));
   }
   for(const e of D.events){
-    if(!e.date)continue;
-    const days=Math.max((new Date(e.date)-now)/DAY,3);
+    const ed=evDate(e);if(!ed)continue;
+    const days=Math.max((new Date(ed)-now)/DAY,3);
     if(days>180)continue;
     const u=e.weight*300/days;
     for(const t of e.prep){
@@ -515,14 +540,16 @@ function projectForm(){
   return w;
 }
 function exportP(){
-  const j=JSON.stringify({buddy:'projects',v:1,focus:S.focus,projects:S.projects,done:Object.fromEntries(Object.entries(S.done).filter(([k])=>k.startsWith('pt:')))},null,1);
+  const j=JSON.stringify({buddy:'projects',v:1,focus:S.focus,projects:S.projects,events:S.events,evDate:S.evDate,done:Object.fromEntries(Object.entries(S.done).filter(([k])=>k.startsWith('pt:')))},null,1);
   try{navigator.clipboard.writeText(j)}catch(e){}
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([j],{type:'application/json'}));a.download='buddy-projects.json';document.body.append(a);a.click();a.remove();toast('Exported to buddy-projects.json');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([j],{type:'application/json'}));a.download='buddy-projects.json';document.body.append(a);a.click();a.remove();toast('Exported projects and events to buddy-projects.json');
 }
 function importP(txt){
   try{const j=JSON.parse(txt);if(!Array.isArray(j.projects))throw 0;
     for(const p of j.projects){if(!p.id||!p.name)continue;const i=S.projects.findIndex(x=>x.id===p.id);if(i<0)S.projects.push(p);else S.projects[i]=p}
-    Object.assign(S.done,j.done||{});if(j.focus&&!focusP())S.focus=j.focus;save();renderAll();toast('Imported '+j.projects.length+' projects');
+    let ne=0;for(const e of Array.isArray(j.events)?j.events:[]){if(!e||!e.id||!e.name||!/^\d{4}-\d{2}-\d{2}$/.test(e.date||''))continue;const i=S.events.findIndex(x=>x.id===e.id);if(i<0)S.events.push(e);else S.events[i]=e;ne++}
+    if(j.evDate&&typeof j.evDate==='object')for(const k in j.evDate)if(/^\d{4}-\d{2}-\d{2}$/.test(j.evDate[k]))S.evDate[k]=j.evDate[k];
+    Object.assign(S.done,j.done||{});if(j.focus&&!focusP())S.focus=j.focus;save();renderAll();toast('Imported '+j.projects.length+' projects'+(ne?' and '+ne+' events':''));
   }catch(e){toast('That file is not a Buddy projects export')}
 }
 function renderProjects(){
@@ -551,11 +578,143 @@ function renderProjects(){
   io.append(ex,im,fi);v.append(io);
 }
 
-function renderAll(){renderHud();render();renderProjects();renderPath();renderRoadmap();renderRewards()}
+/* ---------- calendar (P3) ---------- */
+const EVT={deadline:'Deadline',milestone:'Milestone',hackathon:'Hackathon',ctf:'CTF',contest:'Contest',gsoc:'GSoC',internship:'Internship',personal:'Personal'};
+const EV_USER=Object.keys(EVT).filter(k=>k!=='deadline');
+const ISO=/^\d{4}-\d{2}-\d{2}$/;
+const pad2=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+const fmt=(s,o)=>new Date(s+'T00:00:00').toLocaleDateString(undefined,o||{day:'numeric',month:'short',year:'numeric'});
+let calV=(()=>{const n=new Date();return{y:n.getFullYear(),m:n.getMonth()}})(), selDay=ymd(new Date()), ef=null, dEdit=null;
+function evDate(e){return S.evDate[e.id]||e.date||''}
+const endOf=it=>it.end&&it.end>=it.date?it.end:it.date;
+const onDay=(items,ds)=>items.filter(it=>it.date&&it.date<=ds&&ds<=endOf(it));
+function calItems(){
+  const out=[];
+  for(const p of allProjects())if(p.deadline)out.push({k:'deadline',name:p.name+' due',date:p.deadline,pid:p.id,paused:p.status==='paused'});
+  for(const e of D.events){const mine=!!S.evDate[e.id];out.push({k:EVT[e.type]?e.type:'personal',name:e.name,date:evDate(e),fid:e.id,note:e.note,est:!!e.est&&!mine,mine,base:e.date||''})}
+  for(const e of S.events)out.push({k:EVT[e.type]?e.type:'personal',name:e.name,date:e.date,end:e.end||'',uid:e.id,note:e.note});
+  return out;
+}
+function when(it){
+  const a=it.date,b=endOf(it),dl=daysTo(a),de=daysTo(b);
+  let t=a===b?fmt(a):fmt(a,{day:'numeric',month:'short'})+' to '+fmt(b);
+  if(de<0)return t+' · earlier';
+  if(dl>1)return t+' · in '+dl+' days';
+  if(dl===1)return t+' · tomorrow';
+  return t+(a===b?' · today':' · on now');
+}
+function refreshToday(){if(!timer)render()}
+function calRow(it){
+  const r=el('div','ev'),h=el('div','tt');
+  h.append(el('span','chip k-'+it.k,EVT[it.k]),document.createTextNode(it.name+(it.paused?' (paused)':'')));
+  r.append(h);
+  r.append(el('div','sub',it.date?when(it)+(it.est?' · estimated':'')+(it.mine?' · your date':''):'No date yet'));
+  if(it.note){const d=el('details','evn');d.append(el('summary',null,'Note'),el('div',null,it.note));r.append(d)}
+  const a=el('div','acts');
+  if(it.uid){
+    const e=S.events.find(x=>x.id===it.uid);
+    const eb=el('button','mini','Edit'),xb=el('button','mini','Delete');
+    eb.setAttribute('aria-label','Edit '+it.name);xb.setAttribute('aria-label','Delete '+it.name);
+    eb.onclick=()=>openEv(e);
+    xb.onclick=()=>{if(confirm('Delete '+it.name+'?')){S.events=S.events.filter(x=>x.id!==it.uid);save();renderCalendar()}};
+    a.append(eb,xb);
+  }else if(it.fid){
+    if(dEdit===it.fid){
+      const i=el('input');i.type='date';i.value=it.date;i.setAttribute('aria-label','Date for '+it.name);
+      const sv=el('button','mini go','Save date'),cn=el('button','mini','Cancel');
+      sv.onclick=()=>{if(!ISO.test(i.value)){toast('Pick a date first');return}S.evDate[it.fid]=i.value;dEdit=null;save();renderCalendar();refreshToday()};
+      cn.onclick=()=>{dEdit=null;renderCalendar()};
+      r.append(i);a.append(sv,cn);
+      if(it.mine){const rv=el('button','mini',it.base?'Use the file date':'Clear date');rv.onclick=()=>{delete S.evDate[it.fid];dEdit=null;save();renderCalendar();refreshToday()};a.append(rv)}
+    }else{
+      const b=el('button','mini',it.date?'Change date':'Set date');b.setAttribute('aria-label',(it.date?'Change date of ':'Set date of ')+it.name);
+      b.onclick=()=>{dEdit=it.fid;renderCalendar('#v-calendar input[type=date]')};a.append(b);
+    }
+  }else if(it.pid){
+    const b=el('button','mini','Open project');b.onclick=()=>setView('projects');a.append(b);
+  }
+  if(a.childNodes.length)r.append(a);
+  return r;
+}
+function openEv(e){
+  ef=e?{id:e.id,name:e.name,type:e.type,date:e.date,end:e.end||'',note:e.note||''}
+     :{id:null,name:'',type:'hackathon',date:(selDay&&selDay.slice(0,7)===calV.y+'-'+pad2(calV.m+1))?selDay:ymd(new Date()),end:'',note:''};
+  renderCalendar();window.scrollTo(0,0);
+}
+function saveEv(){
+  const f=ef;
+  if(!f.name.trim()){toast('Give the event a name first');return}
+  if(!ISO.test(f.date)){toast('Pick a start date');return}
+  if(f.end&&(!ISO.test(f.end)||f.end<f.date)){toast('The end date is before the start date');return}
+  let e=S.events.find(x=>x.id===f.id);
+  if(!e){e={id:'e'+Date.now().toString(36)};S.events.push(e)}
+  Object.assign(e,{name:f.name.trim(),type:f.type,date:f.date,end:f.end||'',note:f.note.trim()});
+  const d=new Date(f.date+'T00:00:00');calV={y:d.getFullYear(),m:d.getMonth()};selDay=f.date;
+  ef=null;save();renderCalendar();
+}
+function eventForm(){
+  const f=ef,w=el('div','card');
+  const inp=(label,key,type,ph)=>{const l=el('label',null,label),i=el(type==='area'?'textarea':'input');if(type!=='area')i.type=type||'text';else i.rows=3;i.value=f[key];if(ph)i.placeholder=ph;i.oninput=()=>{f[key]=i.value};l.append(i);w.append(l);return i};
+  w.append(el('h3',null,f.id?'Edit event':'New event'));
+  inp('Name','name','text','e.g. Hackathon at the college');
+  const tl=el('label',null,'Type'),ts=el('select');for(const k of EV_USER){const o=el('option',null,EVT[k]);o.value=k;ts.append(o)}ts.value=f.type;ts.onchange=()=>{f.type=ts.value};tl.append(ts);w.append(tl);
+  inp('Starts','date','date');inp('Ends (optional, for events over several days)','end','date');inp('Note (optional)','note','area');
+  w.append(el('p','sub','Project deadlines appear here by themselves. Set them on the Projects tab.'));
+  const row=el('div','prow'),sv=el('button','main','Save'),cn=el('button',null,'Cancel');sv.onclick=saveEv;cn.onclick=()=>{ef=null;renderCalendar()};row.append(sv,cn);w.append(row);
+  return w;
+}
+function renderCalendar(foc){
+  const v=$('v-calendar');v.textContent='';
+  if(ef){v.append(eventForm());return}
+  const items=calItems(),today=ymd(new Date()),{y,m}=calV,ym=y+'-'+pad2(m+1);
+  const head=el('div','calh'),pv=el('button','mini','‹'),nx=el('button','mini','›'),td=el('button','mini','Today');
+  pv.setAttribute('aria-label','Previous month');nx.setAttribute('aria-label','Next month');pv.dataset.nav='prev';nx.dataset.nav='next';
+  pv.onclick=()=>{calV=m?{y,m:m-1}:{y:y-1,m:11};renderCalendar('[data-nav=prev]')};
+  nx.onclick=()=>{calV=m<11?{y,m:m+1}:{y:y+1,m:0};renderCalendar('[data-nav=next]')};
+  td.onclick=()=>{const n=new Date();calV={y:n.getFullYear(),m:n.getMonth()};selDay=today;renderCalendar()};
+  head.append(pv,el('h2',null,new Date(y,m,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})),td,nx);
+  v.append(head);
+  const g=el('div','cal-g');
+  for(const d of ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])g.append(el('div','cal-w',d));
+  const first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
+  for(let i=0;i<first;i++)g.append(el('div'));
+  for(let d=1;d<=n;d++){
+    const ds=ym+'-'+pad2(d),on=onDay(items,ds),b=el('button','cd'+(ds===today?' today':''));
+    b.type='button';b.dataset.d=ds;b.setAttribute('aria-pressed',String(ds===selDay));
+    b.setAttribute('aria-label',fmt(ds,{weekday:'long',day:'numeric',month:'long'})+(on.length?', '+on.length+(on.length===1?' item':' items'):''));
+    const dots=el('span','kds');for(const it of on.slice(0,3))dots.append(el('i','kd k-'+it.k));
+    b.append(el('span','dn',String(d)),dots);
+    b.onclick=()=>{selDay=ds;renderCalendar('.cd[data-d="'+ds+'"]')};
+    g.append(b);
+  }
+  v.append(g);
+  const kinds=[...new Set(items.filter(it=>it.date&&it.date.slice(0,7)<=ym&&ym<=endOf(it).slice(0,7)).map(it=>it.k))];
+  if(kinds.length){const lg=el('div','legend');for(const k of kinds)lg.append(el('span','chip k-'+k,EVT[k]));v.append(lg)}
+  const sel=el('section','proj');
+  if(selDay&&selDay.slice(0,7)===ym){
+    sel.append(el('h2',null,fmt(selDay,{weekday:'long',day:'numeric',month:'long'})));
+    const on=onDay(items,selDay);
+    if(on.length)for(const it of on)sel.append(calRow(it));else sel.append(el('p','muted','Nothing on this day.'));
+  }else sel.append(el('p','muted','Tap a day to see what is on it.'));
+  v.append(sel);
+  const up=items.filter(it=>it.date&&daysTo(endOf(it))>=0).sort((a,b)=>a.date.localeCompare(b.date)||a.name.localeCompare(b.name));
+  const ag=el('section','proj');ag.append(el('h2',null,'Coming up'));
+  if(!up.length)ag.append(el('p','muted','Nothing coming up. Add an event, or give a project a deadline.'));
+  for(const it of up.slice(0,20))ag.append(calRow(it));
+  if(up.length>20)ag.append(el('p','muted note','and '+(up.length-20)+' more later'));
+  v.append(ag);
+  const nd=items.filter(it=>!it.date);
+  if(nd.length){const s2=el('section','proj');s2.append(el('h2',null,'Needs a date'));for(const it of nd)s2.append(calRow(it));v.append(s2)}
+  const add=el('button','main','Add an event');add.onclick=()=>openEv(null);v.append(add);
+  if(foc){const t=v.querySelector(foc);if(t)t.focus({preventScroll:true})}
+}
+
+function renderAll(){renderHud();render();renderProjects();renderCalendar();renderPath();renderRoadmap();renderRewards()}
 function setView(v){
   view=v;
   for(const b of document.querySelectorAll('.tabs button'))b.setAttribute('aria-selected',String(b.dataset.v===v));
-  for(const id of ['today','projects','path','roadmap','rewards'])$('v-'+id).hidden=id!==v;
+  for(const id of ['today','projects','calendar','path','roadmap','rewards'])$('v-'+id).hidden=id!==v;
   window.scrollTo(0,0);
 }
 function setClock(left,total){
