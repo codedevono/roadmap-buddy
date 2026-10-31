@@ -130,5 +130,5 @@ const _rr=renderRoadmap;
 renderRoadmap=function(){_rr();drawList();$('v-roadmap').append(impBox)};
 })();
 
-/* v2.1: load the project-first layer (v21.js), then the Google Calendar bridge (gcal.js), after this file. */
-(function(){for(const f of ['v21.js','gcal.js']){const s=document.createElement('script');s.src=f;s.async=false;document.body.append(s)}})();
+/* v2.1: load the project-first layer (v21.js), then the Google Calendar bridge (gcal.js), then the space theme (space.js) and the star map (starmap.js), after this file. */
+(function(){for(const f of ['v21.js','gcal.js','space.js','starmap.js']){const s=document.createElement('script');s.src=f;s.async=false;document.body.append(s)}})();

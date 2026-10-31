@@ -1,7 +1,7 @@
 // Network-first: new versions of the app and the plan files show up on the next load.
 // The cache is only a fallback for when the phone is offline.
-const C = 'buddy-v13';
-const SHELL = ['./', 'index.html', 'import.js', 'v21.js', 'gcal.js', 'calendar.json', 'manifest.json', 'icon.svg', 'skills.json', 'projects.json', 'events.json', 'path.json'];
+const C = 'buddy-v14';
+const SHELL = ['./', 'index.html', 'import.js', 'v21.js', 'gcal.js', 'space.js', 'space.css', 'starmap.js', 'fonts/chakra-petch-500.woff2', 'fonts/chakra-petch-600.woff2', 'fonts/chakra-petch-700.woff2', 'calendar.json', 'manifest.json', 'icon.svg', 'skills.json', 'projects.json', 'events.json', 'path.json'];
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(caches.open(C).then(c => c.addAll(SHELL)));

@@ -1,0 +1,128 @@
+/* Roadmap Buddy "mission control" theme. Dark only. Loaded by space.js after the page's own CSS.
+   Fonts: Chakra Petch (OFL), self-hosted in fonts/. Numbers use the phone's own monospace font. */
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/chakra-petch-500.woff2) format('woff2')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/chakra-petch-600.woff2) format('woff2')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/chakra-petch-700.woff2) format('woff2')}
+
+:root:root:root{
+  --bg:#0A1119;--card:#0F1B26;--ink:#E6EFF4;--mute:#93A9B8;--line:#1F3547;--track:#1B2F40;
+  --accent:#7CC4CC;--accent-ink:#06161A;--edge:#2A4357;--hot:#3C8F99;--glow:rgba(124,196,204,.45);
+  --c-sys:#86B8EA;--c-gfx:#E6B95F;--c-sec:#F2958A;--c-ai:#CFA3E6;--warm:#7CC4CC;--sh:none;
+  --mono:ui-monospace,'SF Mono','IBM Plex Mono',Menlo,Consolas,monospace;
+  color-scheme:dark}
+
+html,body{background:#0A1119}
+body{background:#0A1119;color:var(--ink);font:500 15px/1.45 'Chakra Petch',system-ui,sans-serif;letter-spacing:.005em}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(1px 1px at 27px 41px,rgba(230,239,244,.55) 50%,transparent 51%),
+    radial-gradient(1px 1px at 113px 97px,rgba(124,196,204,.5) 50%,transparent 51%),
+    radial-gradient(1.5px 1.5px at 71px 153px,rgba(230,239,244,.35) 50%,transparent 51%),
+    radial-gradient(1px 1px at 190px 22px,rgba(230,239,244,.4) 50%,transparent 51%),
+    radial-gradient(1px 1px at 233px 131px,rgba(124,196,204,.35) 50%,transparent 51%);
+  background-size:260px 190px}
+button,input,select,textarea,summary{font-family:inherit}
+
+/* top strip and rank */
+.top{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.hud{background:transparent;border:0;box-shadow:none;padding:0;margin:.5rem 0 .3rem}
+.hl b{font:600 13px 'Chakra Petch',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.hl span{font:500 11px var(--mono);color:var(--mute)}
+.bar{height:4px;border-radius:2px;background:var(--track);box-shadow:none}
+.bar i{background:var(--accent);border-radius:2px;box-shadow:none}
+
+/* cards */
+.card,details.lad,.jour,.tk{background:rgba(15,27,38,.92);border:1px solid var(--line);border-radius:8px;box-shadow:none;backdrop-filter:none}
+.card{padding:16px;margin:12px 0}
+.nx{border-color:var(--hot);background:rgba(15,27,38,.96);box-shadow:0 0 28px rgba(124,196,204,.12);padding:18px}
+h1,.big,.goal h2{font-family:'Chakra Petch',sans-serif;font-weight:600;letter-spacing:0}
+h1{font-size:24px;line-height:1.2}
+h2{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.goal{padding:16px;gap:16px}
+.goal h2{font-size:22px;line-height:1.1;letter-spacing:0;text-transform:none;color:var(--ink);margin:0 0 3px}
+.goal>div>.sub:first-child{font:600 11px 'Chakra Petch',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.goal>div>.sub:last-child{background:transparent;padding:0;margin:.3rem 0 0}
+.sub,.hint,.why,.note,.msg{color:var(--mute)}
+.nx .why{background:transparent;border:0;padding:0;color:var(--ink);font-size:14px;margin:0 0 1rem}
+.nx .hint{color:var(--ink);font-size:14px;background:transparent;border:0;padding:0}
+.track{background:transparent;border:1px solid currentColor;border-radius:10px;padding:1px 9px;font:600 12px 'Chakra Petch',sans-serif;letter-spacing:0;text-transform:none;display:inline-block}
+
+/* rings */
+.gring{width:76px;height:76px}
+.gring circle{stroke-width:9}.gring .bg,.ring .bg{stroke:var(--track)}.gring .fg,.ring .fg{stroke:var(--accent);filter:drop-shadow(0 0 5px var(--glow))}
+.gring b{font:500 15px var(--mono)}
+.ring .t{font:500 2.2rem var(--mono);letter-spacing:.02em}
+
+/* buttons */
+button{background:transparent;border:1px solid var(--edge);border-radius:6px;color:var(--ink);font:600 13px 'Chakra Petch',sans-serif;min-height:48px;padding:.6rem .9rem}
+button small,button span.pts{color:var(--mute);font:500 12px var(--mono)}
+button.main{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);border-radius:6px;font:700 15px 'Chakra Petch',sans-serif;letter-spacing:.12em;text-transform:uppercase;box-shadow:none;min-height:52px}
+.mini{min-height:44px;border-radius:6px;font-size:12px}
+.mini.go,.pill.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.row #ok{background:transparent;border-color:var(--edge)}
+.row button{border-radius:6px;min-height:48px}
+button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* chips use the track colours */
+.chip{background:transparent;border:1px solid currentColor;border-radius:10px;font:600 11px 'Chakra Petch',sans-serif;padding:0 8px;line-height:18px}
+
+/* flight plan (next 7 days) */
+.sd{display:grid;grid-template-columns:64px 1fr;gap:2px 12px;padding:14px 0;border:0;border-top:1px solid var(--track);border-radius:0;background:transparent;margin:0}
+.sd.today{background:transparent;box-shadow:inset 3px 0 0 var(--accent);padding-left:12px;margin-left:-12px}
+.sd .dl{font:500 11px var(--mono);color:var(--mute);background:transparent;padding:0;text-align:left}
+.sd .dl b{font:600 15px 'Chakra Petch',sans-serif;color:var(--ink)}
+.sd.today .dl b{color:var(--accent);background:transparent}
+.tm,.tskl .min{font-family:var(--mono)}
+.sd .ev2,.tskl{font-size:14px}
+
+/* lists, topics, calendar */
+details.lad summary{padding:14px 16px}
+.ln{font-weight:600}.lc{font:500 12px var(--mono);color:var(--mute)}
+.tp{border-top-color:var(--track)}
+.tp .ic,.tp.done .ic,.tp.ready .ic{color:var(--accent)}
+.tp.locked{opacity:.6}
+.proj,.week{border-top-color:var(--track)}
+.cd.today .dn{background:var(--accent);color:var(--accent-ink)}
+.cd[aria-pressed="true"]{border-color:var(--accent);background:rgba(15,27,38,.92)}
+.cal-w,.cd .dn,.stats b,.stats span{font-family:var(--mono)}
+.ev{border-top-color:var(--track)}
+.badges li{background:rgba(15,27,38,.92);border:1px solid var(--line);border-radius:8px}
+.badges li.on{border-color:var(--hot);box-shadow:0 0 16px -6px var(--glow)}
+.stats b{font-size:1.3rem}
+#v-projects input,#v-projects select,#v-projects textarea,#v-calendar input,#v-calendar select,#v-calendar textarea,.imp textarea{background:transparent;border:1px solid var(--edge);border-radius:6px;color:var(--ink)}
+#toast{background:var(--card);color:var(--ink);border:1px solid var(--hot);border-radius:6px}
+
+/* bottom bar */
+.bnav{left:0;right:0;bottom:0;max-width:none;margin:0;background:#0A1119;border:0;border-top:1px solid var(--line);border-radius:0;padding:0 0 env(safe-area-inset-bottom,0);backdrop-filter:none;-webkit-backdrop-filter:none;gap:0}
+.bnav button{background:transparent;border:0;border-radius:0;min-height:56px;color:var(--mute);font:600 12px 'Chakra Petch',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.bnav svg{display:none}
+.bnav button[aria-selected="true"]{background:transparent;color:var(--accent);box-shadow:inset 0 2px 0 var(--accent)}
+@media (max-width:24rem){.bnav button{font-size:11px;letter-spacing:.06em}}
+main{padding-bottom:6rem}
+
+/* star map (Path tab) */
+.kick{font:600 11px 'Chakra Petch',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0}
+.mono{font-family:var(--mono)}.mute{color:var(--mute)}
+.smhead{margin:.4rem 0 .7rem}.smhead h1{margin:.2rem 0 .3rem;font-size:30px;font-weight:600}
+.smhead p.mono{font-size:12px;letter-spacing:.08em;margin:0 0 .6rem}
+.pills .pill{min-height:34px;font-size:12px}
+.pills .chip{font-size:12px;padding:1px 9px}
+.smap{margin:.7rem 0 .4rem;border:1px solid var(--line);border-radius:8px;background:radial-gradient(70% 45% at 50% 28%,rgba(124,196,204,.1),transparent 70%),rgba(10,17,25,.8);overflow:hidden}
+.smap text{font-family:'Chakra Petch',sans-serif;fill:#8DA3B3}
+.sm-core{font-size:11px;font-weight:600;letter-spacing:.14em;fill:#7CC4CC!important}
+.sm-boss{font:500 12px ui-monospace,Menlo,Consolas,monospace;fill:#A9BCC9!important}
+.sm-note{font-size:11px;fill:#93A9B8!important}
+.smap .sm-l{font-size:11px;font-weight:500}
+.smap .sm-l.done{fill:#C9D8E2}.smap .sm-l.ready{fill:#fff;font-weight:600}.smap .sm-l.locked{fill:#8DA3B3}
+.smap g:focus-visible circle:first-child{stroke:#fff}
+.smlegend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--mute);margin:.2rem 0 .6rem}
+.smlegend .lg::before{content:"";display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:-1px;box-sizing:border-box}
+.lg.done::before{background:#86B8EA;box-shadow:0 0 8px #86B8EA}
+.lg.ready::before{background:#0A1119;border:2px solid #E6EFF4}
+.lg.locked::before{background:#22384A;border:1px solid #2E4A60}
+.lg.boss::before{border-radius:2px;background:#4F6F86;clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%)}
+.smsel{border-color:var(--hot)}
+.smsel h3{font:600 20px/1.25 'Chakra Petch',sans-serif;margin:.5rem 0}
+.smh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.smr{display:flex;align-items:center;gap:8px}
+.smr .mono{font-size:12px;color:var(--mute)}
+a{color:var(--accent)}a:visited{color:var(--accent)}
