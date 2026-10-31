@@ -107,11 +107,6 @@
    {"id":"gs11","t":"Phase 2: confirm the org is in GSoC 2027, read its ideas list, shortlist 2-3 ideas, message a mentor","needs":["gs10"],"min":40,"tiny":"Open the GSoC org list and search for your org"},
    {"id":"gs12","t":"Phase 3: draft the proposal (1,500-2,500 words with a week-by-week timeline)","needs":["gs11"],"min":45,"tiny":"Write the problem statement paragraph"},
    {"id":"gs13","t":"Phase 3: mentor review, register on the GSoC site, submit 24-48 hours before the deadline","needs":["gs12"],"min":40,"tiny":"Send the draft to a mentor"},
-   {"id":"gs14","t":"Phase 4: keep contributing small PRs while results are pending","needs":["gs13"],"min":30,"tiny":"Check the issue tracker for one small fix"}]},
-  {"id":"cal","name":"Calisthenics","floor":4,"src":"Rebuild Log: 8-Week Calisthenics and Diet Plan, phases 1-4. If still sore 48 hours after a session, repeat that week. Sunday is full rest.","nodes":[
-   {"id":"ca1","t":"Phase 1 (weeks 1-2): mobility, pain-free movement, core activation","min":20,"tiny":"Do 2 minutes of gentle mobility"},
-   {"id":"ca2","t":"Phase 2 (weeks 3-4): light calisthenics load and back strengthening","needs":["ca1"],"min":20,"tiny":"Do the first exercise of today's day page"},
-   {"id":"ca3","t":"Phase 3 (weeks 5-6): push, pull and squat progressions plus stamina intervals","needs":["ca2"],"min":25,"tiny":"Do one warm-up set"},
-   {"id":"ca4","t":"Phase 4 (weeks 7-8): combine and test, build toward month 3","needs":["ca3"],"min":25,"tiny":"Do one warm-up set"}]}
+   {"id":"gs14","t":"Phase 4: keep contributing small PRs while results are pending","needs":["gs13"],"min":30,"tiny":"Check the issue tracker for one small fix"}]}
 ]
 }
