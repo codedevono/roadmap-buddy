@@ -27,7 +27,19 @@ The highest score wins, and the two strongest reasons become the "Why now" line.
 ## Data
 All state is in the browser (`localStorage`). `skills.json`, `projects.json` and `events.json` are the source of the plan.
 
+## The Path view (gamified whole picture)
+- `path.json` groups topics into three phases (Foundation, Competitive depth, Cross-domain mastery) and tags each quest with one of four tracks (systems, graphics, security, AI systems). No years: you move on when the quests are done.
+- A quest is an ordinary topic from `skills.json`, so finishing it anywhere counts everywhere. Nothing is stored twice.
+- Milestones (a CTF, a first merged fix, a certificate) are claimed by hand and give XP. Each phase has one boss that unlocks at 60% of that phase's quests. Only bosses are locked, so nothing else can frustrate.
+- XP, levels and badges stay derived from state (`done`, the session log and claimed milestones), so a slow week never erases anything.
+
 ## Plan ahead
 - v0.5: phone reminders (Telegram bot or web push), morning plan and evening check-in.
 - Next: import the remaining Notion roadmaps (AR optics and tracking, brand and graphic design, the GSoC 2028 C/C++ track), Notion sync, auto-append to DEVLOG on GitHub, weekly review.
 - Later: focus mode with app blocking on Android, home-screen widget.
+
+## v2 phase P1: projects inside the app
+- `S.projects` (in localStorage) holds projects made in the app; `projects.json` projects stay read-only and can be focused.
+- Each task of a project becomes a pseudo topic `pt:<projectId>:<taskId>` so Today, logging and XP work unchanged.
+- Score for the first open task of a project: `priority^2 * 12 * focusFactor + max(0, 20 - daysLeft) * 0.5 * focusFactor`; focusFactor is 1 for the focus project and 0.25 for the rest. Skill pulls from `projects.json` use the same factor.
+- Deadline maths, capacity from the log and the on-track message come in phase P2.
