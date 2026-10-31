@@ -1,0 +1,112 @@
+{
+ "title": "Low-Level Design Engineer",
+ "blurb": "Not one field but the rarest stack: someone who can read a disassembly, write a shader, tune a CUDA kernel and trace a memory exploit from one mental model. Three phases, no calendar. You move on when the quests are done.",
+ "core": "Low-Level Design: systems, OS, databases, memory, networks",
+ "src": "low_level_design_6yr_roadmap.html (the user's own roadmap file), years replaced by stages",
+ "bossUnlock": 0.6,
+ "tracks": [
+  {"id": "sys", "name": "Systems", "desc": "OS, architecture, memory, networks, databases, compilers"},
+  {"id": "gfx", "name": "Graphics", "desc": "GPU, shaders, real-time rendering, CUDA"},
+  {"id": "sec", "name": "Security", "desc": "Exploit development, reverse engineering, cloud and kernel security"},
+  {"id": "ai", "name": "AI systems", "desc": "ML infrastructure, inference optimization, neural rendering"}
+ ],
+ "stages": [
+  {
+   "id": "s1", "name": "Foundation",
+   "blurb": "The hardest stage, slow on purpose. C before C++, memory, architecture, OS, networks, databases, first exploits and first graphics math. This is where the moat is built.",
+   "topics": [
+    {"id": "c1", "tr": "sys", "res": "CS:APP chapters 1-6 with the labs; GDB, Valgrind"},
+    {"id": "c4", "tr": "sys", "res": "CS:APP; Nand2Tetris Part I; read x86-64 with objdump (read it, do not write it)"},
+    {"id": "c3", "tr": "sys", "res": "OSTEP (free at ostep.org); strace, ltrace"},
+    {"id": "m3", "tr": "gfx", "res": "3Blue1Brown, Essence of Linear Algebra (15 videos)"},
+    {"id": "m7", "tr": "sec"},
+    {"id": "py1", "tr": "ai", "res": "Python is the tool, C is the education"},
+    {"id": "c2", "tr": "sys"},
+    {"id": "c9", "tr": "sys", "res": "Effective Modern C++ (Scott Meyers); build a small allocator and a thread pool"},
+    {"id": "net1", "tr": "sys", "res": "Beej's Guide to Network Programming; Wireshark"},
+    {"id": "db1", "tr": "sys", "res": "CMU 15-445 (Andy Pavlo, YouTube); Database Internals by Alex Petrov, chapters 1-5"},
+    {"id": "cc1", "tr": "sys"},
+    {"id": "c7", "tr": "sec", "res": "Hacking: The Art of Exploitation (Erickson); pwntools, pwndbg, ROPgadget"},
+    {"id": "cy7", "tr": "sec", "res": "pwn.college (free); LiveOverflow on YouTube"},
+    {"id": "v2", "tr": "gfx"},
+    {"id": "gx1", "tr": "gfx", "res": "Scratchapixel"},
+    {"id": "g1", "tr": "gfx", "res": "learnopengl.com through Advanced Lighting"}
+   ]
+  },
+  {
+   "id": "s2", "name": "Competitive depth",
+   "blurb": "Go deep in all tracks at once: Vulkan, web and cloud security, ML systems, LLVM, CUDA, OSCP, GSoC. Contribution-grade work and a portfolio that gets noticed.",
+   "topics": [
+    {"id": "vk1", "tr": "gfx", "res": "vulkan-tutorial.com; Brendan Galea's Vulkan Game Engine (YouTube); WebGPU is the cross-platform alternative"},
+    {"id": "cy5", "tr": "sec", "res": "Burp Suite; OWASP"},
+    {"id": "sx1", "tr": "sec"},
+    {"id": "ai1", "tr": "ai"},
+    {"id": "ml1", "tr": "ai", "res": "Karpathy micrograd and nanoGPT; fast.ai; Stanford CS231n"},
+    {"id": "llvm1", "tr": "sys", "res": "LLVM IR is the common language of shader compilers, ML compilers and security tools"},
+    {"id": "cy10", "tr": "sec", "res": "HackTheBox, then the Pro Labs"},
+    {"id": "os1", "tr": "sys", "res": "Mesa 3D, LLVM, Rizin or Radare2, Wireshark; wgpu is a lower barrier"},
+    {"id": "os2", "tr": "sys", "res": "Most rejections are vague proposals"},
+    {"id": "cuda1", "tr": "gfx", "res": "CUDA by Example (Sanders and Kandrot) with the NVIDIA CUDA Programming Guide"},
+    {"id": "sx2", "tr": "sec", "res": "OffSec PEN-200"},
+    {"id": "ml2", "tr": "ai", "res": "TensorRT, ONNX Runtime"},
+    {"id": "pbr1", "tr": "gfx", "res": "Physically Based Rendering (pbrt.org, free online)"},
+    {"id": "os3", "tr": "sys", "res": "Post it on a blog or arXiv; or a student track at USENIX Security, IEEE S&P or SIGGRAPH"}
+   ]
+  },
+  {
+   "id": "s3", "name": "Cross-domain mastery",
+   "blurb": "Convergence. GPU security, neural rendering, kernel and hypervisor security, AI compilers. Publish, lead, then choose a role or graduate school.",
+   "topics": [
+    {"id": "c6", "tr": "sys"},
+    {"id": "cy8", "tr": "sec"},
+    {"id": "sx3", "tr": "sec"},
+    {"id": "sx4", "tr": "sec"},
+    {"id": "nr1", "tr": "ai", "res": "3D Gaussian Splatting, instant-ngp"},
+    {"id": "ml3", "tr": "ai", "res": "Triton (OpenAI), IREE; read the whole of tinygrad"},
+    {"id": "os4", "tr": "sys"}
+   ]
+  }
+ ],
+ "milestones": [
+  {"id": "pico", "stage": "s1", "t": "Play picoCTF and solve about half the challenges", "xp": 80, "note": "Sept-Oct, free"},
+  {"id": "aoc", "stage": "s1", "t": "Advent of Code: first 10 days in C, the rest in Python", "xp": 60, "note": "December"},
+  {"id": "csapp", "stage": "s1", "t": "Finish CS:APP chapters 1-6 with the labs", "xp": 100},
+  {"id": "ostep", "stage": "s1", "t": "Read OSTEP: virtualization, concurrency, persistence", "xp": 80},
+  {"id": "n2t", "stage": "s1", "t": "Nand2Tetris Part I: build a computer from logic gates", "xp": 80},
+  {"id": "alloc", "stage": "s1", "t": "Build a small allocator and a thread pool in C++", "xp": 100},
+  {"id": "kv", "stage": "s1", "t": "Build a toy key-value store in C++", "xp": 100},
+  {"id": "htb1", "stage": "s1", "t": "Solve your first Easy HackTheBox machines", "xp": 60},
+  {"id": "csaw", "stage": "s1", "t": "Play CSAW CTF with a team", "xp": 80, "note": "September"},
+  {"id": "boss1", "stage": "s1", "boss": true, "t": "Boss: render a 3D scene with your own software rasterizer, no graphics API", "xp": 150},
+
+  {"id": "gsocfix", "stage": "s2", "t": "Get a first fix merged in a GSoC systems org (Mesa, LLVM, Rizin or Wireshark)", "xp": 150},
+  {"id": "gsocapp", "stage": "s2", "t": "Submit a GSoC application with a detailed proposal", "xp": 100, "note": "Feb-March"},
+  {"id": "htbpro", "stage": "s2", "t": "Complete one HackTheBox Pro Lab", "xp": 150},
+  {"id": "defq", "stage": "s2", "t": "Enter the DEF CON CTF qualifier", "xp": 100, "note": "May"},
+  {"id": "icpc", "stage": "s2", "t": "Compete in an ICPC regional", "xp": 100, "note": "Oct-Nov"},
+  {"id": "bounty", "stage": "s2", "t": "File a first bug bounty report on HackerOne or Bugcrowd", "xp": 100},
+  {"id": "microgd", "stage": "s2", "t": "Build a tiny autograd engine (micrograd)", "xp": 100},
+  {"id": "write1", "stage": "s2", "t": "Publish one solid technical writeup or workshop paper", "xp": 150},
+  {"id": "intern", "stage": "s2", "t": "Apply for internships in security, graphics/GPU or AI systems", "xp": 60},
+  {"id": "boss2", "stage": "s2", "boss": true, "t": "Boss: a complete deferred renderer built from scratch in C++", "xp": 200},
+
+  {"id": "defm", "stage": "s3", "t": "Compete in the DEF CON CTF main event", "xp": 150, "note": "August"},
+  {"id": "gtc", "stage": "s3", "t": "Present a poster at NVIDIA GTC", "xp": 100},
+  {"id": "paper", "stage": "s3", "t": "Get a student paper into IEEE S&P or USENIX Security", "xp": 200},
+  {"id": "cudapr", "stage": "s3", "t": "Land a CUDA kernel contribution in a real ML project", "xp": 150},
+  {"id": "maint", "stage": "s3", "t": "Maintain a small project or ship your own systems tool", "xp": 150},
+  {"id": "pwn", "stage": "s3", "t": "Compete in Pwn2Own or Real World CTF", "xp": 150},
+  {"id": "role", "stage": "s3", "t": "Decide: full-time role or graduate school", "xp": 100},
+  {"id": "boss3", "stage": "s3", "boss": true, "t": "Boss: OSCP certified, with GSoC contributions, papers and a public GitHub that tells one story", "xp": 300}
+ ],
+ "calendar": [
+  {"m": "January", "t": "Real World CTF"},
+  {"m": "February-March", "t": "GSoC application window; Pwn2Own Vancouver"},
+  {"m": "April", "t": "ICPC World Finals"},
+  {"m": "May-June", "t": "DEF CON CTF qualifier; GSoC coding begins"},
+  {"m": "August", "t": "DEF CON main event; SIGGRAPH"},
+  {"m": "September", "t": "CSAW CTF; USENIX Security deadline; internship applications open"},
+  {"m": "October", "t": "ICPC regionals; Pwn2Own Toronto; IEEE S&P deadline"},
+  {"m": "December", "t": "Advent of Code; GSoC org exploration begins"}
+ ]
+}

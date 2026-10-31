@@ -1,7 +1,7 @@
 # The need
 
 ## Problem
-I have roadmaps for many things (cyber, AI, Python, GSoC, calisthenics) in separate Notion pages. I have low consistency, I get distracted, and having many roadmaps means I spend energy choosing instead of doing.
+I have roadmaps for many things (cyber, AI, Python, GSoC and more) in separate Notion pages. I have low consistency, I get distracted, and having many roadmaps means I spend energy choosing instead of doing.
 
 ## What fails with normal tools
 - Long task lists feel heavy, so I open nothing.
