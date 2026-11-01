@@ -12,7 +12,12 @@ import vault as V
 T0 = 1793500000000          # 2026-11-01 (ms)
 DAY = 86400000
 
-SEED = {'projects': [{'id': 'ar', 'name': 'AR glasses', 'priority': 3, 'needs': ['c1', 'o1'], 'goal': 'Prototype'}]}
+# the real projects.json of the repo (read from GitHub on 2026-11-01)
+SEED = {'projects': [
+    {'id': 'arglasses', 'name': 'AR glasses', 'priority': 3, 'status': 'active',
+     'needs': ['m2', 'v1', 'v2', 'v3', 'v4', 'c1', 'e0', 'em0', 'em1', 'e1', 'em2', 'p5', 'me4'],
+     'note': 'Optics and tracking pages in AR/VR Resources are not imported yet.'},
+    {'id': 'buddy', 'name': 'Roadmap Buddy', 'priority': 2, 'status': 'active', 'needs': ['py1', 'py2', 'py3']}]}
 
 BACKUP = {
     'buddy': 'backup', 'v': 1, 'at': T0,
@@ -40,7 +45,7 @@ BACKUP = {
              'type': 'game', 'needs': [], 'ladders': [], 'status': 'paused', 'tasks': [], 'state': 'blocked',
              'why': 'display arrives on the 12th'},
         ],
-        'fpx': {'ar': {'state': 'active', 'next': 'wire the I2C test',
+        'fpx': {'arglasses': {'state': 'active', 'next': 'wire the I2C test',
                        'ms': [{'id': 'm9', 't': 'First light', 'date': '2026-12-01', 'done': False}]}},
         'focus': 'u1',
         'events': [{'id': 'e1', 'name': 'CTF night', 'type': 'ctf', 'date': '2026-11-14', 'end': '2026-11-15',
@@ -97,11 +102,12 @@ class ImportExport(Base):
         months = sorted(k for k in t if k.startswith('log/'))
         self.assertEqual(len(months), 2, months)               # the 40-day-old line sits in an older month
         projects = sorted(k for k in t if k.startswith('projects/'))
-        self.assertEqual(len(projects), 4)                     # u1, u2, u3 and the builtin ar
-        self.assertEqual(len(set(projects)), 4)
+        self.assertEqual(len(projects), 5)                     # u1, u2, u3 and the two builtin projects
+        self.assertEqual(len(set(projects)), 5)
         self.assertIn('projects/roadmap-buddy.md', projects)
         self.assertIn('projects/roadmap-buddy-2.md', projects)  # same name: unique slug, ids stay the identity
         self.assertIn('projects/cafe-munze-unicode.md', projects)  # accents folded to plain letters
+        self.assertIn('Optics and tracking pages', tree(d)['projects/ar-glasses.md'])   # the repo note is kept
         self.assertEqual(V.slugify('!!!', set()), 'project')
 
     def test_log_uids_unique_and_old_lines_keep_fields(self):
@@ -138,8 +144,8 @@ class ImportExport(Base):
         for p0 in S0['projects']:
             self.assertEqual(V.project_record(got[p0['id']], got[p0['id']], 'own', 0),
                              V.project_record(p0, p0, 'own', 0), p0['id'])
-        self.assertEqual(V.project_record(SEED['projects'][0], S['fpx']['ar'], 'builtin', 0),
-                         V.project_record(SEED['projects'][0], S0['fpx']['ar'], 'builtin', 0))
+        self.assertEqual(V.project_record(SEED['projects'][0], S['fpx']['arglasses'], 'builtin', 0),
+                         V.project_record(SEED['projects'][0], S0['fpx']['arglasses'], 'builtin', 0))
         # keys a restore needs even when the app replaces S outright
         for k in V.BLANK_S:
             self.assertIn(k, S, k)
@@ -167,7 +173,7 @@ class ImportExport(Base):
 
     def test_builtin_without_seed_warns(self):
         warns = V.import_backup(copy.deepcopy(BACKUP), os.path.join(self.tmp, 'n'), None)
-        self.assertTrue(any('ar' in w and 'no projects.json' in w for w in warns), warns)
+        self.assertTrue(any('arglasses' in w and 'no projects.json' in w for w in warns), warns)
 
 
 class Validator(Base):
@@ -199,7 +205,7 @@ class Validator(Base):
         self.has('deadline must be null or YYYY-MM-DD')
 
     def test_duplicate_project_id(self):
-        self.edit_project('roadmap-buddy-2', lambda r: r.update(id='u1'))
+        self.edit_project('roadmap-buddy-3', lambda r: r.update(id='u1'))
         self.has('duplicate project id u1')
 
     def test_front_matter_must_be_json(self):
