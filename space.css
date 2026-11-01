@@ -1,8 +1,8 @@
 /* Roadmap Buddy "mission control" theme. Dark only. Loaded by space.js after the page's own CSS.
    Fonts: Chakra Petch (OFL), self-hosted in fonts/. Numbers use the phone's own monospace font. */
-@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/chakra-petch-500.woff2) format('woff2')}
-@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/chakra-petch-600.woff2) format('woff2')}
-@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/chakra-petch-700.woff2) format('woff2')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url(chakra-petch-500.woff2) format('woff2')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url(chakra-petch-600.woff2) format('woff2')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;src:url(chakra-petch-700.woff2) format('woff2')}
 
 :root:root:root{
   --bg:#0A1119;--card:#0F1B26;--ink:#E6EFF4;--mute:#93A9B8;--line:#1F3547;--track:#1B2F40;

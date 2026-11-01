@@ -1,0 +1,548 @@
+{
+ "ladders": [
+  {
+   "id": "hack",
+   "name": "Hacker, 12 months",
+   "floor": 2,
+   "src": "hacking_roadmap.html (12 stages, phases 1 to 4)",
+   "nodes": [
+    {
+     "id": "hk1",
+     "t": "Linux internals and C programming with hacking intent",
+     "min": 45,
+     "tiny": "Open a terminal and run ls -la /proc"
+    },
+    {
+     "id": "hk2",
+     "t": "Networking from the wire up: hardware, protocols, packets",
+     "min": 45,
+     "tiny": "Open Wireshark and capture 10 packets",
+     "needs": [
+      "hk1"
+     ]
+    },
+    {
+     "id": "hk3",
+     "t": "Python for hackers, assembly fundamentals and first CTFs",
+     "min": 45,
+     "tiny": "Solve one beginner CTF challenge",
+     "needs": [
+      "hk1"
+     ]
+    },
+    {
+     "id": "hk4",
+     "t": "Web hacking: HTTP internals and the OWASP Top 10 in depth",
+     "min": 45,
+     "tiny": "Read the OWASP Top 10 list once",
+     "needs": [
+      "hk2",
+      "hk3"
+     ]
+    },
+    {
+     "id": "hk5",
+     "t": "Binary exploitation: buffer overflows, GDB, shellcode",
+     "min": 45,
+     "tiny": "Open a small C program in GDB",
+     "needs": [
+      "hk3"
+     ]
+    },
+    {
+     "id": "hk6",
+     "t": "Network attacks and WiFi hacking, hardware to protocol",
+     "min": 45,
+     "tiny": "List your adapter modes with iw",
+     "needs": [
+      "hk2"
+     ]
+    },
+    {
+     "id": "hk7",
+     "t": "Reverse engineering: Ghidra, radare2, anti-debug techniques",
+     "min": 45,
+     "tiny": "Open a small binary in Ghidra",
+     "needs": [
+      "hk5"
+     ]
+    },
+    {
+     "id": "hk8",
+     "t": "Cryptography and forensics: the math behind the attacks",
+     "min": 45,
+     "tiny": "Read how one classic cipher is broken",
+     "needs": [
+      "hk3"
+     ]
+    },
+    {
+     "id": "hk9",
+     "t": "Active Directory, privilege escalation and OSCP-level labs",
+     "min": 60,
+     "tiny": "Start one beginner lab machine",
+     "needs": [
+      "hk4",
+      "hk6"
+     ]
+    },
+    {
+     "id": "hk10",
+     "t": "Advanced binary exploitation: ROP chains, ASLR and PIE bypass",
+     "min": 60,
+     "tiny": "Read one ROP chain walkthrough",
+     "needs": [
+      "hk5",
+      "hk7"
+     ]
+    },
+    {
+     "id": "hk11",
+     "t": "CTF strategy, OSCP exam prep and bug bounty intro",
+     "min": 60,
+     "tiny": "Pick your next CTF and put it on the calendar",
+     "needs": [
+      "hk9"
+     ]
+    },
+    {
+     "id": "hk12",
+     "t": "Consolidation and specialization: choose your path",
+     "min": 45,
+     "tiny": "Write which two areas you will go deeper in",
+     "needs": [
+      "hk10",
+      "hk11"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cre",
+   "name": "C, Assembly and Reverse Engineering",
+   "floor": 2,
+   "src": "c-asm-re-roadmap.html (16 modules, 52 weeks)",
+   "nodes": [
+    {
+     "id": "cre1",
+     "t": "C-01 Absolute basics: syntax, types, control flow (weeks 1 to 3)",
+     "min": 45,
+     "tiny": "Write and compile hello world in C"
+    },
+    {
+     "id": "cre2",
+     "t": "C-02 Arrays, strings and the C standard library (weeks 4 to 5)",
+     "min": 45,
+     "tiny": "Read one man page, for example man strlen",
+     "needs": [
+      "cre1"
+     ]
+    },
+    {
+     "id": "cre3",
+     "t": "C-03 Structs, unions, bitfields: the kernel building blocks (weeks 6 to 8)",
+     "min": 45,
+     "tiny": "Write one struct and print its size",
+     "needs": [
+      "cre2"
+     ]
+    },
+    {
+     "id": "cre4",
+     "t": "C-04 Preprocessor, macros and kernel-style C (weeks 9 to 10)",
+     "min": 45,
+     "tiny": "Read one macro in the Linux source",
+     "needs": [
+      "cre3"
+     ]
+    },
+    {
+     "id": "cre5",
+     "t": "M-01 Pointers: address arithmetic and dereferencing (weeks 11 to 13)",
+     "min": 45,
+     "tiny": "Print the address of a variable",
+     "needs": [
+      "cre4"
+     ]
+    },
+    {
+     "id": "cre6",
+     "t": "M-02 Dynamic memory: malloc, the heap and kernel allocators (weeks 14 to 16)",
+     "min": 45,
+     "tiny": "Write malloc and free once and run Valgrind",
+     "needs": [
+      "cre5"
+     ]
+    },
+    {
+     "id": "cre7",
+     "t": "M-03 Linked lists, trees and kernel data structures (weeks 17 to 19)",
+     "min": 45,
+     "tiny": "Draw a linked list node on paper",
+     "needs": [
+      "cre6"
+     ]
+    },
+    {
+     "id": "cre8",
+     "t": "A-01 Registers, memory model and the first instruction (weeks 20 to 22)",
+     "min": 45,
+     "tiny": "List the x86-64 registers from memory",
+     "needs": [
+      "cre5"
+     ]
+    },
+    {
+     "id": "cre9",
+     "t": "A-02 Instructions: data movement, arithmetic, logic, jumps (weeks 23 to 25)",
+     "min": 45,
+     "tiny": "Write a mov and an add and assemble them",
+     "needs": [
+      "cre8"
+     ]
+    },
+    {
+     "id": "cre10",
+     "t": "A-03 Stack frames, function calls and the ABI in assembly (weeks 26 to 28)",
+     "min": 45,
+     "tiny": "Draw a stack frame for one call",
+     "needs": [
+      "cre9"
+     ]
+    },
+    {
+     "id": "cre11",
+     "t": "R-01 ELF binary format: the structure of Linux executables (weeks 29 to 31)",
+     "min": 45,
+     "tiny": "Run readelf -h on a binary",
+     "needs": [
+      "cre10"
+     ]
+    },
+    {
+     "id": "cre12",
+     "t": "R-02 Static analysis: Ghidra, radare2, objdump (weeks 32 to 35)",
+     "min": 45,
+     "tiny": "Run objdump -d on a small program",
+     "needs": [
+      "cre11"
+     ]
+    },
+    {
+     "id": "cre13",
+     "t": "R-03 Dynamic analysis: GDB, strace, ltrace, ptrace (weeks 36 to 38)",
+     "min": 45,
+     "tiny": "Run strace on ls",
+     "needs": [
+      "cre12"
+     ]
+    },
+    {
+     "id": "cre14",
+     "t": "L-01 Setting up: kernel source tree navigation (weeks 39 to 41)",
+     "min": 45,
+     "tiny": "Open elixir.bootlin.com and find one function",
+     "needs": [
+      "cre7"
+     ]
+    },
+    {
+     "id": "cre15",
+     "t": "L-02 Write your first kernel module (weeks 42 to 44)",
+     "min": 45,
+     "tiny": "Read a hello-world kernel module",
+     "needs": [
+      "cre14"
+     ]
+    },
+    {
+     "id": "cre16",
+     "t": "L-03 Reading real kernel subsystems: VFS, scheduler, mm (weeks 45 to 52)",
+     "min": 45,
+     "tiny": "Read the start of fs/read_write.c",
+     "needs": [
+      "cre15",
+      "cre13"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dsa",
+   "name": "DSA in Python and C++",
+   "floor": 2,
+   "src": "dsa-roadmap.html (5 phases, 48 topics)",
+   "nodes": [
+    {
+     "id": "ds1",
+     "t": "Foundations & Language Setup (2–3 weeks)",
+     "min": 60,
+     "tiny": "Start with: Python syntax, OOP & idioms"
+    },
+    {
+     "id": "ds2",
+     "t": "Core Data Structures (4–6 weeks)",
+     "min": 60,
+     "tiny": "Start with: Arrays & Dynamic arrays",
+     "needs": [
+      "ds1"
+     ]
+    },
+    {
+     "id": "ds3",
+     "t": "Algorithms & Paradigms (6–8 weeks)",
+     "min": 60,
+     "tiny": "Start with: Sorting — Merge, Quick, Heap, Counting",
+     "needs": [
+      "ds2"
+     ]
+    },
+    {
+     "id": "ds4",
+     "t": "Graphs (3–4 weeks)",
+     "min": 60,
+     "tiny": "Start with: Graph representations",
+     "needs": [
+      "ds3"
+     ]
+    },
+    {
+     "id": "ds5",
+     "t": "Advanced & Competitive Prep (4–6 weeks)",
+     "min": 60,
+     "tiny": "Start with: String matching — KMP, Z-function",
+     "needs": [
+      "ds4"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rag",
+   "name": "RAG: zero to production",
+   "floor": 1,
+   "src": "rag-roadmap.html (7 sections)",
+   "nodes": [
+    {
+     "id": "rg1",
+     "t": "Prerequisites: Python, APIs, LLM basics, terminal and Git",
+     "min": 45,
+     "tiny": "Check that you can run a Python script and a git commit"
+    },
+    {
+     "id": "rg2",
+     "t": "Understand embeddings: vectors, cosine similarity, embedding models",
+     "min": 45,
+     "tiny": "Embed 3 sentences and print their similarity",
+     "needs": [
+      "rg1"
+     ]
+    },
+    {
+     "id": "rg3",
+     "t": "Vector databases: ANN search, HNSW, metadata filters (start with ChromaDB)",
+     "min": 45,
+     "tiny": "Install ChromaDB and add 3 vectors",
+     "needs": [
+      "rg2"
+     ]
+    },
+    {
+     "id": "rg4",
+     "t": "Document processing and chunking: loaders, overlap, metadata",
+     "min": 45,
+     "tiny": "Split one PDF into 512-token chunks",
+     "needs": [
+      "rg2"
+     ]
+    },
+    {
+     "id": "rg5",
+     "t": "Build your first RAG pipeline in about 80 lines, without a framework",
+     "min": 60,
+     "tiny": "Load one PDF and print its text",
+     "needs": [
+      "rg3",
+      "rg4"
+     ]
+    },
+    {
+     "id": "rg6",
+     "t": "Advanced retrieval: hybrid search, reranking, HyDE, multi-query, MMR",
+     "min": 45,
+     "tiny": "Add BM25 next to your vector search",
+     "needs": [
+      "rg5"
+     ]
+    },
+    {
+     "id": "rg7",
+     "t": "Evaluation and production: RAGAS, FastAPI, Docker, deployment",
+     "min": 60,
+     "tiny": "List 10 test questions with their expected answers",
+     "needs": [
+      "rg6"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "osscp",
+   "name": "Coding and OSS to GSoC 2027",
+   "floor": 2,
+   "src": "roadmap.html (3 CP phases, OSS stages 0 to 3)",
+   "nodes": [
+    {
+     "id": "oc1",
+     "t": "CP phase 1: Codeforces setup, A-rated problems, core patterns, C++ STL, first Div. 3 round",
+     "min": 45,
+     "tiny": "Register on Codeforces and open problem A"
+    },
+    {
+     "id": "oc2",
+     "t": "CP phase 2: graphs, BFS, DFS, Dijkstra, Bellman-Ford (30+ problems)",
+     "min": 45,
+     "tiny": "Write BFS from memory",
+     "needs": [
+      "oc1"
+     ]
+    },
+    {
+     "id": "oc3",
+     "t": "CP phase 2: dynamic programming from 1D to bitmask",
+     "min": 45,
+     "tiny": "Solve one coin change problem",
+     "needs": [
+      "oc1"
+     ]
+    },
+    {
+     "id": "oc4",
+     "t": "CP phase 2: greedy with proof first, plus weekly rounds and upsolving",
+     "min": 45,
+     "tiny": "Read the editorial of your last unsolved problem",
+     "needs": [
+      "oc1"
+     ]
+    },
+    {
+     "id": "oc5",
+     "t": "CP milestone: Codeforces Specialist, rating 1200 to 1400",
+     "min": 30,
+     "tiny": "Look up your current rating",
+     "needs": [
+      "oc2",
+      "oc3",
+      "oc4"
+     ]
+    },
+    {
+     "id": "oc6",
+     "t": "CP phase 3: segment trees, DSU, tries, lazy propagation",
+     "min": 45,
+     "tiny": "Code a DSU with path compression",
+     "needs": [
+      "oc5"
+     ]
+    },
+    {
+     "id": "oc7",
+     "t": "CP phase 3: number theory and combinatorics (mod p, sieve)",
+     "min": 45,
+     "tiny": "Write modular exponentiation",
+     "needs": [
+      "oc5"
+     ]
+    },
+    {
+     "id": "oc8",
+     "t": "CP milestone: Codeforces Expert 1600+ with 2 virtual contests a week",
+     "min": 60,
+     "tiny": "Pick a virtual contest at your difficulty ceiling",
+     "needs": [
+      "oc6",
+      "oc7"
+     ]
+    },
+    {
+     "id": "oc9",
+     "t": "OSS stage 0: Git, a professional GitHub profile, how an OSS project works, first docs PR",
+     "min": 45,
+     "tiny": "Write your profile README"
+    },
+    {
+     "id": "oc10",
+     "t": "OSS stage 1: pick your stack, find projects, go deep on one or two",
+     "min": 45,
+     "tiny": "Open goodfirstissue.dev and bookmark 3 issues",
+     "needs": [
+      "oc9"
+     ]
+    },
+    {
+     "id": "oc11",
+     "t": "OSS stage 1: 5 to 10 merged PRs with clear commit messages and PR descriptions",
+     "min": 60,
+     "tiny": "Open one issue you want to fix",
+     "needs": [
+      "oc10"
+     ]
+    },
+    {
+     "id": "oc12",
+     "t": "OSS stage 2: study the GSoC org list, narrow to 2 or 3 orgs, contact mentors",
+     "min": 45,
+     "tiny": "List 5 orgs that match your stack",
+     "needs": [
+      "oc11"
+     ]
+    },
+    {
+     "id": "oc13",
+     "t": "OSS stage 2: become a known contributor, learn the toolchain, 20+ merged PRs and 2 features",
+     "min": 60,
+     "tiny": "Run the test suite of your target project",
+     "needs": [
+      "oc12"
+     ]
+    },
+    {
+     "id": "oc14",
+     "t": "OSS stage 3: harder issues and reviewing other PRs",
+     "min": 60,
+     "tiny": "Read one open PR and leave a useful comment",
+     "needs": [
+      "oc13"
+     ]
+    },
+    {
+     "id": "oc15",
+     "t": "OSS stage 3: validate your project idea with a mentor",
+     "min": 45,
+     "tiny": "Write the idea in 5 lines",
+     "needs": [
+      "oc14"
+     ]
+    },
+    {
+     "id": "oc16",
+     "t": "OSS stage 3: write the proposal: about you, the problem, a week-by-week timeline, deliverables",
+     "min": 60,
+     "tiny": "Write the proposal outline with 4 headings",
+     "needs": [
+      "oc15"
+     ]
+    },
+    {
+     "id": "oc17",
+     "t": "OSS stage 3: submit the proposal and keep contributing during selection",
+     "min": 30,
+     "tiny": "Open one issue and comment on it",
+     "needs": [
+      "oc16"
+     ]
+    }
+   ]
+  }
+ ]
+}

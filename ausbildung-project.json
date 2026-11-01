@@ -1,0 +1,127 @@
+{
+ "buddy": "projects",
+ "v": 1,
+ "focus": null,
+ "events": [],
+ "done": {},
+ "projects": [
+  {
+   "id": "ausbildung-de",
+   "name": "Ausbildung in Germany",
+   "goal": "Start a dual vocational training (Ausbildung) in Germany",
+   "done": "A signed training contract and the D visa in my passport",
+   "deadline": "",
+   "priority": 2,
+   "type": "other",
+   "status": "active",
+   "needs": [
+    "ger1",
+    "ger2",
+    "ger3",
+    "ger4",
+    "ger5",
+    "ger6",
+    "ger7",
+    "ger8",
+    "ger9",
+    "ger10",
+    "ger11",
+    "ger12",
+    "ger13",
+    "ger14",
+    "ger15",
+    "ger16",
+    "ger17",
+    "ger18"
+   ],
+   "ladders": [],
+   "tasks": [
+    {
+     "id": "a1",
+     "t": "Shortlist 3 to 5 Ausbildung courses (IT application development, system integration, mechatronics) and write why for each",
+     "min": 30
+    },
+    {
+     "id": "a2",
+     "t": "Check your certificates on ANABIN and note what needs recognition",
+     "min": 30
+    },
+    {
+     "id": "a3",
+     "t": "Write your German CV (Lebenslauf): tabular, reverse chronological, 1 to 2 pages",
+     "min": 45
+    },
+    {
+     "id": "a4",
+     "t": "Write a first Motivationsschreiben draft in German, one page, 3 to 4 paragraphs",
+     "min": 45
+    },
+    {
+     "id": "a5",
+     "t": "Order certified German translations of your 10th and 12th certificates",
+     "min": 30
+    },
+    {
+     "id": "a6",
+     "t": "Build a list of 20 to 30 target companies on ausbildung.de, LinkedIn and company career pages",
+     "min": 45
+    },
+    {
+     "id": "a7",
+     "t": "Build a portfolio of 5 to 10 pieces (only if you aim at game, VFX or design roles)",
+     "min": 60
+    },
+    {
+     "id": "a8",
+     "t": "Send applications, batch 1: 5 companies with a customised letter each",
+     "min": 45
+    },
+    {
+     "id": "a9",
+     "t": "Send applications, batch 2: 5 more companies",
+     "min": 45
+    },
+    {
+     "id": "a10",
+     "t": "Send applications, batch 3: up to 5 more (15 to 25 in total)",
+     "min": 45
+    },
+    {
+     "id": "a11",
+     "t": "Practise 10 common interview questions in German out loud",
+     "min": 45
+    },
+    {
+     "id": "a12",
+     "t": "Check each training contract: IHK or HWK stamp, stipend, start date, vocational school",
+     "min": 30
+    },
+    {
+     "id": "a13",
+     "t": "Collect the visa documents on the embassy checklist (Form 2, photos, insurance, contract)",
+     "min": 45
+    },
+    {
+     "id": "a14",
+     "t": "Check the money rule: stipend below the minimum needs a blocked account or a sponsor",
+     "min": 30
+    },
+    {
+     "id": "a15",
+     "t": "Arrange health insurance from the start date",
+     "min": 30
+    },
+    {
+     "id": "a16",
+     "t": "Book the embassy appointment and submit the national D visa application",
+     "min": 30
+    },
+    {
+     "id": "a17",
+     "t": "Arrange accommodation (ask about a company dorm) and open a German bank account",
+     "min": 45
+    }
+   ]
+  }
+ ]
+}
