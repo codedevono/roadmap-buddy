@@ -3,3 +3,5 @@
   const l=document.createElement('link');l.rel='stylesheet';l.href='space.css';document.head.append(l);
   const m=document.querySelector('meta[name="theme-color"]');if(m)m.content='#0A1119';
 })();
+/* project states, milestones and the project page (pstate.js), loaded last */
+(function(){const s=document.createElement('script');s.src='pstate.js';s.async=false;document.body.append(s)})();
