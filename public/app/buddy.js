@@ -271,12 +271,12 @@
       </div>
     </div>
     <div class="b-chips">
+      <button class="b-chip special" id="b-savepoint-btn" type="button">📍 Where I Left Off</button>
       <button class="b-chip special" id="b-briefing-btn" type="button">🌅 Daily Briefing</button>
-      <button class="b-chip special" id="b-rebalance-btn" type="button">⚖️ Rebalance Roadmap</button>
+      <button class="b-chip special" id="b-rebalance-btn" type="button">⚖️ Rebalance</button>
       <button class="b-chip special" id="b-git-btn" type="button">💾 Auto-Commit</button>
       <button class="b-chip" type="button" data-prompt="What should I focus on right now?">⚡ Next Focus</button>
       <button class="b-chip" type="button" data-prompt="Break down my active project into 3 small steps">💡 Decompose</button>
-      <button class="b-chip" type="button" data-prompt="I finished my session on C struct pointers (30m). Log it.">📝 Quick Log</button>
     </div>
     <form class="b-input-row" id="b-form">
       <input type="text" id="b-in" placeholder="Ask Buddy, log sessions, or shift dates..." autocomplete="off">
@@ -337,6 +337,13 @@
     msgs.scrollTop = msgs.scrollHeight;
     return d;
   }
+
+  // Save Point Screen
+  panel.querySelector('#b-savepoint-btn').onclick = () => {
+    if (typeof window.showSavePoint === 'function') {
+      window.showSavePoint();
+    }
+  };
 
   // Phase 4: Daily Briefing
   function loadBriefing() {

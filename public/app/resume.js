@@ -115,5 +115,6 @@ window.addEventListener('focus',maybe);
 window.addEventListener('pageshow',maybe);
 
 let tries=0;
+window.showSavePoint = show;
 const wait=setInterval(()=>{if(isReady()){clearInterval(wait);maybe()}else if(++tries>100)clearInterval(wait)},150);
 })();
