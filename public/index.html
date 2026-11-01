@@ -240,7 +240,7 @@ details.lad summary{padding:.9rem 1.1rem}
 </nav>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
-const KEY='buddy.v2', DAY=864e5, FILES=['skills.json','projects.json','events.json'];
+const KEY='buddy.v2', DAY=864e5, FILES=['data/skills.json','data/projects.json','data/events.json'];
 const GOAL=4;                                   // sessions per week that count as a goal week
 const XP={session:10,tiny:5,topic:40};
 const TITLES=['Newcomer','Apprentice','Builder','Maker','Engineer','Architect','Master'];
@@ -944,7 +944,7 @@ $('reset').onclick=()=>{if(confirm('Erase all progress on this device?')){S=blan
 Promise.all(FILES.map(f=>fetch(f,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(f);return r.json()}))).then(([a,b,c])=>{
   D={ladders:a.ladders,projects:b.projects,events:c.events};
   const opt=f=>fetch(f,{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null);
-  return Promise.all([opt('path.json'),opt('events-auto.json')]).then(([pj,ea])=>{
+  return Promise.all([opt('data/path.json'),opt('data/events-auto.json')]).then(([pj,ea])=>{
     P=pj;
     if(ea&&Array.isArray(ea.events))for(const e of ea.events)if(e&&e.id&&e.name&&!D.events.some(x=>x.id===e.id))D.events.push(Object.assign({},e,{auto:true}));
     build();check(true);renderAll();
@@ -952,6 +952,6 @@ Promise.all(FILES.map(f=>fetch(f,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new
 }).catch(()=>{$('focus').innerHTML='<p class="msg">Could not load the plan files. Open this page from GitHub Pages or a local server, not as a file.</p>'});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-<script src="import.js"></script>
+<script src="app/import.js"></script>
 </body>
 </html>

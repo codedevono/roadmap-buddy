@@ -2,7 +2,7 @@
    Same fixture and scenarios as test_vault.py (the Python tools), so the two sides are held to the same spec. */
 'use strict';
 const assert = require('assert');
-const V = require('./vault.js');
+const V = require('../public/app/vault.js');
 const { execFileSync } = require('child_process');
 const fs = require('fs'), os = require('os'), path = require('path');
 
@@ -209,7 +209,8 @@ const has = (f, text) => { const e = errs(f); assert.ok(e.some(x => x.includes(t
     const d = fs.mkdtempSync(path.join(os.tmpdir(), 'vz-')), root = path.join(d, 'myvault');
     for (const p of Object.keys(F0)) { fs.mkdirSync(path.dirname(path.join(root, p)), { recursive: true }); fs.writeFileSync(path.join(root, p), F0[p]); }
     const zp = path.join(d, 'v.zip');
-    execFileSync('python3', ['-I', '-c', 'import zipfile,os,sys\nr,z=sys.argv[1],sys.argv[2]\nzf=zipfile.ZipFile(z,"w",zipfile.ZIP_DEFLATED)\nfor b,_,fs_ in os.walk(r):\n  for f in fs_:\n    p=os.path.join(b,f); zf.write(p, os.path.join("myvault", os.path.relpath(p,r)))\nzf.close()', root, zp]);
+    const py = process.platform === 'win32' ? 'python' : 'python3';
+    execFileSync(py, ['-I', '-c', 'import zipfile,os,sys\nr,z=sys.argv[1],sys.argv[2]\nzf=zipfile.ZipFile(z,"w",zipfile.ZIP_DEFLATED)\nfor b,_,fs_ in os.walk(r):\n  for f in fs_:\n    p=os.path.join(b,f); zf.write(p, os.path.join("myvault", os.path.relpath(p,r).replace(chr(92),"/")))\nzf.close()', root, zp]);
     const buf = fs.readFileSync(zp), back = await V.readZip(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.length));
     assert.deepStrictEqual(back, F0);
   });

@@ -66,7 +66,7 @@ renderCalendar=function(){
   return r;
 };
 window.buddyIcs=icsText;
-fetch('calendar.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null).then(j=>{
+fetch('data/calendar.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null).then(j=>{
   PUB=((j&&j.events)||[]).filter(e=>e&&e.name&&ISO.test(e.date||''));
   if(PUB.length&&typeof renderAll==='function')renderAll();
 });

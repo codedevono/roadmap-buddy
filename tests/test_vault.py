@@ -7,6 +7,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
 import vault as V
 
 T0 = 1793500000000          # 2026-11-01 (ms)
@@ -72,7 +73,7 @@ def tree(d):
         for fn in files:
             p = os.path.join(root, fn)
             with open(p, encoding='utf-8') as f:
-                out[os.path.relpath(p, d)] = f.read()
+                out[os.path.relpath(p, d).replace('\\', '/')] = f.read()
     return out
 
 

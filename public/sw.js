@@ -1,7 +1,31 @@
 // Network-first: new versions of the app and the plan files show up on the next load.
 // The cache is only a fallback for when the phone is offline.
-const C = 'buddy-v20';
-const SHELL = ['./', 'index.html', 'import.js', 'v21.js', 'gcal.js', 'space.js', 'space.css', 'starmap.js', 'pstate.js', 'vault.js', 'ai.js', 'resume.js', 'desk.js', 'chakra-petch-500.woff2', 'chakra-petch-600.woff2', 'chakra-petch-700.woff2', 'calendar.json', 'manifest.json', 'icon.svg', 'skills.json', 'projects.json', 'events.json', 'path.json'];
+const C = 'buddy-v21';
+const SHELL = [
+  './',
+  'index.html',
+  'manifest.json',
+  'icon.svg',
+  'chakra-petch-500.woff2',
+  'chakra-petch-600.woff2',
+  'chakra-petch-700.woff2',
+  'app/import.js',
+  'app/v21.js',
+  'app/gcal.js',
+  'app/space.js',
+  'app/space.css',
+  'app/starmap.js',
+  'app/pstate.js',
+  'app/vault.js',
+  'app/ai.js',
+  'app/resume.js',
+  'app/desk.js',
+  'data/calendar.json',
+  'data/skills.json',
+  'data/projects.json',
+  'data/events.json',
+  'data/path.json'
+];
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(caches.open(C).then(c => c.addAll(SHELL)));
