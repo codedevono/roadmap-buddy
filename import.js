@@ -1,14 +1,28 @@
 /* Roadmap import, shown at the bottom of the Topics tab. Loaded after the main script:
-   it wraps build() (merges imported ladders into the plan) and renderRoadmap() (adds the import box). */
+   it wraps build() (merges imported ladders into the plan), renderRoadmap() (adds the import box),
+   topicRow() and render() (show each topic's links as buttons). */
 (function(){
 const css=document.createElement('style');
-css.textContent='.imp textarea{display:block;width:100%;min-height:9rem;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem;margin:.5rem 0}.imp .acts{flex-wrap:wrap;margin:.3rem 0}';
+css.textContent='.imp textarea{display:block;width:100%;min-height:9rem;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:.7rem;padding:.6rem;margin:.5rem 0}.imp .acts{flex-wrap:wrap;margin:.3rem 0}'
+ +'.lks{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0 .8rem}.lks a{display:inline-flex;align-items:center;min-height:2.75rem;max-width:100%;padding:.2rem .8rem;border:1.5px solid var(--line);border-radius:.7rem;font-size:.85rem;color:var(--accent);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lks a::after{content:"\\00a0\\2197"}.lks a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}';
 document.head.append(css);
 
 /*VET*/
 const IDRE=/^[a-z0-9][a-z0-9_-]*$/;
+/* A link is {"t":"Title","u":"https://..."} or just "https://...". Only http and https are accepted. */
+function linkOf(k){
+  let t='',u='';
+  if(typeof k==='string')u=k.trim();
+  else if(k&&typeof k==='object'){u=typeof k.u==='string'?k.u.trim():'';t=typeof k.t==='string'?k.t.trim():''}
+  if(!/^https?:\/\/[^\s<>"']+$/i.test(u)||u.length>500)return null;
+  let host;try{host=new URL(u).hostname.replace(/^www\./,'')}catch(e){return null}
+  if(!host)return null;
+  if(!t)t=host;
+  if(t.length>80)t=t.slice(0,79)+'…';
+  return{t,u};
+}
 function vet(text,have,haveL){
-  const out={err:[],warn:[],ladders:[],n:0,chain:0,ready:0};
+  const out={err:[],warn:[],ladders:[],n:0,chain:0,ready:0,links:0};
   const d=String(text||'').trim().replace(/^```[a-z]*\s*/i,'').replace(/\s*```$/,'');
   if(!d){out.err.push('Nothing pasted yet.');return out}
   let j;
@@ -39,6 +53,17 @@ function vet(text,have,haveL){
       else if(n.min>60)out.warn.push(nid+': '+n.min+' minutes is long for one sitting');
       if(n.tiny==null)noTiny++;
       else if(typeof n.tiny!=='string'||!n.tiny.trim())out.err.push(nid+': tiny must be text');
+      /* links: "links" (or "resources") is a list of {t,u} or plain URLs; stored as {t,u} under "links" */
+      const rawL=n.links!=null?n.links:n.resources;
+      delete n.resources;
+      if(rawL==null)delete n.links;
+      else if(!Array.isArray(rawL))out.err.push(nid+': links must be a list');
+      else{
+        const ok=[];
+        rawL.forEach((k,i)=>{const x=linkOf(k);if(x)ok.push(x);else out.err.push(nid+': link '+(i+1)+' needs an http or https address, like {"t":"Title","u":"https://..."}')});
+        if(ok.length>8)out.warn.push(nid+': '+ok.length+' links; only the first 8 are shown');
+        n.links=ok;out.links+=ok.length;
+      }
       const nd=n.needs==null?[]:n.needs;
       if(!Array.isArray(nd)||nd.some(x=>typeof x!=='string')){out.err.push(nid+': needs must be a list of ids');g[nid]=[];continue}
       g[nid]=nd;
@@ -70,6 +95,35 @@ const _b=build;build=function(){if(D&&D.ladders)merge();_b()};
 const haveIds=()=>new Set(D.ladders.flatMap(l=>l.nodes.map(n=>n.id)));
 const haveLads=()=>new Set(D.ladders.map(l=>l.id));
 
+/* Links on topics: buttons under the topic in Topics and Path, and under the smallest-start line on Today.
+   Links are checked again here, so a hand-edited backup cannot put anything but http or https on screen. */
+function linksBox(n){
+  const L=((n&&Array.isArray(n.links))?n.links:[]).map(linkOf).filter(Boolean).slice(0,8);
+  if(!L.length)return null;
+  const d=el('div','lks');
+  for(const x of L){
+    const a=document.createElement('a');
+    a.href=x.u;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.t;
+    a.setAttribute('aria-label',x.t+' (opens in a new tab)');
+    d.append(a);
+  }
+  return d;
+}
+const _tr=topicRow;
+topicRow=function(n,o){
+  const r=_tr(n,o),b=r.querySelector('.tb'),x=linksBox(n);
+  if(b&&x)b.insertBefore(x,b.querySelector('.acts'));
+  return r;
+};
+const _rn=render;
+render=function(){
+  _rn();
+  const f=$('focus'),x=cur&&cur.n?linksBox(cur.n):null;
+  if(!f||!x)return;
+  const w=f.querySelector('.why')||f.querySelector('.hint');
+  if(w)w.after(x);
+};
+
 const impBox=document.createElement('details');impBox.className='lad imp';
 const sm=el('summary');sm.append(el('span','ln','Roadmaps'),el('span','lc','Import'));
 const body=el('div');body.style.padding='0 1rem 1rem';
@@ -84,7 +138,7 @@ function show(r,added){
   for(const e of r.err.slice(0,8)){const x=el('div','sub','✗ '+e);x.style.color='var(--c-sec)';msg.append(x)}
   if(r.err.length>8)msg.append(el('div','sub','and '+(r.err.length-8)+' more errors'));
   for(const w of r.warn.slice(0,6))msg.append(el('div','sub','! '+w));
-  if(!r.err.length)msg.append(el('div','sub',(added?'Added: ':'OK: ')+r.ladders.length+' ladder'+(r.ladders.length===1?'':'s')+', '+r.n+' topics, longest chain '+r.chain+', '+r.ready+' ready to start now.'));
+  if(!r.err.length)msg.append(el('div','sub',(added?'Added: ':'OK: ')+r.ladders.length+' ladder'+(r.ladders.length===1?'':'s')+', '+r.n+' topics'+(r.links?', '+r.links+' link'+(r.links===1?'':'s'):'')+', longest chain '+r.chain+', '+r.ready+' ready to start now.'));
 }
 function run(add){
   if(!D){show({err:['Still loading. Try again in a moment.'],warn:[],ladders:[]});return}
@@ -99,7 +153,8 @@ function drawList(){
   const A=S.ladders||[];
   if(!A.length)lst.append(el('p','sub','No imported roadmaps yet.'));
   for(const l of A){
-    const r=el('div','p-row');r.append(el('span',null,l.name+' · '+l.nodes.length+' topics'));
+    const nl=l.nodes.reduce((a,n)=>a+(Array.isArray(n.links)?n.links.length:0),0);
+    const r=el('div','p-row');r.append(el('span',null,l.name+' · '+l.nodes.length+' topics'+(nl?' · '+nl+' links':'')));
     const b=el('button','mini','Remove');b.setAttribute('aria-label','Remove '+l.name);b.onclick=()=>removeLad(l.id);r.append(b);lst.append(r);
   }
 }
@@ -124,7 +179,9 @@ mk('Copy backup',async()=>{
   try{await navigator.clipboard.writeText(j);toast('Backup copied. Paste it here to restore.')}catch(e){prompt('Copy this:',j)}
 });
 fi.onchange=()=>{const f=fi.files[0];if(f)f.text().then(t=>{ta.value=t;run(false)})};
-body.append(el('p','sub','Roadmaps you add here live on this device. Copy a backup now and then.'),ta,acts,fi,msg,lst);
+body.append(el('p','sub','Roadmaps you add here live on this device. Copy a backup now and then.'),
+  el('p','sub','Optional on each topic: "links":[{"t":"CS50P","u":"https://cs50.harvard.edu/python/"}]. They show as buttons on the topic and on Today.'),
+  ta,acts,fi,msg,lst);
 
 const _rr=renderRoadmap;
 renderRoadmap=function(){_rr();drawList();$('v-roadmap').append(impBox)};
