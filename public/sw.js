@@ -1,6 +1,6 @@
 // Network-first: new versions of the app and the plan files show up on the next load.
 // The cache is only a fallback for when the phone is offline.
-const C = 'buddy-v23';
+const C = 'buddy-v25';
 const SHELL = [
   './',
   'index.html',
@@ -22,6 +22,8 @@ const SHELL = [
   'app/desk.js',
   'app/buddy.js',
   'app/goals.js',
+  'app/polish.js',
+  'app/polish.css',
   'data/calendar.json',
   'data/skills.json',
   'data/projects.json',

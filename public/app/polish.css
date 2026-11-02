@@ -1,0 +1,131 @@
+/* polish.css: calmer spacing and colour, wide-window Home dashboard, Coming up card.
+   Loaded after hub.css. Only overrides look; no feature is removed. */
+
+/* ---- calmer chips and accents: one accent colour, types differ by a small dot ---- */
+.chip,.metric-pill,.nav-tab-btn,.mode-pill{box-shadow:none}
+.metric-pill{background:transparent;border-color:var(--line)}
+.cu-chip{display:inline-flex;align-items:center;gap:.35rem;font:600 .66rem var(--mono,monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:.12rem .5rem;white-space:nowrap}
+.cu-chip::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--cu,var(--mute))}
+.cu-chip.k-exam{--cu:#e0897a}.cu-chip.k-test{--cu:#d9b45c}.cu-chip.k-ctf{--cu:#7cc4cc}.cu-chip.k-gsoc{--cu:#9aa7e8}
+.cu-chip.k-contest,.cu-chip.k-hackathon{--cu:#7cc4cc}.cu-chip.k-deadline,.cu-chip.k-application{--cu:#d9b45c}.cu-chip.k-milestone{--cu:#8fd0a2}
+
+/* ---- This week pace: names on one line, dots at the right ---- */
+.t-row{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.35rem 0}
+.t-row .n{flex:1 1 auto;width:auto;min-width:0;font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t-row .dots{flex:0 0 auto}
+.p-row{display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.35rem 0}
+.p-row .p-hide{margin-left:.5rem;font-size:.68rem;padding:.1rem .45rem;min-height:0;width:auto;opacity:.7}
+.p-hidden-note{font-size:.75rem;color:var(--mute);margin-top:.4rem}
+.p-hidden-note button{width:auto;min-height:0;padding:.1rem .5rem;font-size:.72rem}
+
+/* ---- spacing on the Home cards ---- */
+#v-home>.card,#v-home>details{margin:0}
+#v-home{gap:1rem}
+.card.goal{padding:1.1rem 1.2rem}
+.card.nx{padding:1.3rem 1.4rem}
+#strip{padding:1rem 1.1rem}
+#strip .sd{padding:.7rem 0;border-top:1px solid var(--line)}
+#strip .strip-h{margin-bottom:.4rem}
+
+/* ---- wide windows: use the whole width, three columns like the old dashboard ---- */
+@media (min-width:1100px){
+  body>div[style*="max-width"]{max-width:120rem!important;padding:.8rem 2rem 3rem!important}
+  .hub-nav{max-width:60rem}
+  #v-home:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);gap:1rem;align-items:start}
+  #v-home>#goal{grid-column:1;grid-row:1}
+  #v-home>#comingup{grid-column:1;grid-row:2}
+  #v-home>#more{grid-column:1;grid-row:3}
+  #v-home>.nx{grid-column:2;grid-row:1/span 3}
+  #v-home>#strip{grid-column:3;grid-row:1/span 3}
+}
+@media (min-width:1100px) and (min-height:700px){
+  #v-home>#strip{max-height:calc(100vh - 12rem);overflow:auto}
+}
+
+/* ---- phones and narrow windows: next step first, Coming up after the schedule ---- */
+@media (max-width:1099px){
+  #v-home:not([hidden]){display:flex;flex-direction:column;gap:1rem}
+  #v-home>#comingup{order:3}
+  #v-home>#more{order:4}
+  .hub-metrics{flex-wrap:wrap}
+}
+#strip .sd{padding-left:.6rem;padding-right:.2rem}
+
+/* ---- calendar: shorter day cells on wide windows so the month fits on screen ---- */
+@media (min-width:900px){
+  .cal-day-cell{aspect-ratio:auto;min-height:5.2rem}
+}
+
+/* ================= v3: calm one-screen Home =================
+   Rules: one idea per card, one line per item, details on demand, no page scroll on a laptop. */
+
+/* Coming up: one line per item */
+#comingup{padding:.8rem 1rem}
+.cu-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.2rem}
+#comingup h2{margin:0;font-size:.95rem;letter-spacing:0;text-transform:none;color:var(--ink);font-weight:650}
+.cu-all{min-height:0;padding:.15rem .6rem;font-size:.75rem;border-radius:.5rem;color:var(--mute);border-width:1px}
+.cu-row{display:grid;grid-template-columns:.55rem 1fr auto auto;align-items:center;gap:.65rem;padding:.5rem 0;border-top:1px solid var(--line)}
+.cu-row:first-of-type{border-top:0}
+.cu-dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--cu,var(--mute))}
+.cu-row.k-exam{--cu:#e0897a}.cu-row.k-test{--cu:#d9b45c}.cu-row.k-ctf,.cu-row.k-contest,.cu-row.k-hackathon{--cu:#7cc4cc}
+.cu-row.k-gsoc{--cu:#9aa7e8}.cu-row.k-deadline,.cu-row.k-application{--cu:#d9b45c}.cu-row.k-milestone{--cu:#8fd0a2}
+.cu-name{min-width:0;display:flex;flex-direction:column}
+.cu-t{font-weight:600;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cu-k{font-size:.7rem;color:var(--mute)}
+.cu-when{text-align:right;font-size:.7rem;color:var(--mute);white-space:nowrap;line-height:1.25}
+.cu-when b{display:block;color:var(--ink);font-size:.82rem;font-weight:600}
+.cu-act{display:flex;gap:.2rem}
+.cu-act a{display:grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:.4rem;border:1px solid var(--line);color:var(--mute);text-decoration:none;font-size:.8rem}
+.cu-act a:hover,.cu-act a:focus-visible{color:var(--accent);border-color:var(--accent)}
+
+/* Goal card: tighter, the buttons become a quiet row */
+.card.goal{padding:.8rem 1rem}
+#goal .gring{width:3.6rem;height:3.6rem}
+#goal h2{font-size:1rem}
+
+/* Next step: the one loud card. Smaller ring, clamped copy, quieter secondary buttons */
+.card.nx{padding:1rem 1.2rem}
+.nx .ring{width:5.6rem;height:5.6rem;margin:0 auto .6rem}
+.nx .ring .t{font-size:1.25rem}
+.nx h1{font-size:1.2rem;line-height:1.25;margin:.4rem 0 .3rem}
+.nx .hint{margin:0 0 .4rem;font-size:.85rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nx .why{margin:0 0 .6rem;font-size:.78rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.nx .timer-adjust-row{margin-bottom:.6rem;gap:.35rem}
+.nx .timer-adjust-row button{min-height:0;padding:.25rem .5rem;font-size:.72rem}
+.nx button.main{min-height:2.8rem;font-size:1rem}
+.nx .row{grid-template-columns:repeat(4,1fr);gap:.4rem;margin-top:.5rem}
+.nx .row button{min-height:2.4rem;padding:.3rem .4rem;font-size:.8rem;border-color:var(--line);color:var(--mute)}
+.nx .row button small{display:none}
+.nx .row #ok{color:var(--ink)}
+
+/* 7-day schedule: one line per day, reasons live in the tooltip */
+#strip{padding:.8rem 1rem}
+#strip .strip-h h2{font-size:.95rem;letter-spacing:0;text-transform:none;font-weight:650}
+#strip .sd{grid-template-columns:3.6rem 1fr;padding:.45rem 0 .45rem .2rem}
+#strip .sd .dl{font-size:.7rem;line-height:1.2}
+#strip .sd .dl b{font-size:.85rem}
+#strip .ev2,#strip .tskl{font-size:.8rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+#strip .sub{font-size:.72rem;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+#strip .sub[hidden]{display:none!important}
+#strip .chip{font-size:.62rem;padding:.05rem .4rem}
+
+/* Header: one slim line instead of three stacked rows */
+.hud{margin:0 0 .3rem}
+.hud .bar{height:.3rem}
+.hub-nav{margin-bottom:.6rem}
+
+/* Wide laptop windows: natural height, left column stacks, summary stays collapsed */
+@media (min-width:1100px){
+  #v-home:not([hidden]){gap:.8rem;align-items:start;grid-template-rows:auto auto 1fr}
+  #v-home>#goal{grid-row:1}
+  #v-home>#comingup{grid-row:2;overflow:visible}
+  #v-home>#more{grid-row:3;margin:0;align-self:start}
+  #v-home>#more[open]{max-height:60vh;overflow:auto}
+  #v-home>.nx{grid-row:1/span 3}
+  #v-home>#strip{grid-row:1/span 3;max-height:none;overflow:visible}
+  #v-home>#more:not([open]) summary{padding:.55rem 1rem;min-height:0}
+}
+/* Phones: same calm sizes, normal flow */
+@media (max-width:1099px){
+  .nx .row{grid-template-columns:1fr 1fr}
+}

@@ -4,7 +4,7 @@
   "target_date": "2027-08-31",
   "type": "exam",
   "priority": "urgent",
-  "active": true,
+  "active": false,
   "note": "Dated plan from your roadmap PDF (prepared 1 Nov 2026). Goal: B1 by May 2027, then B2. If A2 is not mostly done by end of February, move the B1 exam to June or July. If B1 is not passed by June, aim for the Feb or March 2028 intake. Hours and month targets are the author's estimates; check embassy and employer rules.",
   "links": [
     {
@@ -496,5 +496,5 @@
     "au-arrival",
     "au-selfcheck"
   ],
-  "updated": 1793613847188
+  "updated": 1793616379999
 }
