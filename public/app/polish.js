@@ -75,39 +75,54 @@ function upcoming(){
 function renderComing(){
   const host=document.getElementById('v-home');if(!host)return;
   let c=document.getElementById('comingup');
-  if(!c){c=el('section','card');c.id='comingup';c.setAttribute('aria-label','Coming up');
-    const g=document.getElementById('goal');(g?g.after(c):host.prepend(c))}
+  if(!c){c=el('section','card');c.id='comingup';c.setAttribute('aria-label','Coming up');host.append(c)}
   c.textContent='';
+  const items=upcoming().slice(0,10);
   const hd=el('div','cu-head');hd.append(el('h2',null,'Coming up'));
-  const ob=el('button','cu-all','Calendar');ob.type='button';ob.onclick=()=>window.setView('calendar');hd.append(ob);c.append(hd);
-  const items=upcoming().slice(0,4);
+  const ob=el('button','mini','Open calendar');ob.type='button';ob.onclick=()=>window.setView('calendar');hd.append(ob);c.append(hd);
   if(!items.length)c.append(el('p','cu-empty','Nothing dated yet. Add a date in the Calendar tab.'));
   for(const it of items){
     const r=el('div','cu-row k-'+it.k);
     r.append(el('span','cu-dot'));
-    const nm=el('div','cu-name');nm.append(el('span','cu-t',it.name),el('span','cu-k',(KIND_NAME[it.k]||'Event')+(it.est?' (est.)':'')));
-    const w=el('div','cu-when');w.append(el('b',null,when(it.date).replace('in ','')),el('span',null,nice(it.date)));
+    const nm=el('div','cu-name');nm.append(el('span','cu-t',it.name),el('span','cu-k',(KIND_NAME[it.k]||'Event')+(it.est?' · estimated date':'')));
+    const w=el('div','cu-when');w.append(el('b',null,when(it.date)),el('span',null,nice(it.date)));
     const m=el('div','cu-act');
-    const a=el('a',null,'+');a.href=gLink(it);a.target='_blank';a.rel='noopener noreferrer';a.title='Add to Google Calendar';a.setAttribute('aria-label','Add '+it.name+' to Google Calendar');m.append(a);
-    if(it.url&&/^https?:/.test(it.url)){const s=el('a',null,'↗');s.href=it.url;s.target='_blank';s.rel='noopener noreferrer';s.title='Source';s.setAttribute('aria-label','Source for '+it.name);m.append(s)}
+    const a=el('a',null,'Add to calendar');a.href=gLink(it);a.target='_blank';a.rel='noopener noreferrer';m.append(a);
+    if(it.url&&/^https?:/.test(it.url)){const s2=el('a',null,'Source');s2.href=it.url;s2.target='_blank';s2.rel='noopener noreferrer';m.append(s2)}
     r.append(nm,w,m);c.append(r);
   }
+  const t=document.getElementById('ht-coming-n');if(t)t.textContent=items.length?String(items.length):'';
 }
 
-/* 4b. 7-day schedule: keep the first line of each day, tuck the long reasons away */
-function tidyStrip(){
-  const s=document.getElementById('strip');if(!s)return;
-  s.querySelectorAll('.sd').forEach(row=>{
-    const subs=row.querySelectorAll('.sub');
-    subs.forEach(x=>{x.title=x.textContent;if(!row.classList.contains('today'))x.hidden=true});
-    row.querySelectorAll('.ev2').forEach(e=>{const t=e.textContent;if(!e.title)e.title=t});
-  });
+/* 4b. Home sub-tabs: Today | Schedule | Coming up | Summary */
+const HT=[['today','Today'],['schedule','Next 7 days'],['coming','Coming up'],['summary','Summary']];
+let htab='today';
+try{const v=localStorage.getItem('buddy.homeTab');if(HT.some(x=>x[0]===v))htab=v}catch(e){}
+function setHomeTab(k,focus){
+  htab=k;try{localStorage.setItem('buddy.homeTab',k)}catch(e){}
+  const host=document.getElementById('v-home');if(!host)return;
+  host.dataset.ht=k;
+  host.querySelectorAll('#home-tabs [role=tab]').forEach(b=>{const on=b.dataset.k===k;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;b.classList.toggle('on',on);if(on&&focus)b.focus()});
+  const m=document.getElementById('more');if(m&&k==='summary')m.open=true;
+}
+function buildTabs(){
+  const host=document.getElementById('v-home');if(!host||document.getElementById('home-tabs'))return;
+  const bar=el('div');bar.id='home-tabs';bar.setAttribute('role','tablist');bar.setAttribute('aria-label','Home sections');
+  for(const [k,l] of HT){
+    const b=el('button','ht-btn');b.type='button';b.setAttribute('role','tab');b.dataset.k=k;
+    b.append(el('span',null,l));if(k==='coming'){const n=el('span','ht-n');n.id='ht-coming-n';b.append(n)}
+    b.onclick=()=>setHomeTab(k,false);
+    b.onkeydown=e=>{const i=HT.findIndex(x=>x[0]===k);let j=-1;
+      if(e.key==='ArrowRight')j=(i+1)%HT.length;else if(e.key==='ArrowLeft')j=(i+HT.length-1)%HT.length;
+      if(j>=0){e.preventDefault();setHomeTab(HT[j][0],true)}};
+    bar.append(b);
+  }
+  host.prepend(bar);setHomeTab(htab,false);
 }
 
 /* 5. hooks */
-if(typeof window.renderStrip==='function'){const bs=window.renderStrip;window.renderStrip=function(){const r=bs.apply(this,arguments);try{tidyStrip()}catch(e){}return r}}
 const baseRender=window.render;
-window.render=function(){const r=baseRender.apply(this,arguments);try{renderComing();tidyStrip();decorateProjects();}catch(e){console.error('polish',e)}return r};
+window.render=function(){const r=baseRender.apply(this,arguments);try{buildTabs();renderComing();decorateProjects();}catch(e){console.error('polish',e)}return r};
 
 (async function init(){
   try{const r=await baseFetch(PUB_URL);if(r.ok){const j=await r.json();PUB=(j.events||[]).filter(e=>e&&e.name&&/^\d{4}-\d{2}-\d{2}$/.test(e.date||''))}}catch(e){}
