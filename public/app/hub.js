@@ -174,14 +174,52 @@
     // Timer project selector
     const timerSel = $('timer-project');
     const curTimerVal = timerSel.value;
-    timerSel.innerHTML = activeProjects.map(p => 
-      `<option value="${p.id}">${escapeHtml(p.name)} [${p.category}]</option>`
-    ).join('');
-    if (curTimerVal && activeProjects.some(p => p.id === curTimerVal)) {
+    
+    let timerOptionsHtml = '';
+
+    // Active Goals & Exam Tasks
+    const activeGoals = typeof window.getActiveGoals === 'function' ? window.getActiveGoals() : [];
+    const isTopicPaused = typeof window.isTopicPaused === 'function' ? window.isTopicPaused : () => false;
+
+    if (activeGoals.length) {
+      let goalTasksHtml = '';
+      for (const g of activeGoals) {
+        const uncompleted = (g.syllabus || []).filter(n => !(typeof S !== 'undefined' && S.done && S.done[n.id]));
+        if (uncompleted.length) {
+          goalTasksHtml += uncompleted.slice(0, 10).map(n => 
+            `<option value="goal-${g.id}" data-type="goal" data-topic-id="${n.id}">🎯 ${escapeHtml(g.name)}: ${escapeHtml((n.t || n.title || '').slice(0, 36))}</option>`
+          ).join('');
+        }
+      }
+      if (goalTasksHtml) {
+        timerOptionsHtml += `<optgroup label="🎯 Active Goal Tasks">${goalTasksHtml}</optgroup>`;
+      }
+    }
+
+    // Personal Projects
+    if (activeProjects.length) {
+      timerOptionsHtml += `<optgroup label="📁 Personal Projects">` + activeProjects.map(p => 
+        `<option value="${p.id}" data-type="project">${escapeHtml(p.name)} [${p.category}]</option>`
+      ).join('') + `</optgroup>`;
+    }
+
+    // Active Roadmap Ladders (skipping paused goals)
+    if (typeof D !== 'undefined' && D && D.ladders && D.ladders.length) {
+      const activeLadders = D.ladders.filter(l => l.nodes && l.nodes.length && !isTopicPaused(null, l.id));
+      if (activeLadders.length) {
+        timerOptionsHtml += `<optgroup label="🗺️ Roadmap Curriculums">` + activeLadders.slice(0, 10).map(l => {
+          const nextNode = l.nodes.find(n => !(typeof S !== 'undefined' && S.done && S.done[n.id])) || l.nodes[0];
+          return `<option value="${l.id}" data-type="roadmap" data-topic-id="${nextNode ? nextNode.id : ''}">${escapeHtml(l.name)}: ${escapeHtml(nextNode ? (nextNode.t || '').slice(0, 36) : '')}</option>`;
+        }).join('') + `</optgroup>`;
+      }
+    }
+
+    timerSel.innerHTML = timerOptionsHtml || `<option value="general" data-type="project">General Focus Session</option>`;
+    if (curTimerVal && Array.from(timerSel.options).some(o => o.value === curTimerVal)) {
       timerSel.value = curTimerVal;
-    } else if (activeProjects.length) {
-      timerSel.value = activeProjects[0].id;
-      App.timer.projectId = activeProjects[0].id;
+    } else if (timerSel.options.length) {
+      timerSel.value = timerSel.options[0].value;
+      App.timer.projectId = timerSel.options[0].value;
     }
   }
 

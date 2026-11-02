@@ -526,46 +526,138 @@
     const PT={};
     function pick(o){
       o=o||{};const now=Date.now(), sc={}, why={};
-      if(S.pin&&idx[S.pin]&&!isDone(S.pin)&&ready(idx[S.pin])){const n=idx[S.pin];return{n,lad:n.lad,why:'You chose this from the roadmap'}}
-      const add=(id,s,w)=>{sc[id]=(sc[id]||0)+s;(why[id]=why[id]||[]).push([s,w])};
-      const fp=focusP();
-      for(const p of allProjects()){
-        if(p.status==='paused')continue;
-        const f=fp?(fp.id===p.id?1:.25):1, best={};
-        needsOf(p).forEach((nid,i)=>{
-          if(isDone(nid)||!idx[nid])return;
-          const base=p.priority*p.priority*Math.max(10-i,2);
-          for(const c of closure(nid)){
-            if(isDone(c)||!ready(idx[c]))continue;
-            const s=c===nid?base:base*.9;
-            if(!best[c]||best[c].s<s)best[c]={s,w:c===nid?p.name+' needs this':p.name+' needs '+short(idx[nid]).toLowerCase()+', and this comes first'};
+      const mode = (window.getCurrentMode ? window.getCurrentMode() : 'balanced');
+      const activeGoals = (window.getActiveGoals ? window.getActiveGoals() : []);
+      const pausedGoals = (window.getPausedGoals ? window.getPausedGoals() : []);
+
+      // 0. If pinned, verify it is NOT paused and NOT violating exam mode
+      if(S.pin && idx[S.pin] && !isDone(S.pin)){
+        const pNode = idx[S.pin];
+        const isPaused = window.isTopicPaused ? window.isTopicPaused(pNode.id, pNode.lad ? pNode.lad.id : null) : false;
+        if(isPaused){
+          S.pin = null;
+          save();
+        } else if (mode === 'exam_only') {
+          // In exam mode, pinned node must belong to an active exam goal
+          const inExam = activeGoals.some(g => (g.type === 'exam' || g.type === 'academic') && (
+            g.id === (pNode.lad ? pNode.lad.id : null) ||
+            (g.prep_ids && g.prep_ids.includes(pNode.id)) ||
+            (g.syllabus && g.syllabus.some(s => s.id === pNode.id))
+          ));
+          if(!inExam){
+            S.pin = null;
+            save();
+          } else if(ready(pNode)){
+            return {n: pNode, lad: pNode.lad, why: 'You chose this from your exam goals'};
           }
-        });
-        for(const c in best)add(c,best[c].s*f,best[c].w);
-      }
-      for(const p of S.projects){
-        if(p.status==='paused')continue;
-        const f=fp?(fp.id===p.id?1:.25):1, t=ptNodes(p).find(n=>!isDone(n.id)&&!(S.later[n.id]>now));
-        if(!t)continue;
-        const dl=daysTo(p.deadline);
-        add(t.id,p.priority*p.priority*12*f+(dl!=null?Math.max(0,20-dl)*.5*f:0),p.name+(fp&&fp.id===p.id?' is your focus project':' is one of your projects')+(dl!=null?(dl>=0?', due in '+dl+' days':', past its date'):''));
-      }
-      for(const e of D.events){
-        const ed=evDate(e);if(!ed)continue;
-        const days=Math.max((new Date(ed)-now)/DAY,3);
-        if(days>180)continue;
-        const u=(e.weight||0)*300/days;if(!u)continue;
-        for(const t of (e.prep||[])){
-          const ids=idx[t]?[t]:[(D.ladders.find(l=>l.id===t)||{nodes:[]}).nodes.find(n=>!isDone(n.id)&&ready(n))?.id].filter(Boolean);
-          for(const nid of ids)for(const c of closure(nid))if(!isDone(c)&&ready(idx[c]))add(c,u,e.name+' in '+Math.round(days)+' days');
+        } else if(ready(pNode)){
+          return {n: pNode, lad: pNode.lad, why: 'You chose this target'};
         }
       }
-      for(const l of D.ladders){
-        const n=firstOpen(l);if(!n)continue;
-        const gap=Math.max(0,(l.floor-weekCount(l.id))/l.floor);
-        const idle=Math.min((now-(S.last[l.id]||0))/DAY,7);
-        add(n.id,gap*6+idle*.4,'keeps '+l.name+' moving this week');
+
+      const add=(id,s,w)=>{
+        // Never score paused topics
+        const cn = idx[id] || PT[id];
+        if(!cn) return;
+        const ladId = cn.lad ? cn.lad.id : null;
+        if(window.isTopicPaused && window.isTopicPaused(id, ladId)) return;
+        sc[id]=(sc[id]||0)+s;
+        (why[id]=why[id]||[]).push([s,w]);
+      };
+
+      // 1. In EXAM ONLY mode: strictly score and recommend from active exam goals
+      if(mode === 'exam_only'){
+        for(const g of activeGoals){
+          const isExam = (g.type === 'exam' || g.type === 'academic');
+          if(!isExam) continue;
+          const pMult = g.priority === 'urgent' ? 12 : g.priority === 'high' ? 8 : 4;
+          const days = g.target_date ? daysTo(g.target_date) : 60;
+          const urgency = days != null ? Math.max(1, 200 / Math.max(days, 3)) : 20;
+
+          // Search in syllabus
+          const syl = g.syllabus || [];
+          for(const t of syl){
+            if(isDone(t.id) || !idx[t.id]) continue;
+            if(!ready(idx[t.id])) continue;
+            const tDays = t.due ? daysTo(t.due) : days;
+            const tUrg = tDays != null ? Math.max(1, 150 / Math.max(tDays, 2)) : 10;
+            add(t.id, pMult * 50 + urgency + tUrg, g.title || g.name || 'Exam goal' + ' (Exam focus · due ' + (t.due || g.target_date || 'soon') + ')');
+          }
+
+          // Search in ladder nodes matching goal
+          const lad = D.ladders.find(l => l.id === g.id);
+          if(lad){
+            for(const n of lad.nodes){
+              if(isDone(n.id) || !ready(n)) continue;
+              add(n.id, pMult * 40 + urgency, (g.title || g.name || lad.name) + ' exam curriculum step');
+            }
+          }
+        }
+      } else {
+        // Balanced or Builder Mode
+        // Score active Goals FIRST with high weight
+        for(const g of activeGoals){
+          const pMult = g.priority === 'urgent' ? 10 : g.priority === 'high' ? 7 : 4;
+          const days = g.target_date ? daysTo(g.target_date) : 90;
+          const urgency = days != null ? Math.max(1, 120 / Math.max(days, 3)) : 10;
+          const syl = g.syllabus || [];
+          for(const t of syl){
+            if(isDone(t.id) || !idx[t.id] || !ready(idx[t.id])) continue;
+            const tDays = t.due ? daysTo(t.due) : days;
+            const tUrg = tDays != null ? Math.max(1, 100 / Math.max(tDays, 2)) : 5;
+            add(t.id, pMult * 35 + urgency + tUrg, '🎯 Goal: ' + (g.title || g.name) + (t.due ? ', due ' + t.due : ''));
+          }
+        }
+
+        // Projects scoring (builder mode gives 2.5x)
+        const projMult = (mode === 'builder' ? 2.5 : 1);
+        const fp = focusP();
+        for(const p of allProjects()){
+          if(p.status==='paused') continue;
+          const f = (fp ? (fp.id===p.id ? 1.5 : .3) : 1) * projMult, best={};
+          needsOf(p).forEach((nid,i)=>{
+            if(isDone(nid)||!idx[nid])return;
+            const base=p.priority*p.priority*Math.max(10-i,2);
+            for(const c of closure(nid)){
+              if(isDone(c)||!ready(idx[c]))continue;
+              const s=c===nid?base:base*.9;
+              if(!best[c]||best[c].s<s)best[c]={s,w:c===nid?p.name+' needs this':p.name+' needs '+short(idx[nid]).toLowerCase()+', and this comes first'};
+            }
+          });
+          for(const c in best)add(c,best[c].s*f,best[c].w);
+        }
+
+        for(const p of S.projects){
+          if(p.status==='paused')continue;
+          const f = (fp ? (fp.id===p.id ? 1.5 : .3) : 1) * projMult;
+          const t = ptNodes(p).find(n=>!isDone(n.id)&&!(S.later[n.id]>now));
+          if(!t)continue;
+          const dl=daysTo(p.deadline);
+          add(t.id,p.priority*p.priority*12*f+(dl!=null?Math.max(0,20-dl)*.5*f:0),p.name+(fp&&fp.id===p.id?' is your focus project':' is one of your projects')+(dl!=null?(dl>=0?', due in '+dl+' days':', past its date'):''));
+        }
+
+        for(const e of D.events){
+          // Exclude events from paused goals
+          if(window.isGoalPaused && window.isGoalPaused(e.goal_id)) continue;
+          const ed=evDate(e);if(!ed)continue;
+          const days=Math.max((new Date(ed)-now)/DAY,3);
+          if(days>180)continue;
+          const u=(e.weight||0)*300/days;if(!u)continue;
+          for(const t of (e.prep||[])){
+            const ids=idx[t]?[t]:[(D.ladders.find(l=>l.id===t)||{nodes:[]}).nodes.find(n=>!isDone(n.id)&&ready(n))?.id].filter(Boolean);
+            for(const nid of ids)for(const c of closure(nid))if(!isDone(c)&&ready(idx[c]))add(c,u,e.name+' in '+Math.round(days)+' days');
+          }
+        }
+
+        for(const l of D.ladders){
+          if(window.isGoalPaused && window.isGoalPaused(l.id)) continue;
+          const n=firstOpen(l);if(!n)continue;
+          const gap=Math.max(0,(l.floor-weekCount(l.id))/l.floor);
+          const idle=Math.min((now-(S.last[l.id]||0))/DAY,7);
+          add(n.id,gap*6+idle*.4,'keeps '+l.name+' moving this week');
+        }
       }
+
       let best=null;
       for(const id in sc){
         if(S.later[id]>now)continue;
@@ -573,7 +665,7 @@
         if(!best||sc[id]>best.s)best={id,s:sc[id]};
       }
       if(!best)return null;
-      const n=idx[best.id]||PT[best.id], reasons=why[best.id].sort((a,b)=>b[0]-a[0]).slice(0,2).map(r=>r[1]);
+      const n=idx[best.id]||PT[best.id], reasons=(why[best.id]||[]).sort((a,b)=>b[0]-a[0]).slice(0,2).map(r=>r[1]);
       return {n,lad:n.lad,why:reasons.join('; ')};
     }
 
@@ -594,8 +686,31 @@
       if(!cur){f.innerHTML='<p class="msg">Nothing is ready. Everything is done or snoozed. Add skills in skills.json.</p>'}
       else{
         const n=cur.n, lad=cur.lad||n.lad||{id:'misc',name:'Next step'}, mins=n.min||25;
-        f.innerHTML=`<p class="track"></p><h1></h1><p class="hint"></p><p class="why"></p>
+        f.innerHTML=`<div class="focus-head-bar">
+          <div class="focus-track-wrap">
+            <span class="track"></span>
+            <span class="focus-badge" id="focus-mode-badge"></span>
+          </div>
+          <div class="focus-target-select-wrap">
+            <label class="focus-lbl" for="focus-quick-select">FOCUS ON:</label>
+            <select id="focus-quick-select" class="focus-target-select" title="Switch focus topic or task"></select>
+            <button id="focus-clear-pin" class="focus-clear-btn" title="Return to smart priority recommendation">⚡ Auto-Pick</button>
+          </div>
+        </div>
+        <h1></h1><p class="hint"></p><p class="why"></p>
         <div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" id="fg" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><div class="t" id="clock"></div></div>
+        <div class="timer-adjust-row">
+          <button class="dur-step-btn" id="dur-minus" title="Subtract 5 minutes">-5m</button>
+          <div class="dur-chips">
+            <button class="dur-chip" data-min="15">15m</button>
+            <button class="dur-chip" data-min="25">25m</button>
+            <button class="dur-chip" data-min="30">30m</button>
+            <button class="dur-chip" data-min="45">45m</button>
+            <button class="dur-chip" data-min="60">60m</button>
+          </div>
+          <button class="dur-step-btn" id="dur-plus" title="Add 5 minutes">+5m</button>
+          <button class="tiny-chip-btn" id="dur-tiny" title="Tiny step: 5 min low friction start">⚡ 5m Tiny Start</button>
+        </div>
         <button class="main" id="go">Start ${mins} minutes</button>
         <button class="mini" id="rst" hidden>Start over</button>
         <div class="row"><button id="ok">Session done<small>+${XP.session} XP</small></button><button id="fin">Topic finished<small>+${XP.topic} XP</small></button><button id="later">Later</button><button id="hard">Too hard</button></div>`;
@@ -603,13 +718,150 @@
         f.querySelector('h1').textContent=n.t;
         f.querySelector('.hint').textContent='Smallest start: '+(n.tiny||'open the first resource and work for 5 minutes');
         f.querySelector('.why').textContent='Why now: '+cur.why;
+
+        // Mode badge
+        const modeBadge=$('focus-mode-badge');
+        if(modeBadge){
+          const m=window.getCurrentMode?window.getCurrentMode():'balanced';
+          modeBadge.textContent=m==='exam_only'?'EXAM FOCUS':m==='builder'?'BUILDER':'BALANCED';
+        }
+
+        // Populate Target Quick Switcher
+        const sel=$('focus-quick-select');
+        if(sel){
+          sel.innerHTML='';
+          const autoOpt=document.createElement('option');
+          autoOpt.value='__auto__';
+          autoOpt.textContent='⚡ Auto-Pick (Priority Recommended)';
+          sel.appendChild(autoOpt);
+
+          const activeGoals=window.getActiveGoals?window.getActiveGoals():[];
+          const m=window.getCurrentMode?window.getCurrentMode():'balanced';
+
+          if(activeGoals.length>0){
+            const grp=document.createElement('optgroup');
+            grp.label='🎯 Active Goal Tasks';
+            let c=0;
+            for(const g of activeGoals){
+              const syl=g.syllabus||[];
+              for(const t of syl){
+                if(isDone(t.id))continue;
+                const opt=document.createElement('option');
+                opt.value=t.id;
+                opt.textContent=`[${(g.title||g.name||'Goal').slice(0,14)}] ${t.title||t.t}`;
+                grp.appendChild(opt);
+                c++;
+              }
+            }
+            if(c>0)sel.appendChild(grp);
+          }
+
+          if(m!=='exam_only'&&D.ladders){
+            const grp=document.createElement('optgroup');
+            grp.label='🗺️ Roadmap Quests';
+            let c=0;
+            for(const l of D.ladders){
+              if(window.isGoalPaused&&window.isGoalPaused(l.id))continue;
+              for(const item of l.nodes){
+                if(isDone(item.id))continue;
+                if(window.isTopicPaused&&window.isTopicPaused(item.id,l.id))continue;
+                const opt=document.createElement('option');
+                opt.value=item.id;
+                opt.textContent=`[${l.name}] ${item.t}`;
+                grp.appendChild(opt);
+                c++;
+                if(c>=40)break;
+              }
+            }
+            if(c>0)sel.appendChild(grp);
+          }
+
+          if(m!=='exam_only'){
+            const grp=document.createElement('optgroup');
+            grp.label='📁 Personal Projects';
+            const projs=allProjects().filter(p=>p.status!=='paused');
+            for(const p of projs){
+              for(const item of ptNodes(p)){
+                if(isDone(item.id))continue;
+                const opt=document.createElement('option');
+                opt.value=item.id;
+                opt.textContent=`[${p.name}] ${item.t}`;
+                grp.appendChild(opt);
+              }
+            }
+            if(grp.children.length>0)sel.appendChild(grp);
+          }
+
+          if(S.pin&&sel.querySelector(`option[value="${S.pin}"]`)){
+            sel.value=S.pin;
+          }else{
+            sel.value='__auto__';
+          }
+
+          sel.onchange=function(){
+            if(this.value==='__auto__'){
+              S.pin=null;
+            }else{
+              S.pin=this.value;
+            }
+            S.tm=null;save();render();
+          };
+        }
+
+        const clearBtn=$('focus-clear-pin');
+        if(clearBtn){
+          clearBtn.onclick=function(){
+            S.pin=null;S.tm=null;save();toast('Reverted to Auto-Pick');render();
+          };
+        }
+
+        // Duration adjustments
+        let currentMins=(S.tm&&S.tm.id===n.id?Math.ceil(tmLeft()/60):(n.min||25));
+        if(currentMins<=0)currentMins=(n.min||25);
+
+        function setTimerMins(newMins){
+          newMins=Math.max(5,Math.min(180,newMins));
+          const t=S.tm&&S.tm.id===n.id?S.tm:null;
+          if(t&&t.end){
+            const diffSec=(newMins-currentMins)*60;
+            S.tm.total=Math.max(60,S.tm.total+diffSec);
+            S.tm.end+=diffSec*1000;
+            currentMins=newMins;
+            save();runTick();
+          }else if(t&&t.left>0){
+            const diffSec=(newMins-currentMins)*60;
+            S.tm.total=Math.max(60,S.tm.total+diffSec);
+            S.tm.left=Math.max(60,S.tm.left+diffSec);
+            currentMins=newMins;
+            save();setClock(S.tm.left,S.tm.total);
+            $('go').textContent='Resume ('+tmMin(S.tm.left)+' left)';
+          }else{
+            n.min=newMins;
+            currentMins=newMins;
+            setClock(newMins*60,newMins*60);
+            $('go').textContent='Start '+newMins+' minutes';
+            $('go').onclick=()=>timerGo(n.id,newMins*60);
+          }
+          f.querySelectorAll('.dur-chip').forEach(c=>{
+            c.classList.toggle('active',parseInt(c.dataset.min)===newMins);
+          });
+        }
+
+        $('dur-minus').onclick=()=>setTimerMins(currentMins-5);
+        $('dur-plus').onclick=()=>setTimerMins(currentMins+5);
+        $('dur-tiny').onclick=()=>setTimerMins(5);
+        f.querySelectorAll('.dur-chip').forEach(c=>{
+          c.onclick=()=>setTimerMins(parseInt(c.dataset.min));
+          if(parseInt(c.dataset.min)===currentMins)c.classList.add('active');
+        });
+
         timerUI(n.id,mins*60);
         if(n.pt)$('fin').firstChild.textContent='Task finished';
-        $('go').onclick=()=>timerGo(n.id,mins*60);
+        $('go').onclick=()=>timerGo(n.id,currentMins*60);
         $('ok').onclick=()=>finish('session');
         $('fin').onclick=()=>finish('topic');
         $('later').onclick=()=>{S.later[n.id]=Date.now()+DAY;if(S.pin===n.id)S.pin=null;S.tm=null;save();stop();render()};
-        $('hard').onclick=()=>{stop();S.tm=null;save();$('go').textContent='Start 5 minutes';$('go').onclick=()=>timerGo(n.id,300);setClock(300,300);$('rst').hidden=true;
+        $('hard').onclick=()=>{stop();S.tm=null;save();setTimerMins(5);$('rst').hidden=true;
           $('ok').textContent='Tiny step done · +'+XP.tiny+' XP';$('ok').onclick=()=>finish('tiny');$('fin').style.display='none'};
       }
       const pj=$('proj');pj.textContent='';
@@ -943,8 +1195,34 @@
       const n=cur.n,lad=cur.lad||n.lad||{id:'misc',name:'Next step'},ts=Date.now();
       S.log.push({id:n.id,lad:lad.id,title:n.t,ts,k:kind});
       S.last[lad.id]=ts;
-      if(kind==='topic'){S.done[n.id]=ts;if(S.pin===n.id)S.pin=null}
+      if(kind==='topic'){
+        S.done[n.id]=ts;
+        if(S.pin===n.id)S.pin=null;
+      }
+      const durMin = Math.round(((S.tm && S.tm.total ? S.tm.total : (n.min||25)*60) - (S.tm && S.tm.left!=null ? S.tm.left : 0)) / 60) || (n.min || 25);
       S.tm=null;save();stop();
+
+      // Automatically record session into SQLite / Hub timeline
+      try {
+        fetch('/api/sessions', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            project_id: lad.id || 'general',
+            project_name: lad.name || lad.id || 'Goal Task',
+            topic_id: n.id,
+            topic_title: n.t,
+            duration_minutes: durMin,
+            notes: kind === 'topic' ? 'Completed topic: ' + n.t : 'Focused work session on ' + n.t,
+            completed_task: (kind === 'topic')
+          })
+        }).then(r => r.json()).then(() => {
+          if(window.hubLoadSessions) window.hubLoadSessions();
+          if(window.hubLoadTimeline) window.hubLoadTimeline();
+          if(window.hubLoadCalendar) window.hubLoadCalendar();
+        }).catch(()=>{});
+      } catch(e){}
+
       const gain=kind==='topic'?XP.topic:kind==='tiny'?XP.tiny:XP.session;
       const before=Object.keys(S.badges).length,lv0=S.lvl;
       check(false);

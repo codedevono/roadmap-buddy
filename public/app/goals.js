@@ -321,6 +321,9 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
     .syllabus-item {
       display: grid;
@@ -332,9 +335,14 @@
       border: 1px solid var(--track, #1B2F40);
       border-radius: 6px;
       font-size: 13px;
+      transition: all 0.15s ease;
+    }
+    .syllabus-item:hover {
+      border-color: rgba(124, 196, 204, 0.35);
+      background: rgba(10, 17, 25, 0.85);
     }
     .syllabus-item.done {
-      opacity: 0.65;
+      opacity: 0.6;
     }
     .syllabus-item.done .s-title {
       text-decoration: line-through;
@@ -349,13 +357,83 @@
       color: var(--c-sec, #F2958A);
       font-weight: 600;
     }
+
+    /* Add Task Box inside Goal Drawer */
+    .goal-add-task-box {
+      background: rgba(124, 196, 204, 0.05);
+      border: 1px dashed rgba(124, 196, 204, 0.3);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+    .task-act-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .task-focus-btn {
+      font: 600 11px 'Chakra Petch', sans-serif;
+      padding: 2px 7px;
+      border-radius: 3px;
+      border: 1px solid var(--accent, #7CC4CC);
+      background: rgba(124, 196, 204, 0.12);
+      color: var(--accent, #7CC4CC);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+    }
+    .task-focus-btn:hover {
+      background: var(--accent, #7CC4CC);
+      color: #0A1119;
+    }
+    .task-del-btn {
+      font: 600 11px 'Chakra Petch', sans-serif;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid rgba(242, 149, 138, 0.3);
+      background: transparent;
+      color: var(--c-sec, #F2958A);
+      cursor: pointer;
+    }
+    .task-del-btn:hover {
+      background: rgba(242, 149, 138, 0.2);
+    }
   `;
   document.head.append(style);
 
   // Cached state
   let cachedGoals = [];
-  let currentMode = 'balanced';
+  try {
+    const raw = localStorage.getItem('cached_goals_data');
+    if (raw) cachedGoals = JSON.parse(raw);
+  } catch(e) {}
+  let currentMode = localStorage.getItem('study_mode') || 'balanced';
   let selectedGoalIndex = 0;
+
+  // Expose Goal & Pause helpers globally immediately
+  window.getActiveGoals = function() {
+    return (cachedGoals || []).filter(g => g.active !== false);
+  };
+  window.getPausedGoals = function() {
+    return (cachedGoals || []).filter(g => g.active === false);
+  };
+  window.isGoalPaused = function(goalId) {
+    return (cachedGoals || []).some(g => g.id === goalId && g.active === false);
+  };
+  window.isTopicPaused = function(topicId, ladderId) {
+    const paused = (cachedGoals || []).filter(g => g.active === false);
+    for (const g of paused) {
+      if (g.id === ladderId) return true;
+      if (g.prep_ids && g.prep_ids.includes(topicId)) return true;
+      if (g.syllabus && g.syllabus.some(s => s.id === topicId)) return true;
+    }
+    return false;
+  };
+  window.getCurrentMode = function() {
+    return currentMode || 'balanced';
+  };
 
   // ----------------- Modal Creation -----------------
 
@@ -372,8 +450,8 @@
       <div class="cyber-modal-body">
         <div class="file-dropzone" id="g-dropzone">
           <input type="file" id="g-file" accept=".json,application/json" hidden>
-          <b>📁 Upload or Drag Roadmap .json File</b>
-          <span>Select any Roadmap Buddy JSON (e.g. ausbildung-roadmap.json) or paste below</span>
+          <b>📁 (Optional) Upload or Drag Roadmap .json File</b>
+          <span>Upload an AI roadmap bundle, or leave blank to create a clean goal and add tasks as you go</span>
         </div>
 
         <form id="goal-form">
@@ -405,10 +483,10 @@
           </div>
 
           <label class="field-label" style="display:flex;justify-content:space-between;margin-top:8px;">
-            <span>Roadmap JSON or Syllabus Text</span>
+            <span>Roadmap JSON or Syllabus Text (Optional)</span>
             <span id="g-detect-summary" style="color:var(--accent,#7CC4CC);font-weight:600;"></span>
           </label>
-          <textarea class="cyber-input" id="g-payload" placeholder="Paste roadmap JSON or plain text syllabus here..."></textarea>
+          <textarea class="cyber-input" id="g-payload" placeholder="Optional: Paste roadmap JSON or leave blank to start with an empty goal and add tasks manually..."></textarea>
 
           <div class="import-preview-box" id="g-preview" hidden>
             <b>Detected:</b> <span id="g-prev-text"></span>
@@ -433,9 +511,9 @@
   syllabusModal.id = 'goal-syllabus-modal';
   syllabusModal.hidden = true;
   syllabusModal.innerHTML = `
-    <div class="cyber-modal-box">
+    <div class="cyber-modal-box" style="max-width:680px; width:95%;">
       <div class="cyber-modal-head">
-        <h2 id="syl-modal-title">🎯 Goal Syllabus</h2>
+        <h2 id="syl-modal-title">🎯 Goal Tasks & Plan</h2>
         <button class="cyber-modal-close" type="button" aria-label="Close">✕</button>
       </div>
       <div class="cyber-modal-body">
@@ -443,6 +521,27 @@
           <span id="syl-modal-stats" style="color:var(--mute,#93A9B8);font-size:13px;"></span>
           <span id="syl-modal-target" style="font-family:var(--mono,monospace);color:var(--accent,#7CC4CC);font-size:12px;"></span>
         </div>
+
+        <!-- Inline Add Task Card -->
+        <div class="goal-add-task-box">
+          <div style="font-weight:600; font-size:11px; color:var(--accent,#7CC4CC); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px; display:flex; justify-content:space-between;">
+            <span>+ Add Task or Subtopic</span>
+            <span style="color:var(--mute,#93A9B8); font-weight:400; text-transform:none;">Added to this goal and synced to calendar</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 80px 130px auto; gap:6px; align-items:center;">
+            <input type="text" id="g-new-task-title" class="cyber-input" placeholder="Task name (e.g. OverTheWire Bandit 0-5, Practice Test 1)" style="height:34px; font-size:12px;">
+            <input type="number" id="g-new-task-min" class="cyber-input" placeholder="Mins" value="30" min="5" max="180" style="height:34px; font-size:12px;">
+            <input type="date" id="g-new-task-due" class="cyber-input" style="height:34px; font-size:11px;" title="Optional Due Date">
+            <button type="button" id="g-btn-add-task" class="goal-act-btn" style="height:34px; background:var(--accent,#7CC4CC); color:#0A1119; font-weight:700; padding:0 12px; border:none; cursor:pointer;">
+              Add Task
+            </button>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:6px;">
+            <input type="text" id="g-new-task-tiny" class="cyber-input" placeholder="Smallest start (optional, e.g. Open terminal and ssh into level 0)" style="height:28px; font-size:11px;">
+            <input type="url" id="g-new-task-link" class="cyber-input" placeholder="Resource link URL (optional, https://...)" style="height:28px; font-size:11px;">
+          </div>
+        </div>
+
         <div class="syllabus-list" id="syl-modal-list"></div>
       </div>
     </div>
@@ -739,13 +838,70 @@
   }
 
   function openSyllabusDrawer(goal) {
-    syllabusModal.querySelector('#syl-modal-title').textContent = `🎯 ${goal.name}`;
+    syllabusModal.querySelector('#syl-modal-title').textContent = `🎯 ${goal.name} · Tasks & Plan`;
     const prepIds = goal.prep_ids || [];
     const doneCount = prepIds.filter(id => (typeof S !== 'undefined' && S.done && S.done[id])).length;
     const pct = prepIds.length ? Math.round((doneCount / prepIds.length) * 100) : 0;
     
-    syllabusModal.querySelector('#syl-modal-stats').textContent = `${doneCount} of ${prepIds.length} topics completed (${pct}%)`;
+    syllabusModal.querySelector('#syl-modal-stats').textContent = `${doneCount} of ${prepIds.length} tasks completed (${pct}%)`;
     syllabusModal.querySelector('#syl-modal-target').textContent = goal.target_date ? `Target: ${goal.target_date}` : '';
+
+    // Wire Add Task button in drawer
+    const btnAddTask = syllabusModal.querySelector('#g-btn-add-task');
+    btnAddTask.onclick = async () => {
+      const titleInput = syllabusModal.querySelector('#g-new-task-title');
+      const minInput = syllabusModal.querySelector('#g-new-task-min');
+      const dueInput = syllabusModal.querySelector('#g-new-task-due');
+      const tinyInput = syllabusModal.querySelector('#g-new-task-tiny');
+      const linkInput = syllabusModal.querySelector('#g-new-task-link');
+
+      const title = (titleInput.value || '').trim();
+      if (!title) {
+        alert('Please enter a task title');
+        titleInput.focus();
+        return;
+      }
+
+      btnAddTask.disabled = true;
+      btnAddTask.textContent = 'Adding...';
+
+      try {
+        const res = await fetch('/api/goals/task', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            goal_id: goal.id,
+            title: title,
+            min: parseInt(minInput.value) || 30,
+            due: dueInput.value || '',
+            tiny: (tinyInput.value || '').trim(),
+            links: (linkInput.value || '').trim() ? [
+              { t: 'Resource', u: linkInput.value.trim(), kind: 'docs', free: true }
+            ] : []
+          })
+        }).then(r => r.json());
+
+        if (!res.success) throw new Error(res.error || 'Failed to add task');
+
+        titleInput.value = '';
+        tinyInput.value = '';
+        linkInput.value = '';
+        dueInput.value = '';
+
+        if (typeof toast === 'function') toast(`✓ Added task: ${title}`);
+        goal = res.goal;
+        
+        // Refresh local cache and UI
+        syncGoalsAndRender(true);
+        if (typeof window.hubLoadCalendar === 'function') window.hubLoadCalendar();
+        openSyllabusDrawer(goal);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btnAddTask.disabled = false;
+        btnAddTask.textContent = 'Add Task';
+      }
+    };
 
     const listEl = syllabusModal.querySelector('#syl-modal-list');
     listEl.innerHTML = '';
@@ -754,7 +910,7 @@
     const syllabus = goal.syllabus || [];
 
     if (!syllabus.length) {
-      listEl.innerHTML = '<div style="color:var(--mute,#93A9B8);font-size:13px;padding:8px 0;">No topics found in this goal.</div>';
+      listEl.innerHTML = '<div style="color:var(--mute,#93A9B8);font-size:13px;padding:12px 4px;text-align:center;">No tasks added yet. Use the form above to add your first task!</div>';
     } else {
       syllabus.forEach((n) => {
         const isDone = typeof S !== 'undefined' && S.done && S.done[n.id];
@@ -763,16 +919,19 @@
         const row = document.createElement('div');
         row.className = 'syllabus-item' + (isDone ? ' done' : '');
         row.innerHTML = `
-          <input type="checkbox" ${isDone ? 'checked' : ''} style="cursor:pointer;" aria-label="Mark topic done">
-          <div>
-            <div class="s-title" style="font-weight:600;color:var(--ink,#E6EFF4);">${n.t || n.title}</div>
-            <div style="font-size:11px;color:var(--mute,#93A9B8);display:flex;gap:8px;margin-top:2px;">
-              <span>${n.min || 25} min</span>
+          <input type="checkbox" ${isDone ? 'checked' : ''} style="cursor:pointer;" aria-label="Mark task done">
+          <div style="min-width:0;">
+            <div class="s-title" style="font-weight:600;color:var(--ink,#E6EFF4);">${escapeHtml(n.t || n.title)}</div>
+            <div style="font-size:11px;color:var(--mute,#93A9B8);display:flex;gap:8px;margin-top:2px;flex-wrap:wrap;">
+              <span>⏱ ${n.min || 30} min</span>
               ${n.due ? `<span class="s-due ${isOverdue ? 'overdue' : ''}">${isOverdue ? '⚠️ Overdue: ' : 'Due: '}${n.due}</span>` : ''}
+              ${n.tiny ? `<span style="color:var(--ink,#E6EFF4)">⚡ ${escapeHtml(n.tiny)}</span>` : ''}
+              ${n.links && n.links.length ? `<a href="${n.links[0].u}" target="_blank" rel="noopener" style="color:var(--accent,#7CC4CC);text-decoration:none;">Resource ↗</a>` : ''}
             </div>
           </div>
-          <div>
-            ${n.links && n.links.length ? `<a href="${n.links[0].u}" target="_blank" rel="noopener" style="font-size:11px;color:var(--accent,#7CC4CC);text-decoration:none;">Resource ↗</a>` : ''}
+          <div class="task-act-btns">
+            <button type="button" class="task-focus-btn" data-tid="${n.id}">⏱ Focus</button>
+            <button type="button" class="task-del-btn" data-tid="${n.id}" title="Remove task">✕</button>
           </div>
         `;
 
@@ -789,6 +948,40 @@
             if (typeof renderAll === 'function') renderAll();
             openSyllabusDrawer(goal);
             renderEnhancedGoal();
+          }
+        };
+
+        // Wire Focus button
+        const focusBtn = row.querySelector('.task-focus-btn');
+        focusBtn.onclick = () => {
+          if (typeof S !== 'undefined') {
+            S.pin = n.id;
+            if (typeof save === 'function') save();
+            syllabusModal.hidden = true;
+            if (typeof setView === 'function') setView('home');
+            if (typeof renderAll === 'function') renderAll();
+            if (typeof toast === 'function') toast(`⏱ Focus target: ${n.t || n.title}`);
+          }
+        };
+
+        // Wire Delete button
+        const delBtn = row.querySelector('.task-del-btn');
+        delBtn.onclick = async () => {
+          if (!confirm(`Remove task "${n.t || n.title}" from this goal?`)) return;
+          try {
+            const res = await fetch('/api/goals/task/delete', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ goal_id: goal.id, task_id: n.id })
+            }).then(r => r.json());
+            if (!res.success) throw new Error(res.error || 'Failed to remove task');
+            if (typeof toast === 'function') toast(`🗑️ Task removed`);
+            goal = res.goal;
+            syncGoalsAndRender(true);
+            if (typeof window.hubLoadCalendar === 'function') window.hubLoadCalendar();
+            openSyllabusDrawer(goal);
+          } catch (e) {
+            alert('Error: ' + e.message);
           }
         };
 
@@ -938,7 +1131,7 @@
 
             <div class="goal-actions-row">
               <button type="button" class="goal-act-btn" id="card-btn-syl">
-                👁️ Syllabus
+                📋 Tasks & Plan
               </button>
               <button type="button" class="goal-act-btn" id="card-btn-pause">
                 ${isActive ? '⏸️ Pause' : '▶️ Resume'}
@@ -1005,10 +1198,17 @@
         .then(data => {
           if (!data) return;
           cachedGoals = data.goals || [];
+          try { localStorage.setItem('cached_goals_data', JSON.stringify(cachedGoals)); } catch(e){}
           currentMode = data.mode || 'balanced';
           applyModeEffects(currentMode);
           renderModeSwitcher();
           renderEnhancedGoal();
+          if (typeof renderAll === 'function') {
+            renderAll();
+          }
+          if (location.hash === '#tasks-drawer' && typeof window.openSyllabusDrawer === 'function') {
+            window.openSyllabusDrawer();
+          }
           if (typeof window.hubLoadCalendar === 'function') {
             window.hubLoadCalendar();
           }
@@ -1020,14 +1220,52 @@
   // Enable URL hash navigation
   window.addEventListener('hashchange', () => {
     let h = location.hash.replace(/^#/, '');
+    if (h === 'tasks-drawer') {
+      if (typeof setView === 'function') setView('home');
+      setTimeout(() => window.openSyllabusDrawer(), 150);
+      return;
+    }
     if (!h || h === 'undefined' || h === 'null') h = 'home';
     if (typeof setView === 'function') setView(h);
   });
   if (location.hash) {
     let h = location.hash.replace(/^#/, '');
-    if (!h || h === 'undefined' || h === 'null') h = 'home';
-    if (typeof setView === 'function') setTimeout(() => setView(h), 50);
+    if (h === 'tasks-drawer') {
+      if (typeof setView === 'function') setView('home');
+      setTimeout(() => window.openSyllabusDrawer(), 250);
+    } else {
+      if (!h || h === 'undefined' || h === 'null') h = 'home';
+      if (typeof setView === 'function') setTimeout(() => setView(h), 50);
+    }
   }
+
+  window.openSyllabusDrawer = function(goalId) {
+    const g = goalId ? (cachedGoals.find(x => x.id === goalId) || cachedGoals[0]) : (cachedGoals[selectedGoalIndex] || cachedGoals[0]);
+    if (g) openSyllabusDrawer(g);
+  };
+
+  // Expose Goal & Pause helpers globally
+  window.getActiveGoals = function() {
+    return (cachedGoals || []).filter(g => g.active !== false);
+  };
+  window.getPausedGoals = function() {
+    return (cachedGoals || []).filter(g => g.active === false);
+  };
+  window.isGoalPaused = function(goalId) {
+    return (cachedGoals || []).some(g => g.id === goalId && g.active === false);
+  };
+  window.isTopicPaused = function(topicId, ladderId) {
+    const paused = (cachedGoals || []).filter(g => g.active === false);
+    for (const g of paused) {
+      if (g.id === ladderId) return true;
+      if (g.prep_ids && g.prep_ids.includes(topicId)) return true;
+      if (g.syllabus && g.syllabus.some(s => s.id === topicId)) return true;
+    }
+    return false;
+  };
+  window.getCurrentMode = function() {
+    return currentMode || 'balanced';
+  };
 
   // Hook into client startup
   const initInterval = setInterval(() => {

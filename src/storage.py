@@ -595,6 +595,18 @@ def get_calendar_activity(year: int, month: int) -> Dict[str, Any]:
             })
 
     # 3. Events & Deadlines (Exams, Mock tests, Milestones)
+    # Collect paused goals so they do not clutter calendar
+    paused_goal_ids = set()
+    goals_dir = VAULT_DIR / "goals"
+    if goals_dir.exists():
+        for gf in goals_dir.glob("*.json"):
+            try:
+                gdata = json.loads(gf.read_text(encoding="utf-8"))
+                if not gdata.get("active", True):
+                    paused_goal_ids.add(gdata.get("id"))
+            except Exception:
+                pass
+
     prefix = f"{year:04d}-{month:02d}-"
     events_files = [VAULT_DIR / "events" / "events.json", BASE_DIR / "public" / "data" / "events.json"]
     all_events = []
@@ -612,6 +624,8 @@ def get_calendar_activity(year: int, month: int) -> Dict[str, Any]:
     for ev in all_events:
         eid = ev.get("id")
         if not eid or eid in seen_event_ids:
+            continue
+        if ev.get("goal_id") and ev.get("goal_id") in paused_goal_ids:
             continue
         seen_event_ids.add(eid)
 
@@ -643,11 +657,12 @@ def get_calendar_activity(year: int, month: int) -> Dict[str, Any]:
             })
 
     # 4. Also check Goals target dates and topic due dates in this month
-    goals_dir = VAULT_DIR / "goals"
     if goals_dir.exists():
         for gf in goals_dir.glob("*.json"):
             try:
                 gdata = json.loads(gf.read_text(encoding="utf-8"))
+                if gdata.get("id") in paused_goal_ids or not gdata.get("active", True):
+                    continue
                 gtgt = gdata.get("target_date", "")
                 if gtgt and gtgt.startswith(prefix):
                     day = gtgt[:10]

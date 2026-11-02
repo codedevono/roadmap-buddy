@@ -4,7 +4,7 @@
   "target_date": "2027-01-20",
   "type": "exam",
   "priority": "high",
-  "active": false,
+  "active": true,
   "note": "",
   "links": [],
   "syllabus": [
@@ -221,5 +221,5 @@
     "ielts-7",
     "ielts-8"
   ],
-  "updated": 1793605113418
+  "updated": 1793613739354
 }

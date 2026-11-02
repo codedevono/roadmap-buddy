@@ -645,6 +645,138 @@ def reschedule_goal(goal_id, action="push_forward", days_shift=30):
         "target_date": goal_data.get("target_date")
     }
 
+def add_goal_task(goal_id, task_data):
+    gf = VAULT_DIR / "goals" / f"{goal_id}.json"
+    if not gf.exists():
+        raise ValueError(f"Goal {goal_id} not found")
+    goal = json.loads(gf.read_text(encoding="utf-8"))
+
+    title = task_data.get("title") or task_data.get("t") or "New Task"
+    slug = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')[:20]
+    task_id = f"{goal_id}-{len(goal.get('syllabus', [])) + 1}-{slug}" if slug else f"{goal_id}-{int(time.time())}"
+    mins = int(task_data.get("min") or 30)
+    due = task_data.get("due") or task_data.get("target_date") or ""
+    tiny = task_data.get("tiny") or ""
+    links = task_data.get("links") or task_data.get("resources") or []
+    if isinstance(links, str) and links.strip():
+        links = [{"t": "Resource", "u": links.strip(), "kind": "docs", "free": True}]
+
+    node = {
+        "id": task_id,
+        "t": title,
+        "min": mins,
+        "needs": task_data.get("needs", [])
+    }
+    if tiny:
+        node["tiny"] = tiny
+    if due:
+        node["due"] = due
+    if links:
+        node["links"] = links
+
+    syllabus = goal.setdefault("syllabus", [])
+    syllabus.append(node)
+    prep_ids = goal.setdefault("prep_ids", [])
+    if task_id not in prep_ids:
+        prep_ids.append(task_id)
+    goal["updated"] = int(time.time() * 1000)
+    gf.write_text(json.dumps(goal, indent=2), encoding="utf-8")
+
+    # Update ladder in vault
+    lf = VAULT_DIR / "ladders" / f"{goal_id}.json"
+    ladder = json.loads(lf.read_text(encoding="utf-8")) if lf.exists() else {
+        "id": goal_id, "name": goal.get("name", "Goal"), "floor": 2, "nodes": []
+    }
+    ladder_nodes = ladder.setdefault("nodes", [])
+    if not any(n.get("id") == task_id for n in ladder_nodes):
+        ladder_nodes.append(node)
+    ladder["nodes"] = ladder_nodes
+    lf.write_text(json.dumps(ladder, indent=2), encoding="utf-8")
+
+    # Update public/data/skills.json
+    skills_path = DATA_DIR / "skills.json"
+    if skills_path.exists():
+        try:
+            sk = json.loads(skills_path.read_text(encoding="utf-8"))
+            ladders = sk.get("ladders", [])
+            for l in ladders:
+                if l.get("id") == goal_id:
+                    l["nodes"] = ladder_nodes
+                    break
+            else:
+                ladders.insert(0, ladder)
+            sk["ladders"] = ladders
+            skills_path.write_text(json.dumps(sk, indent=2), encoding="utf-8")
+        except Exception:
+            pass
+
+    # If due date, add to events.json
+    if due:
+        for ev_file in [VAULT_DIR / "events" / "events.json", DATA_DIR / "events.json"]:
+            if ev_file.exists():
+                try:
+                    ev_data = json.loads(ev_file.read_text(encoding="utf-8"))
+                    ev_list = ev_data.get("events", [])
+                    ev_list.append({
+                        "id": f"ev-{task_id}",
+                        "goal_id": goal_id,
+                        "name": title,
+                        "type": "topic",
+                        "date": due,
+                        "weight": 4,
+                        "note": f"Task due for {goal.get('name')}"
+                    })
+                    ev_data["events"] = ev_list
+                    ev_file.write_text(json.dumps(ev_data, indent=2), encoding="utf-8")
+                except Exception:
+                    pass
+
+    all_goals = get_all_goals()
+    (DATA_DIR / "goals.json").write_text(json.dumps({"goals": all_goals}, indent=2), encoding="utf-8")
+    return {"goal": goal, "task": node}
+
+def delete_goal_task(goal_id, task_id):
+    gf = VAULT_DIR / "goals" / f"{goal_id}.json"
+    if not gf.exists():
+        raise ValueError(f"Goal {goal_id} not found")
+    goal = json.loads(gf.read_text(encoding="utf-8"))
+
+    goal["syllabus"] = [n for n in goal.get("syllabus", []) if n.get("id") != task_id]
+    goal["prep_ids"] = [pid for pid in goal.get("prep_ids", []) if pid != task_id]
+    goal["updated"] = int(time.time() * 1000)
+    gf.write_text(json.dumps(goal, indent=2), encoding="utf-8")
+
+    lf = VAULT_DIR / "ladders" / f"{goal_id}.json"
+    if lf.exists():
+        ladder = json.loads(lf.read_text(encoding="utf-8"))
+        ladder["nodes"] = [n for n in ladder.get("nodes", []) if n.get("id") != task_id]
+        lf.write_text(json.dumps(ladder, indent=2), encoding="utf-8")
+
+        skills_path = DATA_DIR / "skills.json"
+        if skills_path.exists():
+            try:
+                sk = json.loads(skills_path.read_text(encoding="utf-8"))
+                for l in sk.get("ladders", []):
+                    if l.get("id") == goal_id:
+                        l["nodes"] = ladder["nodes"]
+                        break
+                skills_path.write_text(json.dumps(sk, indent=2), encoding="utf-8")
+            except Exception:
+                pass
+
+    for ev_file in [VAULT_DIR / "events" / "events.json", DATA_DIR / "events.json"]:
+        if ev_file.exists():
+            try:
+                ev_data = json.loads(ev_file.read_text(encoding="utf-8"))
+                ev_data["events"] = [e for e in ev_data.get("events", []) if e.get("id") != f"ev-{task_id}" and e.get("id") != task_id]
+                ev_file.write_text(json.dumps(ev_data, indent=2), encoding="utf-8")
+            except Exception:
+                pass
+
+    all_goals = get_all_goals()
+    (DATA_DIR / "goals.json").write_text(json.dumps({"goals": all_goals}, indent=2), encoding="utf-8")
+    return {"goal": goal, "deleted_task": task_id}
+
 def get_current_mode():
     settings_file = VAULT_DIR / "settings.json"
     if settings_file.exists():
@@ -884,6 +1016,8 @@ class BuddyRequestHandler(SimpleHTTPRequestHandler):
             self.handle_projects_delete()
         elif path.startswith("/api/timeline"):
             self.handle_timeline_delete()
+        elif path.startswith("/api/goals/task"):
+            self.handle_goals_task_delete()
         elif path.startswith("/api/goals"):
             self.handle_goals_delete()
         else:
@@ -919,6 +1053,10 @@ class BuddyRequestHandler(SimpleHTTPRequestHandler):
             self.handle_action()
         elif path == "/api/goals":
             self.handle_goals_post()
+        elif path == "/api/goals/task":
+            self.handle_goals_task_post()
+        elif path == "/api/goals/task/delete":
+            self.handle_goals_task_delete()
         elif path == "/api/goals/delete":
             self.handle_goals_delete()
         elif path == "/api/goals/pause":
@@ -1217,6 +1355,31 @@ class BuddyRequestHandler(SimpleHTTPRequestHandler):
         try:
             res = reschedule_goal(goal_id, action, days)
             self.send_json({"success": True, "reschedule": res})
+        except Exception as e:
+            self.send_json({"success": False, "error": str(e)}, 400)
+
+    def handle_goals_task_post(self):
+        body = self.read_json_body()
+        goal_id = body.get("goal_id")
+        if not goal_id:
+            self.send_json({"error": "Missing goal_id"}, 400)
+            return
+        try:
+            res = add_goal_task(goal_id, body)
+            self.send_json({"success": True, **res})
+        except Exception as e:
+            self.send_json({"success": False, "error": str(e)}, 400)
+
+    def handle_goals_task_delete(self):
+        body = self.read_json_body()
+        goal_id = body.get("goal_id")
+        task_id = body.get("task_id")
+        if not goal_id or not task_id:
+            self.send_json({"error": "Missing goal_id or task_id"}, 400)
+            return
+        try:
+            res = delete_goal_task(goal_id, task_id)
+            self.send_json({"success": True, **res})
         except Exception as e:
             self.send_json({"success": False, "error": str(e)}, 400)
 
