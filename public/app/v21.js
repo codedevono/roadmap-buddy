@@ -47,33 +47,36 @@ window.pick=function(o){
   if(S.pin&&idx[S.pin]&&!isDone(S.pin)&&ready(idx[S.pin])){const n=idx[S.pin];return{n,lad:n.lad,why:'You chose this from the roadmap'}}
   const add=(id,s,w)=>{sc[id]=(sc[id]||0)+s;(why[id]=why[id]||[]).push([s,w])};
   const fp=focusP();
-  for(const p of allProjects()){
-    if(p.status==='paused')continue;
-    const f=fp?(fp.id===p.id?1:.25):1,best={};
-    needsOf(p).forEach((nid,i)=>{
-      if(isDone(nid)||!idx[nid])return;
-      const base=p.priority*p.priority*Math.max(10-i,2);
-      for(const c of closure(nid)){
-        if(isDone(c)||!ready(idx[c]))continue;
-        const s=c===nid?base:base*.9;
-        if(!best[c]||best[c].s<s)best[c]={s,w:c===nid?p.name+' needs this':p.name+' needs '+short(idx[nid]).toLowerCase()+', and this comes first'};
-      }
-    });
-    for(const c in best)add(c,best[c].s*f,best[c].w);
-  }
-  for(const p of S.projects){
-    if(p.status==='paused')continue;
-    const f=fp?(fp.id===p.id?1:.25):1,t=ptNodes(p).find(n=>!isDone(n.id)&&!(S.later[n.id]>now));
-    if(!t)continue;
-    const dl=daysTo(p.deadline);
-    add(t.id,p.priority*p.priority*12*f+(dl!=null?Math.max(0,20-dl)*.5*f:0),p.name+(fp&&fp.id===p.id?' is your focus project':' is one of your projects')+(dl!=null?(dl>=0?', due in '+dl+' days':', past its date'):''));
+  if(S.mode!=='exam_only'){
+    for(const p of allProjects()){
+      if(p.status==='paused')continue;
+      const f=fp?(fp.id===p.id?1:.25):1,best={};
+      needsOf(p).forEach((nid,i)=>{
+        if(isDone(nid)||!idx[nid])return;
+        const base=p.priority*p.priority*Math.max(10-i,2);
+        for(const c of closure(nid)){
+          if(isDone(c)||!ready(idx[c]))continue;
+          const s=c===nid?base:base*.9;
+          if(!best[c]||best[c].s<s)best[c]={s,w:c===nid?p.name+' needs this':p.name+' needs '+short(idx[nid]).toLowerCase()+', and this comes first'};
+        }
+      });
+      for(const c in best)add(c,best[c].s*f,best[c].w);
+    }
+    for(const p of S.projects){
+      if(p.status==='paused')continue;
+      const f=fp?(fp.id===p.id?1:.25):1,t=ptNodes(p).find(n=>!isDone(n.id)&&!(S.later[n.id]>now));
+      if(!t)continue;
+      const dl=daysTo(p.deadline);
+      add(t.id,p.priority*p.priority*12*f+(dl!=null?Math.max(0,20-dl)*.5*f:0),p.name+(fp&&fp.id===p.id?' is your focus project':' is one of your projects')+(dl!=null?(dl>=0?', due in '+dl+' days':', past its date'):''));
+    }
   }
   for(const e of D.events){
     const ed=evDate(e);if(!ed)continue;
     const dd=daysTo(ed);if(dd==null||dd<0)continue;             // a passed event adds nothing
     const days=Math.max((new Date(ed+'T00:00:00')-now)/DAY,3);
     if(days>180)continue;
-    const u=(e.weight||0)*300/days;if(!u)continue;
+    const boost=(e.type==='exam'||e.type==='test'||S.mode==='exam_only')?2.0:1;
+    const u=(e.weight||0)*300/days*boost;if(!u)continue;
     for(const t of (e.prep||[])){
       const ids=idx[t]?[t]:[(D.ladders.find(l=>l.id===t)||{nodes:[]}).nodes.find(n=>!isDone(n.id)&&ready(n))?.id].filter(Boolean);
       for(const nid of ids)for(const c of closure(nid))if(!isDone(c)&&ready(idx[c]))add(c,u,e.name+' in '+Math.round(days)+' days');

@@ -1,138 +1,1973 @@
 {
- "note": "Ladders imported from Notion pages. A ladder with sample:true holds placeholder tasks; none are left. Optional tiny gives the smallest first step.",
- "ladders": [
-  {"id":"math","name":"Math","floor":2,"src":"Mechatronics Roadmap v2, syllabus M0-M6","nodes":[
-   {"id":"m0","t":"Arithmetic, units and estimation","min":25},
-   {"id":"m1","t":"Algebra: rearranging formulas, equations, logs","needs":["m0"],"min":30},
-   {"id":"m2","t":"Geometry and trigonometry: radians, sine waves","needs":["m1"],"min":30},
-   {"id":"m3","t":"Vectors, matrices and complex numbers","needs":["m2"],"min":30},
-   {"id":"m4","t":"Calculus: derivatives, integrals, first-order ODEs","needs":["m2"],"min":30},
-   {"id":"m5","t":"Statistics and fitting for noisy sensors","needs":["m1"],"min":30},
-   {"id":"m6","t":"Control math: second-order ODEs, Laplace, eigenvalues","needs":["m3","m4"],"min":30},
-   {"id":"m7","t":"Discrete math and modular arithmetic: logic, counting, number theory for security and algorithms","needs":["m1"],"min":30,"tiny":"Work through modular arithmetic with clock examples"}]},
-  {"id":"3d","name":"3D math and graphics","floor":2,"src":"AR/VR Resources: Learning 3D Maths, steps 1-5","nodes":[
-   {"id":"v1","t":"Vectors and coordinates: dot, cross, normalise (three.js)","needs":["m2"],"min":25},
-   {"id":"v2","t":"Matrices and transformations: translate, rotate, scale, 4x4","needs":["v1"],"min":30},
-   {"id":"v3","t":"Coordinate spaces and projection: model, view, projection","needs":["v2"],"min":30},
-   {"id":"v4","t":"Rotations and quaternions: Euler, gimbal lock, slerp","needs":["v2"],"min":30},
-   {"id":"v5","t":"Curves and interpolation: Bezier","needs":["v1"],"min":25},
-   {"id":"g1","t":"LearnOpenGL: getting started through lighting","needs":["v3"],"min":40}]},
-  {"id":"phy","name":"Physics","floor":1,"src":"Mechatronics Roadmap v2, syllabus P0-P6","nodes":[
-   {"id":"p0","t":"Measurement, units and error","min":20},
-   {"id":"p1","t":"Motion: velocity, acceleration, free fall","needs":["p0","m1"],"min":30},
-   {"id":"p2","t":"Forces: Newton's laws, friction, free-body diagrams","needs":["p1"],"min":30},
-   {"id":"p3","t":"Energy, power and momentum","needs":["p2"],"min":30},
-   {"id":"p4","t":"Rotation: torque, inertia, gears","needs":["p3"],"min":30},
-   {"id":"p5","t":"Electricity and magnetism: charge, current, motors","needs":["p1"],"min":30},
-   {"id":"p6","t":"Waves and heat: ultrasonics, temperature rise","needs":["p1"],"min":25}]},
-  {"id":"ele","name":"Electronics","floor":2,"src":"Mechatronics Roadmap v2, syllabus E0-E6","nodes":[
-   {"id":"e0","t":"First circuits: Ohm's law, breadboard, multimeter","needs":["m1"],"min":30},
-   {"id":"e1","t":"Circuit analysis: Kirchhoff, dividers, Thevenin","needs":["e0"],"min":30},
-   {"id":"e2","t":"Capacitors, inductors and AC: RC, impedance, filters","needs":["e1"],"min":30},
-   {"id":"e3","t":"Semiconductors: diodes, BJT, MOSFET switches","needs":["e1"],"min":30},
-   {"id":"e4","t":"Op-amps and power: regulators, ripple, decoupling","needs":["e3"],"min":30},
-   {"id":"e5","t":"Digital: gates, ADC and DAC, sampling","needs":["e0"],"min":30},
-   {"id":"e6","t":"PCB design in KiCad","needs":["e4"],"min":40}]},
-  {"id":"emb","name":"Embedded","floor":1,"src":"Mechatronics Roadmap v2, syllabus EM0-EM4","nodes":[
-   {"id":"em0","t":"Microcontroller basics: pins, clock, flashing code","needs":["e0"],"min":25},
-   {"id":"em1","t":"Peripherals: GPIO, PWM, ADC, timers, interrupts","needs":["em0","c1"],"min":35},
-   {"id":"em2","t":"Protocols: UART, I2C, SPI, logic analyser","needs":["em1"],"min":35},
-   {"id":"em3","t":"Firmware structure: state machines, FreeRTOS","needs":["em2"],"min":35},
-   {"id":"em4","t":"Wireless and IoT: ESP32, MQTT dashboard","needs":["em3"],"min":35}]},
-  {"id":"des","name":"Design and CAD","floor":1,"src":"Mechatronics Roadmap v2, syllabus ME0-ME5 (brand and graphic design not imported yet)","nodes":[
-   {"id":"me0","t":"Engineering drawings, tolerances, measuring","min":25},
-   {"id":"me1","t":"Statics: free-body diagrams, moments","needs":["me0","p2"],"min":30},
-   {"id":"me2","t":"Materials and strength: stress, strain, safety factor","needs":["me1"],"min":30},
-   {"id":"me3","t":"Machine elements: gears, bearings, fasteners","needs":["me2"],"min":30},
-   {"id":"me4","t":"CAD: sketches, extrudes, assemblies, 3D-print design","needs":["me0"],"min":40},
-   {"id":"me5","t":"Actuation sizing: torque, speed, gear ratio","needs":["me3","p4"],"min":30}]},
-  {"id":"c","name":"C and C++","floor":2,"src":"Advanced C / C++ / C# page, stages 1-14","nodes":[
-   {"id":"c1","t":"Stage 1: Advanced C and memory mastery","min":45},
-   {"id":"c2","t":"Stage 2: Data structures and algorithms in C","needs":["c1"],"min":45},
-   {"id":"c3","t":"Stage 3: Systems programming (Linux/POSIX)","needs":["c1"],"min":45},
-   {"id":"c4","t":"Stage 4: Computer architecture and x86-64 assembly","needs":["c1"],"min":45},
-   {"id":"c5","t":"Stage 5: OS theory and your own toy OS","needs":["c2","c3","c4"],"min":45},
-   {"id":"c6","t":"Stage 6: Linux kernel internals","needs":["c5"],"min":45},
-   {"id":"c7","t":"Stage 7: Reverse engineering and binary exploitation","needs":["c4"],"min":45},
-   {"id":"c8","t":"Stage 8: Embedded programming (STM32/ESP32, FreeRTOS)","needs":["c1"],"min":45},
-   {"id":"c9","t":"Stage 9: Modern C++ deep dive","needs":["c1"],"min":45},
-   {"id":"c10","t":"Stage 10: DSA and advanced algorithms in C++","needs":["c2","c9"],"min":45},
-   {"id":"c11","t":"Stage 11: Game dev and graphics in C++","needs":["c9"],"min":45},
-   {"id":"c12","t":"Stage 12: Competitive programming in C++","needs":["c10"],"min":45},
-   {"id":"c13","t":"Stage 13: Hackathons and capstone","needs":["c5","c7","c8","c11"],"min":45},
-   {"id":"c14","t":"Stage 14: Certifications","needs":["c7"],"min":30}]},
-  {"id":"py","name":"Python, DSA, AI","floor":3,"src":"Module 09, stages 1-11 (one sequential path)","nodes":[
-   {"id":"py1","t":"Stage 1: Python fundamentals (CS50P)","min":45,"tiny":"Open CS50P and watch the first 10 minutes of the current lecture"},
-   {"id":"py2","t":"Stage 1 practice: 30 problems on Exercism or CodeWars","needs":["py1"],"min":30,"tiny":"Solve one easy problem"},
-   {"id":"py3","t":"Stage 1 build: CLI expense tracker or Wordle clone, pushed to GitHub with a README","needs":["py2"],"min":45,"tiny":"Create the repo and write the README title"},
-   {"id":"py4","t":"Stage 2: DSA basics (arrays, stacks, recursion): CodeChef roadmap, 50 problems, undo-redo editor","needs":["py3"],"min":45,"tiny":"Read one CodeChef array section"},
-   {"id":"py5","t":"Stage 2 compete: first CodeChef Starters or Codeforces Div 4 contest","needs":["py4"],"min":60,"tiny":"Register for the next contest"},
-   {"id":"py6","t":"Stage 3: trees and graphs: CodeChef, Striver A2Z, 40 problems, pathfinding visualizer","needs":["py4"],"min":45,"tiny":"Solve one tree problem"},
-   {"id":"py7","t":"Stage 3 compete: 2+ AtCoder Beginner Contests","needs":["py6"],"min":60,"tiny":"Register for the next ABC"},
-   {"id":"py8","t":"Stage 4: Dynamic programming: CSES, Striver DP playlist (56 problems), budget allocator project","needs":["py6"],"min":45,"tiny":"Watch the first DP video and solve one problem"},
-   {"id":"py9","t":"Stage 5: Pattern drill: NeetCode 150, weekly Codeforces rounds toward rating 1200, 5 writeups","needs":["py8"],"min":45,"tiny":"Do one NeetCode problem"},
-   {"id":"ai1","t":"Stage 6: AI/ML foundations: Google ML Crash Course, CS229, MIT 6.S191, Kaggle Titanic and House Prices","needs":["py9"],"min":45,"tiny":"Open the ML Crash Course first lesson"},
-   {"id":"ai2","t":"Stage 7: Applied and agentic AI: HF Agents course, fast.ai, RAG tutor bot, first lablab hackathon","needs":["ai1"],"min":45,"tiny":"Open the HF Agents course unit 1"},
-   {"id":"ai3","t":"Stage 8: Certification consolidation: Google Skills AI badges, IBM SkillsBuild, Azure AI-102 (paid)","needs":["ai2"],"min":40,"tiny":"Open the Google Skills Generative AI path"},
-   {"id":"ai4","t":"Stage 9: Blended showcase portfolio: route optimizer with LLM explainer, CP rating predictor, demos on GitHub","needs":["ai2"],"min":45,"tiny":"Write the README for one project"},
-   {"id":"ai5","t":"Stage 10: Major hackathon circuit: enter 3-5 across the year (Devpost, MLH, Unstop, Devfolio, SIH)","needs":["ai4"],"min":45,"tiny":"Find one upcoming hackathon and read its rules"},
-   {"id":"ai6","t":"Stage 11: Ongoing Kaggle competitions and Codeforces/CodeChef rating climb","needs":["py9"],"min":45,"tiny":"Open one open Kaggle competition"}]},
-  {"id":"cyb","name":"Cyber","floor":2,"src":"Module 08, phases 1-5 and the suggested sequence","nodes":[
-   {"id":"cy1","t":"OverTheWire Bandit wargame (Linux, SSH, networking)","min":30,"tiny":"Log in to Bandit level 0"},
-   {"id":"cy2","t":"TryHackMe Pre-Security path","min":30,"tiny":"Open the first room"},
-   {"id":"cy3","t":"Networking basics: Cisco Networking Academy and Professor Messer videos","min":30,"tiny":"Watch one Professor Messer video"},
-   {"id":"cy4","t":"picoCTF: work through the archive (binary, crypto, web, forensics, RE)","needs":["cy1"],"min":40,"tiny":"Open one easy picoCTF challenge"},
-   {"id":"cy5","t":"PortSwigger Web Security Academy: SQLi, XSS, auth, SSRF","needs":["cy2","cy3"],"min":40,"tiny":"Do the first SQL injection lab"},
-   {"id":"cy6","t":"Hacker101 CTF and videos","needs":["cy2"],"min":30,"tiny":"Watch the first Hacker101 video"},
-   {"id":"cy7","t":"pwn.college: lectures and challenges (binary exploitation, RE)","needs":["cy1","c1"],"min":45,"tiny":"Start the first module's lecture"},
-   {"id":"cy8","t":"Nightmare (GuyInATuxedo) and ROP Emporium drills","needs":["cy7"],"min":45,"tiny":"Read the first Nightmare chapter"},
-   {"id":"cy9","t":"TryHackMe free rooms toward Jr Penetration Tester or SOC Level 1 path (paid tier optional)","needs":["cy2"],"min":30,"tiny":"Finish one free room"},
-   {"id":"cy10","t":"HackTheBox free machines: 30-50 without walkthroughs (TJ Null list)","needs":["cy4","cy5"],"min":60,"tiny":"Spawn one easy machine and run nmap"},
-   {"id":"cy11","t":"Join a CTFtime team and enter a live CTF","needs":["cy4"],"min":60,"tiny":"Open CTFtime and find the next CTF"},
-   {"id":"cy12","t":"Publish writeups on GitHub or a blog for every box and CTF","needs":["cy4"],"min":30,"tiny":"Write the title and the goal of one writeup"},
-   {"id":"cy13","t":"ISC2 Certified in Cybersecurity (CC), free","needs":["cy3"],"min":40,"tiny":"Open the CC free course"},
-   {"id":"cy14","t":"eJPT v2 (practical pentest cert, paid about $249)","needs":["cy10"],"min":45,"tiny":"Read the eJPT exam outline"},
-   {"id":"cy15","t":"HTB CPTS (paid about $210)","needs":["cy14"],"min":45,"tiny":"Read the CPTS path outline"},
-   {"id":"cy16","t":"Bug bounty: YesWeHack Dojo, then live programs on HackerOne and Bugcrowd","needs":["cy5","cy6"],"min":45,"tiny":"Open one Dojo challenge"}]},
-  {"id":"gs","name":"GSoC","floor":1,"src":"GSoC 2027 Roadmap, Python + AI Track (phases -1 to 4). The C/C++ Systems Track targets GSoC 2028 and is not imported.","nodes":[
-   {"id":"gs1","t":"Phase -1: Git and GitHub properly: clone, branch, PR, resolve a merge conflict","min":30,"tiny":"Make a branch and push one small change"},
-   {"id":"gs2","t":"Phase -1: numpy and pandas basics","needs":["py1"],"min":30,"tiny":"Create one array and one dataframe"},
-   {"id":"gs3","t":"Phase -1: build 3-5 small real projects (CLI tool, CSV script, API caller, data cleaner)","needs":["py3","gs1"],"min":45,"tiny":"Pick the first project and write what it does in one line"},
-   {"id":"gs4","t":"Phase -1: read an open-source Python file of about 200 lines and explain every function","needs":["py2"],"min":30,"tiny":"Pick one small file and read the first function"},
-   {"id":"gs5","t":"Phase 0: pick a primary org and a backup (PSF, NumFOCUS AiiDA/ArviZ, CVXPY). Checkpoint: if Phase -1 is not solid by November 2026, consider GSoC 2028","needs":["gs3","gs4"],"min":30,"tiny":"List 3 orgs and read their front page"},
-   {"id":"gs6","t":"Phase 0: read CONTRIBUTING and get the codebase building and running locally","needs":["gs5"],"min":45,"tiny":"Clone the repo"},
-   {"id":"gs7","t":"Phase 0: join the community chat, introduce yourself, skim the test suite","needs":["gs6"],"min":30,"tiny":"Join the chat and say hello"},
-   {"id":"gs8","t":"Phase 1: find 2-3 good first issues and comment on one","needs":["gs7"],"min":30,"tiny":"Open the good first issue list"},
-   {"id":"gs9","t":"Phase 1: submit your first PR and iterate on review feedback","needs":["gs8"],"min":45,"tiny":"Trace the code path for the issue"},
-   {"id":"gs10","t":"Phase 1: second, slightly harder PR (small feature or real bug)","needs":["gs9"],"min":45,"tiny":"Pick the issue and comment on it"},
-   {"id":"gs11","t":"Phase 2: confirm the org is in GSoC 2027, read its ideas list, shortlist 2-3 ideas, message a mentor","needs":["gs10"],"min":40,"tiny":"Open the GSoC org list and search for your org"},
-   {"id":"gs12","t":"Phase 3: draft the proposal (1,500-2,500 words with a week-by-week timeline)","needs":["gs11"],"min":45,"tiny":"Write the problem statement paragraph"},
-   {"id":"gs13","t":"Phase 3: mentor review, register on the GSoC site, submit 24-48 hours before the deadline","needs":["gs12"],"min":40,"tiny":"Send the draft to a mentor"},
-   {"id":"gs14","t":"Phase 4: keep contributing small PRs while results are pending","needs":["gs13"],"min":30,"tiny":"Check the issue tracker for one small fix"}]},
-  {"id":"sysd","name":"Systems depth","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
-   {"id":"net1","t":"Networking internals: sockets in C, an HTTP/1.1 client and server, DNS, the TLS handshake, packets in Wireshark","needs":["c1"],"min":40,"tiny":"Read the first two chapters of Beej's Guide"},
-   {"id":"db1","t":"Database internals: B-trees, LSM trees, WAL, MVCC, buffer pool; build a toy key-value store in C++","needs":["c2","c9"],"min":45,"tiny":"Watch the first 10 minutes of a CMU 15-445 lecture"},
-   {"id":"cc1","t":"Concurrency and the memory model: mutexes, spinlocks, condition variables, atomics; build a concurrent hash map","needs":["c3","c9"],"min":40,"tiny":"Write a two-thread counter and watch it race"},
-   {"id":"llvm1","t":"Compilers and LLVM: lexing, parsing, IR, optimization passes, code generation","needs":["c2","c9"],"min":45,"tiny":"Compile a 5-line C file to LLVM IR with clang and read it"}]},
-  {"id":"gfx","name":"Graphics and GPU","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
-   {"id":"gx1","t":"Software rasterizer in C++ with no graphics API: triangles, depth buffer, textures","needs":["v2","c9"],"min":45,"tiny":"Draw one triangle into an image file"},
-   {"id":"vk1","t":"Vulkan or WebGPU: explicit memory, render passes, synchronization, descriptor sets","needs":["g1","c9"],"min":45,"tiny":"Read the Overview page of vulkan-tutorial.com"},
-   {"id":"cuda1","t":"CUDA programming: thread hierarchy, shared memory, warp divergence, coalescing, streams; write a GEMM kernel","needs":["c9","c4"],"min":45,"tiny":"Run the vector-add example from the CUDA guide (a free Colab GPU works)"},
-   {"id":"pbr1","t":"Real-time rendering: deferred shading, PBR, shadow maps, ambient occlusion, post-processing; build a deferred renderer","needs":["vk1"],"min":45,"tiny":"Read the deferred shading chapter of LearnOpenGL"}]},
-  {"id":"aisys","name":"AI systems","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
-   {"id":"ml1","t":"PyTorch internals and autograd: tensor storage, CUDA dispatch; build micrograd from scratch","needs":["ai1"],"min":45,"tiny":"Watch the first 10 minutes of Karpathy's micrograd lecture"},
-   {"id":"ml2","t":"AI inference optimization: INT8/FP16 quantization, pruning, TensorRT, ONNX Runtime, KV-cache","needs":["ml1","cuda1"],"min":45,"tiny":"Export one small model to ONNX"},
-   {"id":"nr1","t":"Neural rendering: NeRF, 3D Gaussian Splatting, instant-ngp; optimize at the CUDA level","needs":["cuda1","ml1"],"min":45,"tiny":"Read the abstract and figures of the 3D Gaussian Splatting paper"},
-   {"id":"ml3","t":"AI compilers: MLIR, Triton, IREE; write a small Triton kernel","needs":["llvm1","cuda1"],"min":45,"tiny":"Run the Triton vector-add tutorial"}]},
-  {"id":"secx","name":"Security advanced","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
-   {"id":"sx1","t":"Cloud security: AWS IAM misconfigurations, S3 exposure, OWASP cloud risks","needs":["cy5"],"min":40,"tiny":"Read the AWS IAM policy basics page"},
-   {"id":"sx2","t":"OSCP (PEN-200): buffer overflows, privilege escalation, Active Directory attacks, report writing, 24-hour exam","needs":["cy10","c7"],"min":60,"tiny":"Read the PEN-200 syllabus"},
-   {"id":"sx3","t":"Kernel and hypervisor security: Linux kernel exploitation, KVM, container escapes","needs":["c6","cy8"],"min":45,"tiny":"Read one public Linux kernel CVE writeup"},
-   {"id":"sx4","t":"GPU security research: driver vulnerabilities, GPU memory attacks, cache side channels, model theft through GPU timing","needs":["cuda1","c7"],"min":45,"tiny":"Read the abstract of one GPU security paper"}]},
-  {"id":"oss","name":"Open source and research","floor":1,"src":"6-year Low-Level Design roadmap (convergence path)","nodes":[
-   {"id":"os1","t":"GSoC systems track: pick an org (Mesa, LLVM, Rizin or Wireshark), build it, read the codebase, land a small bug fix","needs":["c9","gs1"],"min":45,"tiny":"Clone one of the four repos and build it"},
-   {"id":"os2","t":"GSoC systems proposal: shortlist ideas, message a mentor, write a detailed proposal with a week-by-week timeline","needs":["os1"],"min":45,"tiny":"Read the org's ideas list"},
-   {"id":"os3","t":"Write one solid technical writeup or workshop paper: a CTF exploit, a GPU optimization or a driver bug","needs":["c7"],"min":45,"tiny":"Write the title and the one-line claim"},
-   {"id":"os4","t":"Open source leadership: maintain a small project or ship your own systems tool (GPU profiler, shader debugger, exploit framework)","needs":["os1"],"min":45,"tiny":"Write the README title and one-line purpose"}]}
-]
+  "note": "Ladders imported from Notion pages. A ladder with sample:true holds placeholder tasks; none are left. Optional tiny gives the smallest first step.",
+  "ladders": [
+    {
+      "id": "ielts-academic-target-band-7",
+      "name": "IELTS Academic - Target Band 7",
+      "floor": 2,
+      "nodes": [
+        {
+          "id": "ielts-1",
+          "t": "Diagnostic Test, Format & Band Descriptors",
+          "min": 150,
+          "needs": [],
+          "due": "2026-11-08",
+          "links": [
+            {
+              "title": "Official IELTS Sample Test Questions",
+              "url": "https://www.ielts.org/for-test-takers/sample-test-questions",
+              "kind": "docs"
+            }
+          ]
+        },
+        {
+          "id": "ielts-2",
+          "t": "Register & Book Test (IDP India), Passport Check",
+          "min": 45,
+          "needs": [
+            "ielts-1"
+          ],
+          "due": "2026-11-15",
+          "links": [
+            {
+              "title": "IDP India - IELTS Test Dates & Registration",
+              "url": "https://www.ieltsidpindia.com/Registration/ielts-test-dates-india",
+              "kind": "docs"
+            }
+          ]
+        },
+        {
+          "id": "ielts-3",
+          "t": "Foundation: Academic Vocabulary, Grammar & Daily Listening/Reading Habit",
+          "min": 150,
+          "needs": [
+            "ielts-1"
+          ],
+          "due": "2026-11-29",
+          "links": [
+            {
+              "title": "British Council - Prepare for IELTS",
+              "url": "https://takeielts.britishcouncil.org/take-ielts/prepare",
+              "kind": "docs"
+            }
+          ]
+        },
+        {
+          "id": "ielts-4",
+          "t": "Listening & Reading: Question Types and Timing Strategies",
+          "min": 150,
+          "needs": [
+            "ielts-3"
+          ],
+          "due": "2026-12-20",
+          "links": [
+            {
+              "title": "Cambridge IELTS Practice Tests (16-19)",
+              "url": "https://www.cambridgeenglish.org/exams-and-tests/ielts/",
+              "kind": "book"
+            }
+          ]
+        },
+        {
+          "id": "ielts-5",
+          "t": "Writing Task 1 & 2 and Speaking Parts 1-3 (with feedback)",
+          "min": 150,
+          "needs": [
+            "ielts-3"
+          ],
+          "due": "2026-12-20",
+          "links": [
+            {
+              "title": "IELTS Liz - Writing & Speaking Lessons",
+              "url": "https://ieltsliz.com/",
+              "kind": "docs"
+            }
+          ]
+        },
+        {
+          "id": "ielts-6",
+          "t": "Timed Section-wise Practice & Weak-Skill Work",
+          "min": 150,
+          "needs": [
+            "ielts-4",
+            "ielts-5"
+          ],
+          "due": "2027-01-03",
+          "links": [
+            {
+              "title": "Cambridge IELTS Practice Tests (16-19)",
+              "url": "https://www.cambridgeenglish.org/exams-and-tests/ielts/",
+              "kind": "book"
+            }
+          ]
+        },
+        {
+          "id": "ielts-7",
+          "t": "Full Mock Tests, Marked Writing & Speaking Feedback",
+          "min": 180,
+          "needs": [
+            "ielts-6"
+          ],
+          "due": "2027-01-17",
+          "links": [
+            {
+              "title": "British Council - Prepare for IELTS",
+              "url": "https://takeielts.britishcouncil.org/take-ielts/prepare",
+              "kind": "docs"
+            }
+          ]
+        },
+        {
+          "id": "ielts-8",
+          "t": "Final Polish, Error-Log Review & Test-Day Checklist",
+          "min": 90,
+          "needs": [
+            "ielts-7"
+          ],
+          "due": "2027-01-24",
+          "links": [
+            {
+              "title": "IELTS Liz - Test Day Tips",
+              "url": "https://ieltsliz.com/",
+              "kind": "docs"
+            }
+          ]
+        }
+      ],
+      "target": "2027-01-20"
+    },
+    {
+      "id": "aus",
+      "name": "Ausbildung plan, Nov 2026 to Aug 2027",
+      "floor": 2,
+      "start": "2026-11-01",
+      "target": "2027-08-31",
+      "note": "Dated plan from your roadmap PDF (prepared 1 Nov 2026). Goal: B1 by May 2027, then B2. If A2 is not mostly done by end of February, move the B1 exam to June or July. If B1 is not passed by June, aim for the Feb or March 2028 intake. Hours and month targets are the author's estimates; check embassy and employer rules.",
+      "links": [
+        {
+          "t": "DW Nicos Weg (A1 to B1)",
+          "u": "https://learngerman.dw.com",
+          "kind": "course",
+          "free": true
+        },
+        {
+          "t": "Anki flashcards",
+          "u": "https://apps.ankiweb.net",
+          "kind": "practice",
+          "free": true
+        },
+        {
+          "t": "Make it in Germany",
+          "u": "https://www.make-it-in-germany.com",
+          "kind": "docs",
+          "free": true
+        },
+        {
+          "t": "Bundesagentur f\u00fcr Arbeit",
+          "u": "https://www.arbeitsagentur.de",
+          "kind": "docs",
+          "free": true
+        },
+        {
+          "t": "Anabin (certificate check)",
+          "u": "https://anabin.kmk.org",
+          "kind": "docs",
+          "free": true
+        },
+        {
+          "t": "German Embassy India",
+          "u": "https://india.diplo.de",
+          "kind": "docs",
+          "free": true
+        }
+      ],
+      "nodes": [
+        {
+          "id": "au-field",
+          "t": "Choose your main field: mechatronics or software (you can apply to both later)",
+          "min": 30,
+          "tiny": "Write the two options and one reason for each",
+          "due": "2026-11-30",
+          "links": [
+            {
+              "t": "Make it in Germany",
+              "u": "https://www.make-it-in-germany.com",
+              "kind": "docs",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-passport",
+          "t": "Check your passport is valid for at least 6 months beyond your planned arrival in Germany; apply or renew now if needed",
+          "min": 30,
+          "tiny": "Open your passport and read the expiry date",
+          "due": "2026-11-30",
+          "links": [
+            {
+              "t": "Passport Seva",
+              "u": "https://www.passportindia.gov.in",
+              "kind": "docs",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-docs-copies",
+          "t": "Collect copies of your school certificates (10th, 12th, diploma or ITI), ID and birth certificate",
+          "min": 45,
+          "tiny": "List the certificates you have",
+          "due": "2026-12-31"
+        },
+        {
+          "id": "au-docs-duplicates",
+          "t": "Ask your school or college what it takes to get duplicates or attested copies",
+          "min": 30,
+          "tiny": "Write down who to call or email",
+          "needs": [
+            "au-docs-copies"
+          ],
+          "due": "2026-12-31"
+        },
+        {
+          "id": "au-a1-mock",
+          "t": "A1 checkpoint: take a free Goethe Start Deutsch 1 sample test (aim for 60% or more; if lower, revise in the first week of January)",
+          "min": 60,
+          "tiny": "Open the Start Deutsch 1 sample test",
+          "needs": [
+            "ger3",
+            "ger4",
+            "ger5"
+          ],
+          "due": "2026-12-31",
+          "links": [
+            {
+              "t": "Goethe: find the free sample tests",
+              "u": "https://www.goethe.de",
+              "kind": "practice",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-apostille",
+          "t": "Start the apostille process for your educational certificates (MEA attestation in India; allow 2 to 6 weeks)",
+          "min": 45,
+          "tiny": "Open the MEA attestation page and note the steps",
+          "needs": [
+            "au-docs-duplicates"
+          ],
+          "due": "2027-01-31",
+          "links": [
+            {
+              "t": "Ministry of External Affairs",
+              "u": "https://www.mea.gov.in",
+              "kind": "docs",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-pcc",
+          "t": "Start the police clearance certificate (PCC) application through the passport authority (allow 4 to 8 weeks)",
+          "min": 45,
+          "tiny": "Find the PCC form on the passport site",
+          "needs": [
+            "au-passport"
+          ],
+          "due": "2027-01-31",
+          "links": [
+            {
+              "t": "Passport Seva",
+              "u": "https://www.passportindia.gov.in",
+              "kind": "docs",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-a2-mock",
+          "t": "A2 checkpoint: take an A2 sample test (if A2 is not mostly done by the end of February, use the fallback in the ladder note)",
+          "min": 60,
+          "tiny": "Open an A2 sample test",
+          "needs": [
+            "ger7",
+            "ger8",
+            "ger9",
+            "ger10"
+          ],
+          "due": "2027-02-28",
+          "links": [
+            {
+              "t": "Goethe: find the free sample tests",
+              "u": "https://www.goethe.de",
+              "kind": "practice",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-portfolio-sw",
+          "t": "Software track: start a small GitHub portfolio with 2 to 3 projects and short English READMEs",
+          "min": 60,
+          "tiny": "Create the GitHub repository for project 1",
+          "due": "2027-02-28",
+          "links": [
+            {
+              "t": "GitHub",
+              "u": "https://github.com",
+              "kind": "docs",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-portfolio-mech",
+          "t": "Mechatronics track: list your lab work, diploma projects, ITI trades and hobby builds (Arduino, Raspberry Pi)",
+          "min": 45,
+          "tiny": "Write down three things you have built",
+          "due": "2027-02-28"
+        },
+        {
+          "id": "au-vocab-tech",
+          "t": "Learn technical German vocabulary for your field. Mechatronics: Schaltplan, Steuerung, Sensor, Antrieb, Maschine, Werkzeug, Messger\u00e4t. Software: Programmiersprache, Datenbank, Netzwerk, Fehler, Anwendung",
+          "min": 30,
+          "tiny": "Write 5 of these words with their article",
+          "needs": [
+            "ger10"
+          ],
+          "due": "2027-03-31"
+        },
+        {
+          "id": "au-b1-register",
+          "t": "Check the Goethe India website for B1 dates in May and June 2027 and register as soon as they open (modules can be booked together or separately; bring the original passport on exam day)",
+          "min": 30,
+          "tiny": "Open the Goethe India exam page",
+          "needs": [
+            "au-a2-mock"
+          ],
+          "due": "2027-04-30",
+          "links": [
+            {
+              "t": "Goethe-Institut",
+              "u": "https://www.goethe.de",
+              "kind": "docs",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-b1-mocks",
+          "t": "Take full B1 mock tests every week, timed (aim for 60% or more; if lower, move the exam by one cycle)",
+          "min": 90,
+          "tiny": "Open the next B1 sample test and set a timer",
+          "needs": [
+            "ger14",
+            "ger16"
+          ],
+          "due": "2027-04-30",
+          "links": [
+            {
+              "t": "Goethe: find the free sample tests",
+              "u": "https://www.goethe.de",
+              "kind": "practice",
+              "free": true
+            }
+          ]
+        },
+        {
+          "id": "au-b1-writing",
+          "t": "B1 writing practice: a formal email, an informal email and a forum post, corrected by a teacher or language partner",
+          "min": 45,
+          "tiny": "Write the first two lines of a formal email",
+          "needs": [
+            "ger14"
+          ],
+          "due": "2027-04-30"
+        },
+        {
+          "id": "au-b1-speaking",
+          "t": "B1 speaking practice: a 2 to 3 minute presentation and a short discussion",
+          "min": 30,
+          "tiny": "Record a one-minute talk on a familiar topic",
+          "needs": [
+            "ger16"
+          ],
+          "due": "2027-04-30"
+        },
+        {
+          "id": "au-employer-questions",
+          "t": "Prepare questions to ask employers: training plan, vocational school location, accommodation help, support with visa paperwork",
+          "min": 30,
+          "tiny": "Write three questions",
+          "due": "2027-05-31"
+        },
+        {
+          "id": "au-b1-results",
+          "t": "Receive your B1 results (about 4 to 6 weeks after the exam); if a module fails, rebook that module only",
+          "min": 15,
+          "tiny": "Note the date results are expected",
+          "needs": [
+            "ger18"
+          ],
+          "due": "2027-06-30"
+        },
+        {
+          "id": "au-arrival",
+          "t": "Prepare for arrival: Anmeldung (address registration) and the residence permit appointment",
+          "min": 30,
+          "tiny": "Search how Anmeldung works in your city",
+          "needs": [
+            "au-b1-results"
+          ],
+          "due": "2027-08-31"
+        },
+        {
+          "id": "au-selfcheck",
+          "t": "Monthly self-check: studied 5+ days a week? checklist done? mock test 60%+? documents moving? Adjust the plan",
+          "min": 15,
+          "tiny": "Answer the first question for last month"
+        }
+      ]
+    },
+    {
+      "id": "math",
+      "name": "Math",
+      "floor": 2,
+      "src": "Mechatronics Roadmap v2, syllabus M0-M6",
+      "nodes": [
+        {
+          "id": "m0",
+          "t": "Arithmetic, units and estimation",
+          "min": 25
+        },
+        {
+          "id": "m1",
+          "t": "Algebra: rearranging formulas, equations, logs",
+          "needs": [
+            "m0"
+          ],
+          "min": 30
+        },
+        {
+          "id": "m2",
+          "t": "Geometry and trigonometry: radians, sine waves",
+          "needs": [
+            "m1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "m3",
+          "t": "Vectors, matrices and complex numbers",
+          "needs": [
+            "m2"
+          ],
+          "min": 30
+        },
+        {
+          "id": "m4",
+          "t": "Calculus: derivatives, integrals, first-order ODEs",
+          "needs": [
+            "m2"
+          ],
+          "min": 30
+        },
+        {
+          "id": "m5",
+          "t": "Statistics and fitting for noisy sensors",
+          "needs": [
+            "m1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "m6",
+          "t": "Control math: second-order ODEs, Laplace, eigenvalues",
+          "needs": [
+            "m3",
+            "m4"
+          ],
+          "min": 30
+        },
+        {
+          "id": "m7",
+          "t": "Discrete math and modular arithmetic: logic, counting, number theory for security and algorithms",
+          "needs": [
+            "m1"
+          ],
+          "min": 30,
+          "tiny": "Work through modular arithmetic with clock examples"
+        }
+      ]
+    },
+    {
+      "id": "3d",
+      "name": "3D math and graphics",
+      "floor": 2,
+      "src": "AR/VR Resources: Learning 3D Maths, steps 1-5",
+      "nodes": [
+        {
+          "id": "v1",
+          "t": "Vectors and coordinates: dot, cross, normalise (three.js)",
+          "needs": [
+            "m2"
+          ],
+          "min": 25
+        },
+        {
+          "id": "v2",
+          "t": "Matrices and transformations: translate, rotate, scale, 4x4",
+          "needs": [
+            "v1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "v3",
+          "t": "Coordinate spaces and projection: model, view, projection",
+          "needs": [
+            "v2"
+          ],
+          "min": 30
+        },
+        {
+          "id": "v4",
+          "t": "Rotations and quaternions: Euler, gimbal lock, slerp",
+          "needs": [
+            "v2"
+          ],
+          "min": 30
+        },
+        {
+          "id": "v5",
+          "t": "Curves and interpolation: Bezier",
+          "needs": [
+            "v1"
+          ],
+          "min": 25
+        },
+        {
+          "id": "g1",
+          "t": "LearnOpenGL: getting started through lighting",
+          "needs": [
+            "v3"
+          ],
+          "min": 40
+        }
+      ]
+    },
+    {
+      "id": "phy",
+      "name": "Physics",
+      "floor": 1,
+      "src": "Mechatronics Roadmap v2, syllabus P0-P6",
+      "nodes": [
+        {
+          "id": "p0",
+          "t": "Measurement, units and error",
+          "min": 20
+        },
+        {
+          "id": "p1",
+          "t": "Motion: velocity, acceleration, free fall",
+          "needs": [
+            "p0",
+            "m1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "p2",
+          "t": "Forces: Newton's laws, friction, free-body diagrams",
+          "needs": [
+            "p1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "p3",
+          "t": "Energy, power and momentum",
+          "needs": [
+            "p2"
+          ],
+          "min": 30
+        },
+        {
+          "id": "p4",
+          "t": "Rotation: torque, inertia, gears",
+          "needs": [
+            "p3"
+          ],
+          "min": 30
+        },
+        {
+          "id": "p5",
+          "t": "Electricity and magnetism: charge, current, motors",
+          "needs": [
+            "p1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "p6",
+          "t": "Waves and heat: ultrasonics, temperature rise",
+          "needs": [
+            "p1"
+          ],
+          "min": 25
+        }
+      ]
+    },
+    {
+      "id": "ele",
+      "name": "Electronics",
+      "floor": 2,
+      "src": "Mechatronics Roadmap v2, syllabus E0-E6",
+      "nodes": [
+        {
+          "id": "e0",
+          "t": "First circuits: Ohm's law, breadboard, multimeter",
+          "needs": [
+            "m1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "e1",
+          "t": "Circuit analysis: Kirchhoff, dividers, Thevenin",
+          "needs": [
+            "e0"
+          ],
+          "min": 30
+        },
+        {
+          "id": "e2",
+          "t": "Capacitors, inductors and AC: RC, impedance, filters",
+          "needs": [
+            "e1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "e3",
+          "t": "Semiconductors: diodes, BJT, MOSFET switches",
+          "needs": [
+            "e1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "e4",
+          "t": "Op-amps and power: regulators, ripple, decoupling",
+          "needs": [
+            "e3"
+          ],
+          "min": 30
+        },
+        {
+          "id": "e5",
+          "t": "Digital: gates, ADC and DAC, sampling",
+          "needs": [
+            "e0"
+          ],
+          "min": 30
+        },
+        {
+          "id": "e6",
+          "t": "PCB design in KiCad",
+          "needs": [
+            "e4"
+          ],
+          "min": 40
+        }
+      ]
+    },
+    {
+      "id": "emb",
+      "name": "Embedded",
+      "floor": 1,
+      "src": "Mechatronics Roadmap v2, syllabus EM0-EM4",
+      "nodes": [
+        {
+          "id": "em0",
+          "t": "Microcontroller basics: pins, clock, flashing code",
+          "needs": [
+            "e0"
+          ],
+          "min": 25
+        },
+        {
+          "id": "em1",
+          "t": "Peripherals: GPIO, PWM, ADC, timers, interrupts",
+          "needs": [
+            "em0",
+            "c1"
+          ],
+          "min": 35
+        },
+        {
+          "id": "em2",
+          "t": "Protocols: UART, I2C, SPI, logic analyser",
+          "needs": [
+            "em1"
+          ],
+          "min": 35
+        },
+        {
+          "id": "em3",
+          "t": "Firmware structure: state machines, FreeRTOS",
+          "needs": [
+            "em2"
+          ],
+          "min": 35
+        },
+        {
+          "id": "em4",
+          "t": "Wireless and IoT: ESP32, MQTT dashboard",
+          "needs": [
+            "em3"
+          ],
+          "min": 35
+        }
+      ]
+    },
+    {
+      "id": "des",
+      "name": "Design and CAD",
+      "floor": 1,
+      "src": "Mechatronics Roadmap v2, syllabus ME0-ME5 (brand and graphic design not imported yet)",
+      "nodes": [
+        {
+          "id": "me0",
+          "t": "Engineering drawings, tolerances, measuring",
+          "min": 25
+        },
+        {
+          "id": "me1",
+          "t": "Statics: free-body diagrams, moments",
+          "needs": [
+            "me0",
+            "p2"
+          ],
+          "min": 30
+        },
+        {
+          "id": "me2",
+          "t": "Materials and strength: stress, strain, safety factor",
+          "needs": [
+            "me1"
+          ],
+          "min": 30
+        },
+        {
+          "id": "me3",
+          "t": "Machine elements: gears, bearings, fasteners",
+          "needs": [
+            "me2"
+          ],
+          "min": 30
+        },
+        {
+          "id": "me4",
+          "t": "CAD: sketches, extrudes, assemblies, 3D-print design",
+          "needs": [
+            "me0"
+          ],
+          "min": 40
+        },
+        {
+          "id": "me5",
+          "t": "Actuation sizing: torque, speed, gear ratio",
+          "needs": [
+            "me3",
+            "p4"
+          ],
+          "min": 30
+        }
+      ]
+    },
+    {
+      "id": "c",
+      "name": "C and C++",
+      "floor": 2,
+      "src": "Advanced C / C++ / C# page, stages 1-14",
+      "nodes": [
+        {
+          "id": "c1",
+          "t": "Stage 1: Advanced C and memory mastery",
+          "min": 45
+        },
+        {
+          "id": "c2",
+          "t": "Stage 2: Data structures and algorithms in C",
+          "needs": [
+            "c1"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c3",
+          "t": "Stage 3: Systems programming (Linux/POSIX)",
+          "needs": [
+            "c1"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c4",
+          "t": "Stage 4: Computer architecture and x86-64 assembly",
+          "needs": [
+            "c1"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c5",
+          "t": "Stage 5: OS theory and your own toy OS",
+          "needs": [
+            "c2",
+            "c3",
+            "c4"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c6",
+          "t": "Stage 6: Linux kernel internals",
+          "needs": [
+            "c5"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c7",
+          "t": "Stage 7: Reverse engineering and binary exploitation",
+          "needs": [
+            "c4"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c8",
+          "t": "Stage 8: Embedded programming (STM32/ESP32, FreeRTOS)",
+          "needs": [
+            "c1"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c9",
+          "t": "Stage 9: Modern C++ deep dive",
+          "needs": [
+            "c1"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c10",
+          "t": "Stage 10: DSA and advanced algorithms in C++",
+          "needs": [
+            "c2",
+            "c9"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c11",
+          "t": "Stage 11: Game dev and graphics in C++",
+          "needs": [
+            "c9"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c12",
+          "t": "Stage 12: Competitive programming in C++",
+          "needs": [
+            "c10"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c13",
+          "t": "Stage 13: Hackathons and capstone",
+          "needs": [
+            "c5",
+            "c7",
+            "c8",
+            "c11"
+          ],
+          "min": 45
+        },
+        {
+          "id": "c14",
+          "t": "Stage 14: Certifications",
+          "needs": [
+            "c7"
+          ],
+          "min": 30
+        }
+      ]
+    },
+    {
+      "id": "py",
+      "name": "Python, DSA, AI",
+      "floor": 3,
+      "src": "Module 09, stages 1-11 (one sequential path)",
+      "nodes": [
+        {
+          "id": "py1",
+          "t": "Stage 1: Python fundamentals (CS50P)",
+          "min": 45,
+          "tiny": "Open CS50P and watch the first 10 minutes of the current lecture"
+        },
+        {
+          "id": "py2",
+          "t": "Stage 1 practice: 30 problems on Exercism or CodeWars",
+          "needs": [
+            "py1"
+          ],
+          "min": 30,
+          "tiny": "Solve one easy problem"
+        },
+        {
+          "id": "py3",
+          "t": "Stage 1 build: CLI expense tracker or Wordle clone, pushed to GitHub with a README",
+          "needs": [
+            "py2"
+          ],
+          "min": 45,
+          "tiny": "Create the repo and write the README title"
+        },
+        {
+          "id": "py4",
+          "t": "Stage 2: DSA basics (arrays, stacks, recursion): CodeChef roadmap, 50 problems, undo-redo editor",
+          "needs": [
+            "py3"
+          ],
+          "min": 45,
+          "tiny": "Read one CodeChef array section"
+        },
+        {
+          "id": "py5",
+          "t": "Stage 2 compete: first CodeChef Starters or Codeforces Div 4 contest",
+          "needs": [
+            "py4"
+          ],
+          "min": 60,
+          "tiny": "Register for the next contest"
+        },
+        {
+          "id": "py6",
+          "t": "Stage 3: trees and graphs: CodeChef, Striver A2Z, 40 problems, pathfinding visualizer",
+          "needs": [
+            "py4"
+          ],
+          "min": 45,
+          "tiny": "Solve one tree problem"
+        },
+        {
+          "id": "py7",
+          "t": "Stage 3 compete: 2+ AtCoder Beginner Contests",
+          "needs": [
+            "py6"
+          ],
+          "min": 60,
+          "tiny": "Register for the next ABC"
+        },
+        {
+          "id": "py8",
+          "t": "Stage 4: Dynamic programming: CSES, Striver DP playlist (56 problems), budget allocator project",
+          "needs": [
+            "py6"
+          ],
+          "min": 45,
+          "tiny": "Watch the first DP video and solve one problem"
+        },
+        {
+          "id": "py9",
+          "t": "Stage 5: Pattern drill: NeetCode 150, weekly Codeforces rounds toward rating 1200, 5 writeups",
+          "needs": [
+            "py8"
+          ],
+          "min": 45,
+          "tiny": "Do one NeetCode problem"
+        },
+        {
+          "id": "ai1",
+          "t": "Stage 6: AI/ML foundations: Google ML Crash Course, CS229, MIT 6.S191, Kaggle Titanic and House Prices",
+          "needs": [
+            "py9"
+          ],
+          "min": 45,
+          "tiny": "Open the ML Crash Course first lesson"
+        },
+        {
+          "id": "ai2",
+          "t": "Stage 7: Applied and agentic AI: HF Agents course, fast.ai, RAG tutor bot, first lablab hackathon",
+          "needs": [
+            "ai1"
+          ],
+          "min": 45,
+          "tiny": "Open the HF Agents course unit 1"
+        },
+        {
+          "id": "ai3",
+          "t": "Stage 8: Certification consolidation: Google Skills AI badges, IBM SkillsBuild, Azure AI-102 (paid)",
+          "needs": [
+            "ai2"
+          ],
+          "min": 40,
+          "tiny": "Open the Google Skills Generative AI path"
+        },
+        {
+          "id": "ai4",
+          "t": "Stage 9: Blended showcase portfolio: route optimizer with LLM explainer, CP rating predictor, demos on GitHub",
+          "needs": [
+            "ai2"
+          ],
+          "min": 45,
+          "tiny": "Write the README for one project"
+        },
+        {
+          "id": "ai5",
+          "t": "Stage 10: Major hackathon circuit: enter 3-5 across the year (Devpost, MLH, Unstop, Devfolio, SIH)",
+          "needs": [
+            "ai4"
+          ],
+          "min": 45,
+          "tiny": "Find one upcoming hackathon and read its rules"
+        },
+        {
+          "id": "ai6",
+          "t": "Stage 11: Ongoing Kaggle competitions and Codeforces/CodeChef rating climb",
+          "needs": [
+            "py9"
+          ],
+          "min": 45,
+          "tiny": "Open one open Kaggle competition"
+        }
+      ]
+    },
+    {
+      "id": "cyb",
+      "name": "Cyber",
+      "floor": 2,
+      "src": "Module 08, phases 1-5 and the suggested sequence",
+      "nodes": [
+        {
+          "id": "cy1",
+          "t": "OverTheWire Bandit wargame (Linux, SSH, networking)",
+          "min": 30,
+          "tiny": "Log in to Bandit level 0"
+        },
+        {
+          "id": "cy2",
+          "t": "TryHackMe Pre-Security path",
+          "min": 30,
+          "tiny": "Open the first room"
+        },
+        {
+          "id": "cy3",
+          "t": "Networking basics: Cisco Networking Academy and Professor Messer videos",
+          "min": 30,
+          "tiny": "Watch one Professor Messer video"
+        },
+        {
+          "id": "cy4",
+          "t": "picoCTF: work through the archive (binary, crypto, web, forensics, RE)",
+          "needs": [
+            "cy1"
+          ],
+          "min": 40,
+          "tiny": "Open one easy picoCTF challenge"
+        },
+        {
+          "id": "cy5",
+          "t": "PortSwigger Web Security Academy: SQLi, XSS, auth, SSRF",
+          "needs": [
+            "cy2",
+            "cy3"
+          ],
+          "min": 40,
+          "tiny": "Do the first SQL injection lab"
+        },
+        {
+          "id": "cy6",
+          "t": "Hacker101 CTF and videos",
+          "needs": [
+            "cy2"
+          ],
+          "min": 30,
+          "tiny": "Watch the first Hacker101 video"
+        },
+        {
+          "id": "cy7",
+          "t": "pwn.college: lectures and challenges (binary exploitation, RE)",
+          "needs": [
+            "cy1",
+            "c1"
+          ],
+          "min": 45,
+          "tiny": "Start the first module's lecture"
+        },
+        {
+          "id": "cy8",
+          "t": "Nightmare (GuyInATuxedo) and ROP Emporium drills",
+          "needs": [
+            "cy7"
+          ],
+          "min": 45,
+          "tiny": "Read the first Nightmare chapter"
+        },
+        {
+          "id": "cy9",
+          "t": "TryHackMe free rooms toward Jr Penetration Tester or SOC Level 1 path (paid tier optional)",
+          "needs": [
+            "cy2"
+          ],
+          "min": 30,
+          "tiny": "Finish one free room"
+        },
+        {
+          "id": "cy10",
+          "t": "HackTheBox free machines: 30-50 without walkthroughs (TJ Null list)",
+          "needs": [
+            "cy4",
+            "cy5"
+          ],
+          "min": 60,
+          "tiny": "Spawn one easy machine and run nmap"
+        },
+        {
+          "id": "cy11",
+          "t": "Join a CTFtime team and enter a live CTF",
+          "needs": [
+            "cy4"
+          ],
+          "min": 60,
+          "tiny": "Open CTFtime and find the next CTF"
+        },
+        {
+          "id": "cy12",
+          "t": "Publish writeups on GitHub or a blog for every box and CTF",
+          "needs": [
+            "cy4"
+          ],
+          "min": 30,
+          "tiny": "Write the title and the goal of one writeup"
+        },
+        {
+          "id": "cy13",
+          "t": "ISC2 Certified in Cybersecurity (CC), free",
+          "needs": [
+            "cy3"
+          ],
+          "min": 40,
+          "tiny": "Open the CC free course"
+        },
+        {
+          "id": "cy14",
+          "t": "eJPT v2 (practical pentest cert, paid about $249)",
+          "needs": [
+            "cy10"
+          ],
+          "min": 45,
+          "tiny": "Read the eJPT exam outline"
+        },
+        {
+          "id": "cy15",
+          "t": "HTB CPTS (paid about $210)",
+          "needs": [
+            "cy14"
+          ],
+          "min": 45,
+          "tiny": "Read the CPTS path outline"
+        },
+        {
+          "id": "cy16",
+          "t": "Bug bounty: YesWeHack Dojo, then live programs on HackerOne and Bugcrowd",
+          "needs": [
+            "cy5",
+            "cy6"
+          ],
+          "min": 45,
+          "tiny": "Open one Dojo challenge"
+        }
+      ]
+    },
+    {
+      "id": "gs",
+      "name": "GSoC",
+      "floor": 1,
+      "src": "GSoC 2027 Roadmap, Python + AI Track (phases -1 to 4). The C/C++ Systems Track targets GSoC 2028 and is not imported.",
+      "nodes": [
+        {
+          "id": "gs1",
+          "t": "Phase -1: Git and GitHub properly: clone, branch, PR, resolve a merge conflict",
+          "min": 30,
+          "tiny": "Make a branch and push one small change"
+        },
+        {
+          "id": "gs2",
+          "t": "Phase -1: numpy and pandas basics",
+          "needs": [
+            "py1"
+          ],
+          "min": 30,
+          "tiny": "Create one array and one dataframe"
+        },
+        {
+          "id": "gs3",
+          "t": "Phase -1: build 3-5 small real projects (CLI tool, CSV script, API caller, data cleaner)",
+          "needs": [
+            "py3",
+            "gs1"
+          ],
+          "min": 45,
+          "tiny": "Pick the first project and write what it does in one line"
+        },
+        {
+          "id": "gs4",
+          "t": "Phase -1: read an open-source Python file of about 200 lines and explain every function",
+          "needs": [
+            "py2"
+          ],
+          "min": 30,
+          "tiny": "Pick one small file and read the first function"
+        },
+        {
+          "id": "gs5",
+          "t": "Phase 0: pick a primary org and a backup (PSF, NumFOCUS AiiDA/ArviZ, CVXPY). Checkpoint: if Phase -1 is not solid by November 2026, consider GSoC 2028",
+          "needs": [
+            "gs3",
+            "gs4"
+          ],
+          "min": 30,
+          "tiny": "List 3 orgs and read their front page"
+        },
+        {
+          "id": "gs6",
+          "t": "Phase 0: read CONTRIBUTING and get the codebase building and running locally",
+          "needs": [
+            "gs5"
+          ],
+          "min": 45,
+          "tiny": "Clone the repo"
+        },
+        {
+          "id": "gs7",
+          "t": "Phase 0: join the community chat, introduce yourself, skim the test suite",
+          "needs": [
+            "gs6"
+          ],
+          "min": 30,
+          "tiny": "Join the chat and say hello"
+        },
+        {
+          "id": "gs8",
+          "t": "Phase 1: find 2-3 good first issues and comment on one",
+          "needs": [
+            "gs7"
+          ],
+          "min": 30,
+          "tiny": "Open the good first issue list"
+        },
+        {
+          "id": "gs9",
+          "t": "Phase 1: submit your first PR and iterate on review feedback",
+          "needs": [
+            "gs8"
+          ],
+          "min": 45,
+          "tiny": "Trace the code path for the issue"
+        },
+        {
+          "id": "gs10",
+          "t": "Phase 1: second, slightly harder PR (small feature or real bug)",
+          "needs": [
+            "gs9"
+          ],
+          "min": 45,
+          "tiny": "Pick the issue and comment on it"
+        },
+        {
+          "id": "gs11",
+          "t": "Phase 2: confirm the org is in GSoC 2027, read its ideas list, shortlist 2-3 ideas, message a mentor",
+          "needs": [
+            "gs10"
+          ],
+          "min": 40,
+          "tiny": "Open the GSoC org list and search for your org"
+        },
+        {
+          "id": "gs12",
+          "t": "Phase 3: draft the proposal (1,500-2,500 words with a week-by-week timeline)",
+          "needs": [
+            "gs11"
+          ],
+          "min": 45,
+          "tiny": "Write the problem statement paragraph"
+        },
+        {
+          "id": "gs13",
+          "t": "Phase 3: mentor review, register on the GSoC site, submit 24-48 hours before the deadline",
+          "needs": [
+            "gs12"
+          ],
+          "min": 40,
+          "tiny": "Send the draft to a mentor"
+        },
+        {
+          "id": "gs14",
+          "t": "Phase 4: keep contributing small PRs while results are pending",
+          "needs": [
+            "gs13"
+          ],
+          "min": 30,
+          "tiny": "Check the issue tracker for one small fix"
+        }
+      ]
+    },
+    {
+      "id": "sysd",
+      "name": "Systems depth",
+      "floor": 1,
+      "src": "6-year Low-Level Design roadmap (convergence path)",
+      "nodes": [
+        {
+          "id": "net1",
+          "t": "Networking internals: sockets in C, an HTTP/1.1 client and server, DNS, the TLS handshake, packets in Wireshark",
+          "needs": [
+            "c1"
+          ],
+          "min": 40,
+          "tiny": "Read the first two chapters of Beej's Guide"
+        },
+        {
+          "id": "db1",
+          "t": "Database internals: B-trees, LSM trees, WAL, MVCC, buffer pool; build a toy key-value store in C++",
+          "needs": [
+            "c2",
+            "c9"
+          ],
+          "min": 45,
+          "tiny": "Watch the first 10 minutes of a CMU 15-445 lecture"
+        },
+        {
+          "id": "cc1",
+          "t": "Concurrency and the memory model: mutexes, spinlocks, condition variables, atomics; build a concurrent hash map",
+          "needs": [
+            "c3",
+            "c9"
+          ],
+          "min": 40,
+          "tiny": "Write a two-thread counter and watch it race"
+        },
+        {
+          "id": "llvm1",
+          "t": "Compilers and LLVM: lexing, parsing, IR, optimization passes, code generation",
+          "needs": [
+            "c2",
+            "c9"
+          ],
+          "min": 45,
+          "tiny": "Compile a 5-line C file to LLVM IR with clang and read it"
+        }
+      ]
+    },
+    {
+      "id": "gfx",
+      "name": "Graphics and GPU",
+      "floor": 1,
+      "src": "6-year Low-Level Design roadmap (convergence path)",
+      "nodes": [
+        {
+          "id": "gx1",
+          "t": "Software rasterizer in C++ with no graphics API: triangles, depth buffer, textures",
+          "needs": [
+            "v2",
+            "c9"
+          ],
+          "min": 45,
+          "tiny": "Draw one triangle into an image file"
+        },
+        {
+          "id": "vk1",
+          "t": "Vulkan or WebGPU: explicit memory, render passes, synchronization, descriptor sets",
+          "needs": [
+            "g1",
+            "c9"
+          ],
+          "min": 45,
+          "tiny": "Read the Overview page of vulkan-tutorial.com"
+        },
+        {
+          "id": "cuda1",
+          "t": "CUDA programming: thread hierarchy, shared memory, warp divergence, coalescing, streams; write a GEMM kernel",
+          "needs": [
+            "c9",
+            "c4"
+          ],
+          "min": 45,
+          "tiny": "Run the vector-add example from the CUDA guide (a free Colab GPU works)"
+        },
+        {
+          "id": "pbr1",
+          "t": "Real-time rendering: deferred shading, PBR, shadow maps, ambient occlusion, post-processing; build a deferred renderer",
+          "needs": [
+            "vk1"
+          ],
+          "min": 45,
+          "tiny": "Read the deferred shading chapter of LearnOpenGL"
+        }
+      ]
+    },
+    {
+      "id": "aisys",
+      "name": "AI systems",
+      "floor": 1,
+      "src": "6-year Low-Level Design roadmap (convergence path)",
+      "nodes": [
+        {
+          "id": "ml1",
+          "t": "PyTorch internals and autograd: tensor storage, CUDA dispatch; build micrograd from scratch",
+          "needs": [
+            "ai1"
+          ],
+          "min": 45,
+          "tiny": "Watch the first 10 minutes of Karpathy's micrograd lecture"
+        },
+        {
+          "id": "ml2",
+          "t": "AI inference optimization: INT8/FP16 quantization, pruning, TensorRT, ONNX Runtime, KV-cache",
+          "needs": [
+            "ml1",
+            "cuda1"
+          ],
+          "min": 45,
+          "tiny": "Export one small model to ONNX"
+        },
+        {
+          "id": "nr1",
+          "t": "Neural rendering: NeRF, 3D Gaussian Splatting, instant-ngp; optimize at the CUDA level",
+          "needs": [
+            "cuda1",
+            "ml1"
+          ],
+          "min": 45,
+          "tiny": "Read the abstract and figures of the 3D Gaussian Splatting paper"
+        },
+        {
+          "id": "ml3",
+          "t": "AI compilers: MLIR, Triton, IREE; write a small Triton kernel",
+          "needs": [
+            "llvm1",
+            "cuda1"
+          ],
+          "min": 45,
+          "tiny": "Run the Triton vector-add tutorial"
+        }
+      ]
+    },
+    {
+      "id": "secx",
+      "name": "Security advanced",
+      "floor": 1,
+      "src": "6-year Low-Level Design roadmap (convergence path)",
+      "nodes": [
+        {
+          "id": "sx1",
+          "t": "Cloud security: AWS IAM misconfigurations, S3 exposure, OWASP cloud risks",
+          "needs": [
+            "cy5"
+          ],
+          "min": 40,
+          "tiny": "Read the AWS IAM policy basics page"
+        },
+        {
+          "id": "sx2",
+          "t": "OSCP (PEN-200): buffer overflows, privilege escalation, Active Directory attacks, report writing, 24-hour exam",
+          "needs": [
+            "cy10",
+            "c7"
+          ],
+          "min": 60,
+          "tiny": "Read the PEN-200 syllabus"
+        },
+        {
+          "id": "sx3",
+          "t": "Kernel and hypervisor security: Linux kernel exploitation, KVM, container escapes",
+          "needs": [
+            "c6",
+            "cy8"
+          ],
+          "min": 45,
+          "tiny": "Read one public Linux kernel CVE writeup"
+        },
+        {
+          "id": "sx4",
+          "t": "GPU security research: driver vulnerabilities, GPU memory attacks, cache side channels, model theft through GPU timing",
+          "needs": [
+            "cuda1",
+            "c7"
+          ],
+          "min": 45,
+          "tiny": "Read the abstract of one GPU security paper"
+        }
+      ]
+    },
+    {
+      "id": "oss",
+      "name": "Open source and research",
+      "floor": 1,
+      "src": "6-year Low-Level Design roadmap (convergence path)",
+      "nodes": [
+        {
+          "id": "os1",
+          "t": "GSoC systems track: pick an org (Mesa, LLVM, Rizin or Wireshark), build it, read the codebase, land a small bug fix",
+          "needs": [
+            "c9",
+            "gs1"
+          ],
+          "min": 45,
+          "tiny": "Clone one of the four repos and build it"
+        },
+        {
+          "id": "os2",
+          "t": "GSoC systems proposal: shortlist ideas, message a mentor, write a detailed proposal with a week-by-week timeline",
+          "needs": [
+            "os1"
+          ],
+          "min": 45,
+          "tiny": "Read the org's ideas list"
+        },
+        {
+          "id": "os3",
+          "t": "Write one solid technical writeup or workshop paper: a CTF exploit, a GPU optimization or a driver bug",
+          "needs": [
+            "c7"
+          ],
+          "min": 45,
+          "tiny": "Write the title and the one-line claim"
+        },
+        {
+          "id": "os4",
+          "t": "Open source leadership: maintain a small project or ship your own systems tool (GPU profiler, shader debugger, exploit framework)",
+          "needs": [
+            "os1"
+          ],
+          "min": 45,
+          "tiny": "Write the README title and one-line purpose"
+        }
+      ]
+    },
+    {
+      "id": "ger",
+      "name": "German A1 to C1",
+      "floor": 3,
+      "src": "german_ielts_learning_roadmap.html (phases 1 to 5, months 1 to 24)",
+      "nodes": [
+        {
+          "id": "ger1",
+          "t": "German alphabet and pronunciation (umlauts \u00e4 \u00f6 \u00fc, \u00df)",
+          "min": 30,
+          "tiny": "Say the alphabet aloud once"
+        },
+        {
+          "id": "ger2",
+          "t": "Numbers, days, months, colours and family words",
+          "min": 30,
+          "tiny": "Say the numbers 1 to 20 aloud",
+          "needs": [
+            "ger1"
+          ]
+        },
+        {
+          "id": "ger3",
+          "t": "Basic sentence order: subject, verb, object",
+          "min": 30,
+          "tiny": "Write one sentence about your day",
+          "needs": [
+            "ger1"
+          ]
+        },
+        {
+          "id": "ger4",
+          "t": "Present tense with sein and haben",
+          "min": 30,
+          "tiny": "Write ich bin and ich habe with one example each",
+          "needs": [
+            "ger3"
+          ]
+        },
+        {
+          "id": "ger5",
+          "t": "First 100 to 300 common words with Anki",
+          "min": 30,
+          "tiny": "Open Anki and add 5 words",
+          "needs": [
+            "ger2"
+          ]
+        },
+        {
+          "id": "ger6",
+          "t": "Cases: Nominativ, Akkusativ, Dativ and their articles",
+          "min": 40,
+          "tiny": "Write der, die, das in a three-column table",
+          "needs": [
+            "ger4"
+          ]
+        },
+        {
+          "id": "ger7",
+          "t": "Past tense: Perfekt and Pr\u00e4teritum",
+          "min": 40,
+          "tiny": "Turn one present sentence into Perfekt",
+          "needs": [
+            "ger4"
+          ]
+        },
+        {
+          "id": "ger8",
+          "t": "Modal verbs: k\u00f6nnen, m\u00fcssen, wollen, sollen",
+          "min": 30,
+          "tiny": "Write one sentence with k\u00f6nnen",
+          "needs": [
+            "ger4"
+          ]
+        },
+        {
+          "id": "ger9",
+          "t": "Prepositions with cases (in, auf, an, mit, f\u00fcr)",
+          "min": 40,
+          "tiny": "List five prepositions and the case each takes",
+          "needs": [
+            "ger6"
+          ]
+        },
+        {
+          "id": "ger10",
+          "t": "Simple conversations: shopping, transport, directions",
+          "min": 30,
+          "tiny": "Write three lines you would say in a shop",
+          "needs": [
+            "ger8",
+            "ger9"
+          ]
+        },
+        {
+          "id": "ger11",
+          "t": "Vocabulary to about 800 words",
+          "min": 30,
+          "tiny": "Review 10 Anki cards",
+          "needs": [
+            "ger5"
+          ]
+        },
+        {
+          "id": "ger12",
+          "t": "Konjunktiv II (subjunctive)",
+          "min": 40,
+          "tiny": "Write one wish sentence with h\u00e4tte or w\u00e4re",
+          "needs": [
+            "ger7",
+            "ger8"
+          ]
+        },
+        {
+          "id": "ger13",
+          "t": "Passive voice and relative clauses",
+          "min": 40,
+          "tiny": "Turn one active sentence into the passive",
+          "needs": [
+            "ger7"
+          ]
+        },
+        {
+          "id": "ger14",
+          "t": "Subordinate clauses with weil, obwohl, wenn, dass",
+          "min": 40,
+          "tiny": "Join two short sentences with weil",
+          "needs": [
+            "ger6"
+          ]
+        },
+        {
+          "id": "ger15",
+          "t": "Genitive case and two-way prepositions",
+          "min": 40,
+          "tiny": "Write one sentence with a two-way preposition",
+          "needs": [
+            "ger9"
+          ]
+        },
+        {
+          "id": "ger16",
+          "t": "Talk about opinions, events and experiences in German",
+          "min": 30,
+          "tiny": "Say one opinion about today aloud",
+          "needs": [
+            "ger14"
+          ]
+        },
+        {
+          "id": "ger17",
+          "t": "Vocabulary to about 2000 words and short news reading",
+          "min": 30,
+          "tiny": "Read one headline and look up one word",
+          "needs": [
+            "ger11"
+          ]
+        },
+        {
+          "id": "ger18",
+          "t": "Goethe-Zertifikat B1: prepare and sit the exam",
+          "min": 60,
+          "tiny": "Open the official B1 sample paper",
+          "needs": [
+            "ger12",
+            "ger13",
+            "ger14",
+            "ger15",
+            "ger16",
+            "ger17"
+          ]
+        },
+        {
+          "id": "ger19",
+          "t": "Read newspapers, books and podcasts at native speed",
+          "min": 30,
+          "tiny": "Play one minute of a German podcast",
+          "needs": [
+            "ger17"
+          ]
+        },
+        {
+          "id": "ger20",
+          "t": "Formal writing in German: emails, essays, letters",
+          "min": 45,
+          "tiny": "Write the opening line of a formal email",
+          "needs": [
+            "ger14"
+          ]
+        },
+        {
+          "id": "ger21",
+          "t": "Nuanced grammar: Partizip II as adjective, extended attributes",
+          "min": 40,
+          "tiny": "Find one extended attribute in a news sentence",
+          "needs": [
+            "ger13"
+          ]
+        },
+        {
+          "id": "ger22",
+          "t": "Watch German TV and films without subtitles (ARD, ZDF Mediathek)",
+          "min": 30,
+          "tiny": "Open the Mediathek and start one episode",
+          "needs": [
+            "ger17"
+          ]
+        },
+        {
+          "id": "ger23",
+          "t": "Vocabulary to about 4000 words",
+          "min": 30,
+          "tiny": "Review 10 Anki cards",
+          "needs": [
+            "ger17"
+          ]
+        },
+        {
+          "id": "ger24",
+          "t": "Goethe-Zertifikat B2: prepare and sit the exam",
+          "min": 60,
+          "tiny": "Open the official B2 sample paper",
+          "needs": [
+            "ger18",
+            "ger19",
+            "ger20",
+            "ger21"
+          ]
+        },
+        {
+          "id": "ger25",
+          "t": "Read full novels and academic, legal or business texts",
+          "min": 40,
+          "tiny": "Read one page and underline unknown words",
+          "needs": [
+            "ger19"
+          ]
+        },
+        {
+          "id": "ger26",
+          "t": "Debate, argue and present in German",
+          "min": 30,
+          "tiny": "Record a one-minute argument",
+          "needs": [
+            "ger16"
+          ]
+        },
+        {
+          "id": "ger27",
+          "t": "Idioms and edge-case grammar",
+          "min": 30,
+          "tiny": "Look up one idiom and use it in a sentence",
+          "needs": [
+            "ger21"
+          ]
+        },
+        {
+          "id": "ger28",
+          "t": "Vocabulary to 8000+ words",
+          "min": 30,
+          "tiny": "Review 10 Anki cards",
+          "needs": [
+            "ger23"
+          ]
+        },
+        {
+          "id": "ger29",
+          "t": "Goethe C1 (or TestDaF if you go to a German university): prepare and sit",
+          "min": 60,
+          "tiny": "Open the official C1 sample paper",
+          "needs": [
+            "ger24",
+            "ger25",
+            "ger26",
+            "ger27"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iel",
+      "name": "IELTS",
+      "floor": 2,
+      "src": "german_ielts_learning_roadmap.html (IELTS parts of phases 3 to 5)",
+      "nodes": [
+        {
+          "id": "iel1",
+          "t": "Understand the IELTS format: Listening, Reading, Writing, Speaking",
+          "min": 30,
+          "tiny": "Open the official IELTS format page"
+        },
+        {
+          "id": "iel2",
+          "t": "Take one full practice test to find your baseline score",
+          "min": 90,
+          "tiny": "Open an official sample paper (the test may take two sittings)",
+          "needs": [
+            "iel1"
+          ]
+        },
+        {
+          "id": "iel3",
+          "t": "Build academic vocabulary with the AWL word list",
+          "min": 30,
+          "tiny": "Learn 5 words from the list",
+          "needs": [
+            "iel1"
+          ]
+        },
+        {
+          "id": "iel4",
+          "t": "Listening practice: BBC, CNN, TED Talks with note-taking",
+          "min": 30,
+          "tiny": "Play one TED talk for 5 minutes and take notes",
+          "needs": [
+            "iel1"
+          ]
+        },
+        {
+          "id": "iel5",
+          "t": "Reading strategies: skimming, scanning, true/false/not given",
+          "min": 40,
+          "tiny": "Skim one passage in 2 minutes",
+          "needs": [
+            "iel1"
+          ]
+        },
+        {
+          "id": "iel6",
+          "t": "Writing Task 1: describe charts and graphs",
+          "min": 45,
+          "tiny": "Describe one chart in three sentences",
+          "needs": [
+            "iel1"
+          ]
+        },
+        {
+          "id": "iel7",
+          "t": "Writing Task 2: essays",
+          "min": 45,
+          "tiny": "Write a thesis sentence for one essay question",
+          "needs": [
+            "iel1"
+          ]
+        },
+        {
+          "id": "iel8",
+          "t": "Speaking Parts 1 to 3: record yourself",
+          "min": 30,
+          "tiny": "Record a 1-minute answer to one Part 1 question",
+          "needs": [
+            "iel1"
+          ]
+        },
+        {
+          "id": "iel9",
+          "t": "Two or three full mock tests a month, with error analysis",
+          "min": 90,
+          "tiny": "Pick the next mock test and set a timer",
+          "needs": [
+            "iel2",
+            "iel6",
+            "iel7",
+            "iel8"
+          ]
+        },
+        {
+          "id": "iel10",
+          "t": "Weekly full mock test, timed strictly",
+          "min": 90,
+          "tiny": "Open this week's mock test",
+          "needs": [
+            "iel9"
+          ]
+        },
+        {
+          "id": "iel11",
+          "t": "Get your Writing checked by a certified IELTS tutor",
+          "min": 30,
+          "tiny": "Send one essay to a tutor",
+          "needs": [
+            "iel7"
+          ]
+        },
+        {
+          "id": "iel12",
+          "t": "Book the official IELTS exam (British Council or IDP)",
+          "min": 30,
+          "tiny": "Open the booking page and pick a date",
+          "needs": [
+            "iel9"
+          ]
+        },
+        {
+          "id": "iel13",
+          "t": "Sit the IELTS exam (target Band 7.0+, 6.5+ in each section)",
+          "min": 90,
+          "tiny": "Pack your ID and check the venue",
+          "needs": [
+            "iel10",
+            "iel11",
+            "iel12"
+          ]
+        }
+      ]
+    }
+  ]
 }

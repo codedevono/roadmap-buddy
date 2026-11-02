@@ -1,0 +1,9 @@
+{"id": "6678e57a", "type": "progress", "title": "Printed 6 coxa and femur brackets on Voron 2.4", "body": "PETG black, 4 walls, 35% gyroid infill for strength.", "timestamp": 1793552333987, "media": []}
+{"id": "75b3d239", "type": "blocker", "title": "Servo jitter on leg 3 during 5V rail brownout", "body": "When all 3 servos on leg 3 move simultaneously, voltage drops to 4.2V causing MCU brownout.", "timestamp": 1793552333994, "media": []}
+{"id": "7567aac2", "type": "progress", "title": "API Test Commit", "body": "Verifying the REST commit stream.", "timestamp": 1793552588303, "media": []}
+{"id": "a7f41c41", "type": "blocker", "title": "Test Blocker", "body": "Something is blocking testing.", "timestamp": 1793552590368, "media": []}
+{"id": "91b896c3", "type": "progress", "title": "API Test Commit", "body": "Verifying the REST commit stream.", "timestamp": 1793552648619, "media": []}
+{"id": "6abf5fe4", "type": "blocker", "title": "Test Blocker", "body": "Something is blocking testing.", "timestamp": 1793552650669, "media": []}
+{"id": "399dc986", "type": "progress", "title": "API Test Commit", "body": "Verifying the REST commit stream.", "timestamp": 1793552666517, "media": []}
+{"id": "ba2f65b7", "type": "blocker", "title": "Test Blocker", "body": "Something is blocking testing.", "timestamp": 1793552668577, "media": []}
+{"id": "7faf94aa", "type": "progress", "title": "Assembled Coxa and Femur joints", "body": "Bolted the 3D printed brackets onto the MG996R servos. Tested 90-degree zero positioning.", "timestamp": 1793553063300, "media": [{"filename": "coxa_assembly.png", "url": "/media/hexapod-robot-build/5133a90e_test_pixel.png", "mime_type": "image/png"}]}

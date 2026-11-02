@@ -1,0 +1,500 @@
+{
+  "id": "aus",
+  "name": "Ausbildung plan, Nov 2026 to Aug 2027",
+  "target_date": "2027-08-31",
+  "type": "exam",
+  "priority": "urgent",
+  "active": false,
+  "note": "Dated plan from your roadmap PDF (prepared 1 Nov 2026). Goal: B1 by May 2027, then B2. If A2 is not mostly done by end of February, move the B1 exam to June or July. If B1 is not passed by June, aim for the Feb or March 2028 intake. Hours and month targets are the author's estimates; check embassy and employer rules.",
+  "links": [
+    {
+      "t": "DW Nicos Weg (A1 to B1)",
+      "u": "https://learngerman.dw.com",
+      "kind": "course",
+      "free": true
+    },
+    {
+      "t": "Anki flashcards",
+      "u": "https://apps.ankiweb.net",
+      "kind": "practice",
+      "free": true
+    },
+    {
+      "t": "Make it in Germany",
+      "u": "https://www.make-it-in-germany.com",
+      "kind": "docs",
+      "free": true
+    },
+    {
+      "t": "Bundesagentur f\u00fcr Arbeit",
+      "u": "https://www.arbeitsagentur.de",
+      "kind": "docs",
+      "free": true
+    },
+    {
+      "t": "Anabin (certificate check)",
+      "u": "https://anabin.kmk.org",
+      "kind": "docs",
+      "free": true
+    },
+    {
+      "t": "German Embassy India",
+      "u": "https://india.diplo.de",
+      "kind": "docs",
+      "free": true
+    }
+  ],
+  "syllabus": [
+    {
+      "id": "au-field",
+      "t": "Choose your main field: mechatronics or software (you can apply to both later)",
+      "min": 30,
+      "tiny": "Write the two options and one reason for each",
+      "due": "2026-11-30",
+      "links": [
+        {
+          "t": "Make it in Germany",
+          "u": "https://www.make-it-in-germany.com",
+          "kind": "docs",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-passport",
+      "t": "Check your passport is valid for at least 6 months beyond your planned arrival in Germany; apply or renew now if needed",
+      "min": 30,
+      "tiny": "Open your passport and read the expiry date",
+      "due": "2026-11-30",
+      "links": [
+        {
+          "t": "Passport Seva",
+          "u": "https://www.passportindia.gov.in",
+          "kind": "docs",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-docs-copies",
+      "t": "Collect copies of your school certificates (10th, 12th, diploma or ITI), ID and birth certificate",
+      "min": 45,
+      "tiny": "List the certificates you have",
+      "due": "2026-12-31"
+    },
+    {
+      "id": "au-docs-duplicates",
+      "t": "Ask your school or college what it takes to get duplicates or attested copies",
+      "min": 30,
+      "tiny": "Write down who to call or email",
+      "needs": [
+        "au-docs-copies"
+      ],
+      "due": "2026-12-31"
+    },
+    {
+      "id": "au-a1-mock",
+      "t": "A1 checkpoint: take a free Goethe Start Deutsch 1 sample test (aim for 60% or more; if lower, revise in the first week of January)",
+      "min": 60,
+      "tiny": "Open the Start Deutsch 1 sample test",
+      "needs": [
+        "ger3",
+        "ger4",
+        "ger5"
+      ],
+      "due": "2026-12-31",
+      "links": [
+        {
+          "t": "Goethe: find the free sample tests",
+          "u": "https://www.goethe.de",
+          "kind": "practice",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-apostille",
+      "t": "Start the apostille process for your educational certificates (MEA attestation in India; allow 2 to 6 weeks)",
+      "min": 45,
+      "tiny": "Open the MEA attestation page and note the steps",
+      "needs": [
+        "au-docs-duplicates"
+      ],
+      "due": "2027-01-31",
+      "links": [
+        {
+          "t": "Ministry of External Affairs",
+          "u": "https://www.mea.gov.in",
+          "kind": "docs",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-pcc",
+      "t": "Start the police clearance certificate (PCC) application through the passport authority (allow 4 to 8 weeks)",
+      "min": 45,
+      "tiny": "Find the PCC form on the passport site",
+      "needs": [
+        "au-passport"
+      ],
+      "due": "2027-01-31",
+      "links": [
+        {
+          "t": "Passport Seva",
+          "u": "https://www.passportindia.gov.in",
+          "kind": "docs",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-a2-mock",
+      "t": "A2 checkpoint: take an A2 sample test (if A2 is not mostly done by the end of February, use the fallback in the ladder note)",
+      "min": 60,
+      "tiny": "Open an A2 sample test",
+      "needs": [
+        "ger7",
+        "ger8",
+        "ger9",
+        "ger10"
+      ],
+      "due": "2027-02-28",
+      "links": [
+        {
+          "t": "Goethe: find the free sample tests",
+          "u": "https://www.goethe.de",
+          "kind": "practice",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-portfolio-sw",
+      "t": "Software track: start a small GitHub portfolio with 2 to 3 projects and short English READMEs",
+      "min": 60,
+      "tiny": "Create the GitHub repository for project 1",
+      "due": "2027-02-28",
+      "links": [
+        {
+          "t": "GitHub",
+          "u": "https://github.com",
+          "kind": "docs",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-portfolio-mech",
+      "t": "Mechatronics track: list your lab work, diploma projects, ITI trades and hobby builds (Arduino, Raspberry Pi)",
+      "min": 45,
+      "tiny": "Write down three things you have built",
+      "due": "2027-02-28"
+    },
+    {
+      "id": "au-vocab-tech",
+      "t": "Learn technical German vocabulary for your field. Mechatronics: Schaltplan, Steuerung, Sensor, Antrieb, Maschine, Werkzeug, Messger\u00e4t. Software: Programmiersprache, Datenbank, Netzwerk, Fehler, Anwendung",
+      "min": 30,
+      "tiny": "Write 5 of these words with their article",
+      "needs": [
+        "ger10"
+      ],
+      "due": "2027-03-31"
+    },
+    {
+      "id": "au-b1-register",
+      "t": "Check the Goethe India website for B1 dates in May and June 2027 and register as soon as they open (modules can be booked together or separately; bring the original passport on exam day)",
+      "min": 30,
+      "tiny": "Open the Goethe India exam page",
+      "needs": [
+        "au-a2-mock"
+      ],
+      "due": "2027-04-30",
+      "links": [
+        {
+          "t": "Goethe-Institut",
+          "u": "https://www.goethe.de",
+          "kind": "docs",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-b1-mocks",
+      "t": "Take full B1 mock tests every week, timed (aim for 60% or more; if lower, move the exam by one cycle)",
+      "min": 90,
+      "tiny": "Open the next B1 sample test and set a timer",
+      "needs": [
+        "ger14",
+        "ger16"
+      ],
+      "due": "2027-04-30",
+      "links": [
+        {
+          "t": "Goethe: find the free sample tests",
+          "u": "https://www.goethe.de",
+          "kind": "practice",
+          "free": true
+        }
+      ]
+    },
+    {
+      "id": "au-b1-writing",
+      "t": "B1 writing practice: a formal email, an informal email and a forum post, corrected by a teacher or language partner",
+      "min": 45,
+      "tiny": "Write the first two lines of a formal email",
+      "needs": [
+        "ger14"
+      ],
+      "due": "2027-04-30"
+    },
+    {
+      "id": "au-b1-speaking",
+      "t": "B1 speaking practice: a 2 to 3 minute presentation and a short discussion",
+      "min": 30,
+      "tiny": "Record a one-minute talk on a familiar topic",
+      "needs": [
+        "ger16"
+      ],
+      "due": "2027-04-30"
+    },
+    {
+      "id": "au-employer-questions",
+      "t": "Prepare questions to ask employers: training plan, vocational school location, accommodation help, support with visa paperwork",
+      "min": 30,
+      "tiny": "Write three questions",
+      "due": "2027-05-31"
+    },
+    {
+      "id": "au-b1-results",
+      "t": "Receive your B1 results (about 4 to 6 weeks after the exam); if a module fails, rebook that module only",
+      "min": 15,
+      "tiny": "Note the date results are expected",
+      "needs": [
+        "ger18"
+      ],
+      "due": "2027-06-30"
+    },
+    {
+      "id": "au-arrival",
+      "t": "Prepare for arrival: Anmeldung (address registration) and the residence permit appointment",
+      "min": 30,
+      "tiny": "Search how Anmeldung works in your city",
+      "needs": [
+        "au-b1-results"
+      ],
+      "due": "2027-08-31"
+    },
+    {
+      "id": "au-selfcheck",
+      "t": "Monthly self-check: studied 5+ days a week? checklist done? mock test 60%+? documents moving? Adjust the plan",
+      "min": 15,
+      "tiny": "Answer the first question for last month"
+    }
+  ],
+  "mock_tests": [],
+  "events": [
+    {
+      "id": "goal-aus-ev-1",
+      "goal_id": "aus",
+      "name": "Goethe B1 exam (estimated; 2027 dates not published yet)",
+      "type": "exam",
+      "date": "2027-05-31",
+      "prep": [
+        "au-field",
+        "au-passport",
+        "au-docs-copies",
+        "au-docs-duplicates",
+        "au-a1-mock",
+        "au-apostille",
+        "au-pcc",
+        "au-a2-mock",
+        "au-portfolio-sw",
+        "au-portfolio-mech",
+        "au-vocab-tech",
+        "au-b1-register",
+        "au-b1-mocks",
+        "au-b1-writing",
+        "au-b1-speaking",
+        "au-employer-questions",
+        "au-b1-results",
+        "au-arrival",
+        "au-selfcheck"
+      ],
+      "weight": 10,
+      "note": "Check the Goethe India website for May and June 2027 and register when dates open. Bring the original passport."
+    },
+    {
+      "id": "goal-aus-ev-2",
+      "goal_id": "aus",
+      "name": "Last sensible month to apply to employers",
+      "type": "application",
+      "date": "2027-05-31",
+      "prep": [
+        "au-field",
+        "au-passport",
+        "au-docs-copies",
+        "au-docs-duplicates",
+        "au-a1-mock",
+        "au-apostille",
+        "au-pcc",
+        "au-a2-mock",
+        "au-portfolio-sw",
+        "au-portfolio-mech",
+        "au-vocab-tech",
+        "au-b1-register",
+        "au-b1-mocks",
+        "au-b1-writing",
+        "au-b1-speaking",
+        "au-employer-questions",
+        "au-b1-results",
+        "au-arrival",
+        "au-selfcheck"
+      ],
+      "weight": 8,
+      "note": "Latest sensible month for a September 2027 start."
+    },
+    {
+      "id": "goal-aus-ev-3",
+      "goal_id": "aus",
+      "name": "Book the visa appointment; open a blocked account if required",
+      "type": "application",
+      "date": "2027-06-30",
+      "prep": [
+        "au-field",
+        "au-passport",
+        "au-docs-copies",
+        "au-docs-duplicates",
+        "au-a1-mock",
+        "au-apostille",
+        "au-pcc",
+        "au-a2-mock",
+        "au-portfolio-sw",
+        "au-portfolio-mech",
+        "au-vocab-tech",
+        "au-b1-register",
+        "au-b1-mocks",
+        "au-b1-writing",
+        "au-b1-speaking",
+        "au-employer-questions",
+        "au-b1-results",
+        "au-arrival",
+        "au-selfcheck"
+      ],
+      "weight": 8,
+      "note": "Check the current checklist and waiting times for your German mission."
+    },
+    {
+      "id": "goal-aus-ev-4",
+      "goal_id": "aus",
+      "name": "Submit the national D-visa application",
+      "type": "application",
+      "date": "2027-07-31",
+      "prep": [
+        "au-field",
+        "au-passport",
+        "au-docs-copies",
+        "au-docs-duplicates",
+        "au-a1-mock",
+        "au-apostille",
+        "au-pcc",
+        "au-a2-mock",
+        "au-portfolio-sw",
+        "au-portfolio-mech",
+        "au-vocab-tech",
+        "au-b1-register",
+        "au-b1-mocks",
+        "au-b1-writing",
+        "au-b1-speaking",
+        "au-employer-questions",
+        "au-b1-results",
+        "au-arrival",
+        "au-selfcheck"
+      ],
+      "weight": 8,
+      "note": "Processing is commonly quoted at 6 to 12 weeks, some sources say 2 to 4 months. Apply as early as the embassy allows."
+    },
+    {
+      "id": "goal-aus-ev-5",
+      "goal_id": "aus",
+      "name": "Collect the visa; arrange housing and travel",
+      "type": "milestone",
+      "date": "2027-08-31",
+      "prep": [
+        "au-field",
+        "au-passport",
+        "au-docs-copies",
+        "au-docs-duplicates",
+        "au-a1-mock",
+        "au-apostille",
+        "au-pcc",
+        "au-a2-mock",
+        "au-portfolio-sw",
+        "au-portfolio-mech",
+        "au-vocab-tech",
+        "au-b1-register",
+        "au-b1-mocks",
+        "au-b1-writing",
+        "au-b1-speaking",
+        "au-employer-questions",
+        "au-b1-results",
+        "au-arrival",
+        "au-selfcheck"
+      ],
+      "weight": 6,
+      "note": ""
+    },
+    {
+      "id": "goal-aus-ev-6",
+      "goal_id": "aus",
+      "name": "Ausbildung starts (September 2027; exact day not known)",
+      "type": "milestone",
+      "date": "2027-09-01",
+      "prep": [
+        "au-field",
+        "au-passport",
+        "au-docs-copies",
+        "au-docs-duplicates",
+        "au-a1-mock",
+        "au-apostille",
+        "au-pcc",
+        "au-a2-mock",
+        "au-portfolio-sw",
+        "au-portfolio-mech",
+        "au-vocab-tech",
+        "au-b1-register",
+        "au-b1-mocks",
+        "au-b1-writing",
+        "au-b1-speaking",
+        "au-employer-questions",
+        "au-b1-results",
+        "au-arrival",
+        "au-selfcheck"
+      ],
+      "weight": 6,
+      "note": ""
+    }
+  ],
+  "prep_ids": [
+    "au-field",
+    "au-passport",
+    "au-docs-copies",
+    "au-docs-duplicates",
+    "au-a1-mock",
+    "au-apostille",
+    "au-pcc",
+    "au-a2-mock",
+    "au-portfolio-sw",
+    "au-portfolio-mech",
+    "au-vocab-tech",
+    "au-b1-register",
+    "au-b1-mocks",
+    "au-b1-writing",
+    "au-b1-speaking",
+    "au-employer-questions",
+    "au-b1-results",
+    "au-arrival",
+    "au-selfcheck"
+  ],
+  "updated": 1793604812977
+}

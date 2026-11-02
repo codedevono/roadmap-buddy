@@ -271,6 +271,7 @@
       </div>
     </div>
     <div class="b-chips">
+      <button class="b-chip special" id="b-add-goal-btn" type="button">🎯 + Add Goal/Exam</button>
       <button class="b-chip special" id="b-savepoint-btn" type="button">📍 Where I Left Off</button>
       <button class="b-chip special" id="b-briefing-btn" type="button">🌅 Daily Briefing</button>
       <button class="b-chip special" id="b-rebalance-btn" type="button">⚖️ Rebalance</button>
@@ -337,6 +338,13 @@
     msgs.scrollTop = msgs.scrollHeight;
     return d;
   }
+
+  // Add Goal Modal
+  panel.querySelector('#b-add-goal-btn').onclick = () => {
+    if (typeof window.openGoalModal === 'function') {
+      window.openGoalModal();
+    }
+  };
 
   // Save Point Screen
   panel.querySelector('#b-savepoint-btn').onclick = () => {
